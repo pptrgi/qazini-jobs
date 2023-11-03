@@ -46,7 +46,7 @@ const JobCard = ({ job }) => {
     date_expiring,
     job_city,
     job_country,
-    user_id: user.user_id,
+    user_id: 1,
   };
 
   const [save_job_now, { loading }] = useMutation(SAVE_JOB_MUTATION, {
