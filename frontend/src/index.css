@@ -1,0 +1,239 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Nunito-Semibold";
+  src: url("/public/fonts/Nunito-SemiBold.ttf");
+}
+@font-face {
+  font-family: "Nunito-Normal";
+  src: url("/public/fonts/Nunito-VariableFont_wght.ttf");
+}
+
+/* BASE */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply font-nunitoText font-unboldened bg-bodyColor text-textColor text-small md480:text-normal;
+}
+
+button,
+input {
+  @apply hover:outline-none focus:outline-none;
+}
+
+/* REUSABLE */
+.custom_container {
+  @apply max-w-[1120px] m-[1.5rem] xm:m-[1rem] lg1120:m-auto xl2048:max-w-[1300px];
+}
+
+.main {
+  @apply overflow-hidden;
+}
+
+.section {
+  @apply mt-[2rem] py-[1rem];
+}
+
+.section_after_header {
+  @apply mt-[4.5rem] py-[0.75rem] mb-[0.5rem];
+}
+.search_section {
+  @apply mt-[6rem] py-[0.75rem] mb-[0.5rem];
+}
+.section_after_search {
+  @apply mt-[0.75rem] pt-[0.5rem] pb-[1rem];
+}
+
+.flex_between {
+  @apply flex justify-between items-center;
+}
+
+.title_h3 {
+  @apply font-nunitoTitle font-semibolden text-titleColor text-h3 tracking-wide;
+}
+.title_normal {
+  @apply font-nunitoTitle font-semibolden text-titleColor text-normal tracking-wide;
+}
+.title_h2 {
+  @apply font-nunitoTitle font-semibolden text-titleColor text-h2 tracking-wide;
+}
+
+.cta_button {
+  @apply px-[2rem] py-[0.75rem] rounded-full bg-ctaColor text-bodyColor font-semibolden;
+}
+.outline_button {
+  @apply px-[2rem] py-[0.75rem] border_1_full font-semibolden;
+}
+
+.flex_center {
+  @apply flex justify-center items-center;
+}
+
+.flex_col {
+  @apply flex flex-col;
+}
+
+.hidden_flex_between {
+  @apply hidden justify-between items-center;
+}
+/* .flex_start_center {
+  @apply flex justify-start items-start md800:justify-center md800:items-start;
+} */
+
+.border_1_full {
+  @apply border-[1px] border-textColor rounded-full;
+}
+.border_1_md {
+  @apply border-[1px] border-textColor rounded-md;
+}
+.border_125 {
+  @apply border-[1.8px] border-textColor rounded-[1.25rem];
+}
+
+.filter_form_width {
+  @apply w-full md480:w-[80%] md800:w-[70%] lg1023:w-[60%];
+}
+
+.search_input_field {
+  @apply py-[0.75rem] px-[0.75rem] bg-transparent w-full md480:py-[1rem];
+}
+
+.filter_button_1 {
+  @apply flex_center gap-[0.75rem] border_1_md px-[1rem] py-[0.5rem];
+}
+.filter_button {
+  @apply flex_center gap-[0.75rem] rounded-md px-[1rem] py-[0.6rem] hover:outline focus:outline outline-[2px] outline-offset-[3px] outline-ctaColor;
+}
+.filter_name {
+  @apply text-smaller font-semibolden md480:text-small capitalize min-w-fit truncate;
+}
+.filter_mobile_modal_wrapper {
+  @apply block border-t-[2px] border-t-gray-200 rounded-t-[1.25rem] px-[1.5rem] pt-[2rem] pb-[2rem] bg-bodyColor md800:hidden;
+}
+
+/* .job_card_wrapper {
+  @apply w-[290px] px-[1rem] py-[1rem] rounded-[1.25rem] border-[1px] border-textColor xm:w-[265px] md480:w-[315px];
+} */
+.job_card_wrapper {
+  @apply w-full max-w-[315px] min-w-[265px] px-[1rem] py-[1rem] rounded-[1.25rem] border-[1px] border-textColor;
+}
+
+.lines_limit_2 {
+  @apply line-clamp-2;
+}
+
+/* MODAL BACKGROUND */
+#mobilemodal {
+  @apply fixed top-0 bottom-0 left-0 right-0 z-[60] bg-gray-100 bg-opacity-70 overflow-y-hidden md800:relative;
+}
+#dropdownMenu {
+  @apply hidden md800:block;
+}
+
+/* FORM INPUT */
+.auth_card {
+  @apply w-[320px] border_125 px-[1rem] py-[2.5rem] md800:px-[1.5rem] md480:w-[370px] md800:w-[400px] xm:w-[280px];
+}
+
+.form_input {
+  @apply py-[0.6rem] px-[1rem] rounded-md border_1_md hover:outline-none focus:outline-none;
+}
+
+/* SKELETON LOADERS */
+
+/* Job Card */
+.skeleton_card_wrapper {
+  @apply w-full max-w-[315px] min-w-[265px] px-[1rem] py-[1rem] rounded-[1.25rem] border-[1px] border-skeletonColor;
+}
+.skeleton_com_logo {
+  @apply relative w-[60px] h-[60px] rounded-full bg-skeletonColor overflow-hidden;
+}
+.skeleton_bookmark {
+  @apply relative w-[18px] h-[27px] rounded-t-lg bg-skeletonColor overflow-hidden;
+}
+.skeleton_job_title_1 {
+  @apply relative w-[100%] h-[23px] bg-skeletonColor rounded-[10px] overflow-hidden;
+}
+.skeleton_job_title_2 {
+  @apply relative w-[70%] h-[23px] bg-skeletonColor rounded-[10px] overflow-hidden;
+}
+.skeleton_com_name {
+  @apply relative w-[85%] h-[11px] bg-skeletonColor rounded-[10px] overflow-hidden;
+}
+.skeleton_job_type {
+  @apply relative w-[38%] h-[13px] bg-skeletonColor rounded-[10px] overflow-hidden;
+}
+.skeleton_expires_in {
+  @apply relative w-[50%] h-[13px] bg-skeletonColor rounded-[10px] overflow-hidden;
+}
+.skeleton_button {
+  @apply relative w-[50%] h-[42px] bg-skeletonColor rounded-full overflow-hidden;
+}
+
+/* Profile Page */
+.profile_skeleton_wrapper {
+  @apply bg-bodyColor rounded-md px-[1rem] py-[2rem] shadow-lg xm360:px-[0.75rem];
+}
+.skeleton_section_title {
+  @apply relative w-[60%] h-[32px] bg-skeletonColor rounded-[10px] md480:w-[35%] overflow-hidden;
+}
+.skeleton_section_subtitle {
+  @apply relative w-[80%] h-[18px] bg-skeletonColor rounded-[10px] md480:w-[40%] overflow-hidden;
+}
+.skeleton_form_input {
+  @apply relative w-[100%] h-[24px] bg-skeletonColor rounded-sm overflow-hidden lg1023:h-[25px];
+}
+.skeleton_profile_button {
+  @apply relative w-[150px] h-[42px] bg-skeletonColor rounded-full overflow-hidden;
+}
+
+/* Skeletons Animation */
+/* profile's classes start from "skeleton_profile_button" */
+.skeleton_com_logo::before,
+.skeleton_bookmark::before,
+.skeleton_job_title_1::before,
+.skeleton_job_title_2::before,
+.skeleton_com_name::before,
+.skeleton_job_type::before,
+.skeleton_expires_in::before,
+.skeleton_button::before,
+.skeleton_profile_button::before,
+.skeleton_section_title::before,
+.skeleton_section_subtitle::before,
+.skeleton_form_input::before {
+  content: "";
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-image: linear-gradient(
+    to right,
+    #d9d9d9 0%,
+    rgba(0, 0, 0, 0.05) 20%,
+    #d9d9d9 40%,
+    #d9d9d9 100%
+  );
+  background-size: 450px 400px;
+  background-repeat: no-repeat;
+  animation: shimmer 1s linear infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -450px 0;
+  }
+  100% {
+    background-position: 450px 0;
+  }
+}
+
+/* SCROLL BAR */
+::-webkit-scrollbar {
+  @apply rounded-full bg-lightGrayColor h-[0.2rem] w-[0.4rem];
+}
+::-webkit-scrollbar-thumb {
+  @apply rounded-full bg-ctaColor;
+}
