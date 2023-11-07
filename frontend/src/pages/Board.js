@@ -29,10 +29,10 @@ const Board = () => {
           <div className="w-[95%] xm360:w-[99%] md800:w-[80%]">
             <div className="flex_col gap-[1.25rem]">
               {/* <ProfileSkeleton /> */}
-              <section className="bg-tintColor2 rounded-md px-[1rem] py-[2rem] shadow-lg xm360:px-[0.75rem]">
+              <section className="bg-tintColor3 rounded-md px-[1rem] py-[2rem] shadow-lg xm360:px-[0.75rem]">
                 <UserInformation user={user} loading={loading} />
               </section>
-              <section className="bg-tintColor2 rounded-md px-[1rem] py-[2rem] shadow-lg xm360:px-[0.75rem]">
+              <section className="bg-bodyColor rounded-md px-[1rem] py-[2rem] shadow-lg xm360:px-[0.75rem]">
                 <SavedJobs jobs={data?.get_user?.jobs} />
               </section>
               {/* {/* <section className="bg-[#f4f5f7] rounded-md px-[1rem] py-[2rem] shadow-lg xm360:px-[0.75rem]">

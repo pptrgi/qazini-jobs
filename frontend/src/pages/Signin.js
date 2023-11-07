@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { IoEyeSharp, IoEyeOffSharp } from "react-icons/io5";
 
@@ -69,39 +69,41 @@ const Signin = () => {
                     name="email"
                     value={signinValues.email}
                     onChange={handleOnChange}
-                    className="form_input"
+                    className="form_input bg-bodyColor"
                     placeholder="email address"
                   />
 
-                  <div className="flex_between form_input items-center">
+                  <div className="flex_between form_input bg-bodyColor items-center">
                     <input
                       type={showPassword ? "text" : "password"}
                       name="password"
                       value={signinValues.password}
                       onChange={handleOnChange}
                       placeholder="password"
-                      className="w-full"
+                      className="w-full bg-transparent"
                     />
                     {showPassword ? (
                       <span
                         onClick={(e) => setShowPassword(false)}
                         className="text-ctaColor pl-[0.75rem]"
                       >
-                        <IoEyeSharp />
+                        <IoEyeOffSharp />
                       </span>
                     ) : (
                       <span
                         onClick={(e) => setShowPassword(true)}
                         className="text-ctaColor pl-[0.75rem]"
                       >
-                        <IoEyeOffSharp />
+                        <IoEyeSharp />
                       </span>
                     )}
                   </div>
                 </div>
                 <div className="flex justify-end items-end">
                   <div className="flex gap-[0.75rem] items-center">
-                    <span className="outline_button">Cancel</span>
+                    <Link to={"/"} className="outline_button">
+                      Cancel
+                    </Link>
                     <button type="submit" className="cta_button">
                       {loading ? "lesdoit..." : "Let's go"}
                     </button>
@@ -111,7 +113,9 @@ const Signin = () => {
 
               <div className="flex justify-start items-start gap-[0.5rem]">
                 <p>New to Qazini?</p>
-                <span className="text-ctaColor">Register</span>
+                <Link to={"/register"} className="text-ctaColor">
+                  Register
+                </Link>
               </div>
             </div>
           </div>

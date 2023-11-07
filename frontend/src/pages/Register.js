@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoEyeSharp, IoEyeOffSharp } from "react-icons/io5";
 
 import { GET_USER_QUERY } from "../graphql/queries";
@@ -75,7 +75,7 @@ const Register = () => {
                     name="fullname"
                     value={registerValues.fullname}
                     onChange={handleOnChange}
-                    className="form_input"
+                    className="form_input bg-bodyColor"
                     placeholder="full name"
                   />
                   <input
@@ -83,16 +83,17 @@ const Register = () => {
                     name="email"
                     value={registerValues.email}
                     onChange={handleOnChange}
-                    className="form_input"
+                    className="form_input bg-bodyColor"
                     placeholder="email address"
                   />
 
-                  <div className="flex_between form_input items-center">
+                  <div className="flex_between form_input bg-bodyColor items-center">
                     <input
                       type={showPassword ? "text" : "password"}
                       name="password"
                       value={registerValues.password}
                       onChange={handleOnChange}
+                      className="bg-transparent"
                       placeholder="password"
                     />
                     {showPassword ? (
@@ -100,21 +101,23 @@ const Register = () => {
                         onClick={(e) => setShowPassword(false)}
                         className="text-ctaColor"
                       >
-                        <IoEyeSharp />
+                        <IoEyeOffSharp />
                       </span>
                     ) : (
                       <span
                         onClick={(e) => setShowPassword(true)}
                         className="text-ctaColor"
                       >
-                        <IoEyeOffSharp />
+                        <IoEyeSharp />
                       </span>
                     )}
                   </div>
                 </div>
                 <div className="flex justify-end items-end">
                   <div className="flex gap-[0.75rem] items-center">
-                    <span className="outline_button">Cancel</span>
+                    <Link to={"/"} className="outline_button">
+                      Cancel
+                    </Link>
                     <button type="submit" className="cta_button">
                       {loading ? "registering..." : "Register"}
                     </button>
@@ -128,7 +131,9 @@ const Register = () => {
                 </p>
                 <div className="flex justify-end items-end gap-[0.5rem]">
                   <p>Already in Qazini?</p>
-                  <span className="text-ctaColor">Let's go</span>
+                  <Link to={"/signin"} className="text-ctaColor">
+                    Let's go
+                  </Link>
                 </div>
               </div>
             </div>
