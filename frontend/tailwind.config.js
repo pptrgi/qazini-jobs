@@ -27,6 +27,7 @@ module.exports = {
         halfDarkColor: "#220012",
         skeletonColor: "#d9d9d9",
         lightGrayColor: "#f3f5f7",
+        tintClearColor: "#ff98d0",
       },
       fontSize: {
         large: "3rem",
