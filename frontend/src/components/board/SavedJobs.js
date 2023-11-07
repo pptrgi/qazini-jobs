@@ -6,14 +6,16 @@ const SavedJobs = ({ jobs }) => {
   return (
     <div className="flex_col gap-[1.5rem]">
       <h3 className="title_h3">Jobs you Saved</h3>
-      <JobCardSkeleton />
+      {/* <JobCardSkeleton /> */}
 
-      {jobs?.length > 0 && (
+      {jobs?.length > 0 ? (
         <div>
           {jobs?.map((job, index) => {
             return <JobCard job={job} key={index} />;
           })}
         </div>
+      ) : (
+        <p>Seems like you haven't saved any jobs yet</p>
       )}
     </div>
   );

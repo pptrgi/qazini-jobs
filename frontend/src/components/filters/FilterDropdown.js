@@ -4,8 +4,8 @@ const FilterDropdown = ({
   filterValue,
 }) => {
   return (
-    <div className="absolute top-[3rem] left-0 z-20 w-full">
-      <div className="flex_col w-full rounded-md shadow-lg bg-bodyColor">
+    <div className="absolute top-[3.25rem] left-0 z-20 w-full">
+      <div className="flex_col w-full rounded-md shadow-lg bg-tintColor">
         {filters?.map((filter) => {
           return (
             <p

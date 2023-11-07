@@ -1,14 +1,19 @@
-import React from "react";
-
-import { jobsData } from "../jobsFeed/JobsData";
+import { LiaCheckSquareSolid } from "react-icons/lia";
 
 const Descriptions = ({ description, qualifications, responsibilities }) => {
-  const paragraphMaker = (paragraphsArray) => {
+  // function accepts an array of paragraphs then returns individual paragraphs styled based on the desired output of that information
+  const paragraphMaker = (paragraphsArray, origin) => {
     return paragraphsArray?.map((paragraph, index) => {
       return (
-        <p key={index} className="mb-[0.75rem]">
-          {paragraph[index]}
-        </p>
+        <div key={index} className="mb-[0.75rem] flex gap-[0.5rem] items-start">
+          {origin === "qualifications" && (
+            <span className="text-normal">
+              <LiaCheckSquareSolid />
+            </span>
+          )}
+          {origin === "responsibilities" && <span>{`${index + 1}.`}</span>}
+          <p>{paragraph[index]}</p>
+        </div>
       );
     });
   };
@@ -26,15 +31,15 @@ const Descriptions = ({ description, qualifications, responsibilities }) => {
           Qualifications
         </h3>
         <div className="text-smaller md800:text-small">
-          {paragraphMaker(qualifications)}
+          {paragraphMaker(qualifications, "qualifications")}
         </div>
       </div>
       <div className="flex_col gap-[0.75rem]">
         <h3 className="title_normal border-b-[1px] border-gray-200">
-          Requirements
+          Responsibilities
         </h3>
         <div className="text-smaller md800:text-small">
-          {paragraphMaker(responsibilities)}
+          {paragraphMaker(responsibilities, "responsibilities")}
         </div>
       </div>
     </div>

@@ -1,12 +1,14 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useRef } from "react";
 import { IoChevronDown, IoChevronUp } from "react-icons/io5";
 import FilterDropdown from "./FilterDropdown";
 import { filtersData } from "./FilterData";
 import FilterMobileModal from "./FilterMobileModal";
 import { JobsUserContext } from "../../context/jobsUserContext";
+import useClickOutsideClose from "../../hooks/useClickOutsideClose";
 
 const Filters = () => {
   const context = useContext(JobsUserContext);
+  const dropdownRef = useRef();
 
   // filter values for a property/key
   const [filterValuesArray, setFilterValuesArray] = useState([]);
@@ -37,10 +39,13 @@ const Filters = () => {
     context.filterJobs(activeFilterProperty, filterValueName);
   };
 
+  // close the dropdown menu on outside click
+  useClickOutsideClose(dropdownRef, () => setShowDropdown(false));
+
   return (
     <section className="custom_container section_after_search">
       <div className="">
-        <div className="flex gap-[1.75rem] items-center relative">
+        <div className="flex gap-[1.5rem] items-center relative">
           <h3 className="title_normal">Filters:</h3>
           <div className="overflow-x-auto py-[0.5rem] px-[0.5rem]">
             <div className="flex gap-[1.5rem]">
@@ -61,7 +66,11 @@ const Filters = () => {
                         {filtersData[key].name}
                       </span>
                       <span>
-                        <IoChevronDown />
+                        {activeFilterProperty === key ? (
+                          <IoChevronUp />
+                        ) : (
+                          <IoChevronDown />
+                        )}
                       </span>
                     </div>
                   </div>
@@ -70,7 +79,7 @@ const Filters = () => {
             </div>
           </div>
           {showDropdown && (
-            <div id="dropdownMenu">
+            <div key={dropdownRef} id="dropdownMenu">
               <FilterDropdown
                 filters={filterValuesArray}
                 handleSetActiveFilterValue={handleSetActiveFilterValue}

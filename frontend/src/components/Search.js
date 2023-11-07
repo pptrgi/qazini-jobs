@@ -17,7 +17,7 @@ const Search = () => {
       <div className="flex_center w-full">
         <form
           onSubmit={handleSearchJobs}
-          className="flex_between border_1_full items-center filter_form_width"
+          className="flex_between border_1_full items-center search_form_width"
         >
           <input
             type="text"

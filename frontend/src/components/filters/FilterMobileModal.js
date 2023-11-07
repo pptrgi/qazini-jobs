@@ -1,7 +1,7 @@
 import {
   IoClose,
-  IoCheckmarkCircleOutline,
   IoCheckmarkCircleSharp,
+  IoRadioButtonOffSharp,
 } from "react-icons/io5";
 
 const FilterMobileModal = ({
@@ -15,7 +15,7 @@ const FilterMobileModal = ({
       <div className="filter_mobile_modal_wrapper relative">
         <span
           onClick={(e) => closeModal()}
-          className="absolute top-[1rem] right-[1rem]"
+          className="absolute top-[1rem] right-[1rem] text-normal"
         >
           <IoClose />
         </span>
@@ -34,11 +34,11 @@ const FilterMobileModal = ({
                     <span className="capitalize text-smaller">
                       {filter.shownName}
                     </span>
-                    <span>
+                    <span className="text-normal">
                       {activeFilterValue === filter.value ? (
                         <IoCheckmarkCircleSharp />
                       ) : (
-                        <IoCheckmarkCircleOutline />
+                        <IoRadioButtonOffSharp />
                       )}
                     </span>
                   </div>

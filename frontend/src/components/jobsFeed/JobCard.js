@@ -92,7 +92,10 @@ const JobCard = ({ job }) => {
         <div className="flex_between w-full">
           <img src={`${employer_logo}`} className="w-[60px] min-h-[60px]" />
           {/* <img src="/logo192.png" className="w-[60px] min-h-[60px]" /> */}
-          <span onClick={(e) => handleJobSave()} className="text-h3">
+          <span
+            onClick={(e) => handleJobSave()}
+            className="text-h3 hover:text-ctaColor"
+          >
             <IoBookmark />
           </span>
         </div>
@@ -102,13 +105,20 @@ const JobCard = ({ job }) => {
               {job_title}
             </h2>
             <span className="text-smaller md480:text-small">
-              At <span className="text-titleColor">{`${employer_name}`}</span>,{" "}
-              {`${job_country}`}
+              At
+              <span className="text-darkColor">
+                {/* if there's company website url make it a link, otherwise just show name */}{" "}
+                {employer_website === null ? (
+                  <span>{employer_name}</span>
+                ) : (
+                  <a href={`${employer_website}`}>{`${employer_name}`}</a>
+                )}
+              </span>
+              , {`${job_country}`}
             </span>
           </div>
           <div className="flex_col gap-[0.25rem]">
             <span className="capitalize">{employment_type}</span>
-
             <p>
               {date_expiring === null
                 ? "No Expiry"
@@ -121,7 +131,7 @@ const JobCard = ({ job }) => {
           <div className="group">
             <a
               href={`${apply_link}`}
-              className="flex gap-[0.75rem] items-center cta_button xm:gap-[0.5rem]"
+              className="flex gap-[0.5rem] items-center cta_button xm:gap-[0.5rem]"
             >
               <span>Apply</span>
               <span className="text-normal">
@@ -133,9 +143,6 @@ const JobCard = ({ job }) => {
             <div onClick={handleViewJob} className="outline_button ">
               <span>View Job</span>
             </div>
-            {/* <Link to={`/job/${alien_job_id}`} className="outline_button ">
-              <span>View Job</span>
-            </Link> */}
           </div>
         </div>
       </div>
