@@ -53,24 +53,36 @@ input {
 }
 
 .title_h3 {
-  @apply font-nunitoTitle font-semibolden text-titleColor text-h3 tracking-wide;
+  @apply font-nunitoTitle font-semibolden text-darkColor text-h3 tracking-wide;
 }
 .title_normal {
-  @apply font-nunitoTitle font-semibolden text-titleColor text-normal tracking-wide;
+  @apply font-nunitoTitle font-semibolden text-darkColor text-normal tracking-wide;
 }
 .title_h2 {
-  @apply font-nunitoTitle font-semibolden text-titleColor text-h2 tracking-wide;
+  @apply font-nunitoTitle font-semibolden text-darkColor text-h2 tracking-wide;
 }
 
 .cta_button {
-  @apply px-[2rem] py-[0.75rem] rounded-full bg-ctaColor text-bodyColor font-semibolden;
+  @apply px-[2rem] py-[0.75rem] rounded-full bg-ctaColor text-bodyColor font-semibolden cursor-pointer hover:bg-halfDarkColor;
 }
 .outline_button {
-  @apply px-[2rem] py-[0.75rem] border_1_full font-semibolden;
+  @apply px-[2rem] py-[0.75rem] border_1_full font-semibolden cursor-pointer hover:text-darkColor hover:border-darkColor;
 }
 
 .flex_center {
   @apply flex justify-center items-center;
+}
+.flex_end {
+  @apply flex justify-end items-end;
+}
+.flex_start {
+  @apply flex justify-start items-start;
+}
+.flex_start_center {
+  @apply flex justify-start items-start md480:justify-center md480:items-center;
+}
+.flex_start_end {
+  @apply flex justify-start items-start md480:justify-end md480:items-end;
 }
 
 .flex_col {
@@ -90,29 +102,32 @@ input {
 .border_1_md {
   @apply border-[1px] border-textColor rounded-md;
 }
+.border_1_lg {
+  @apply border-[1px] border-textColor rounded-lg;
+}
 .border_125 {
   @apply border-[1.8px] border-textColor rounded-[1.25rem];
 }
 
-.filter_form_width {
-  @apply w-full md480:w-[80%] md800:w-[70%] lg1023:w-[60%];
+.search_form_width {
+  @apply w-full hover:border-tintClearColor focus:border-tintClearColor md480:w-[80%] md800:w-[70%] lg1023:w-[60%];
 }
 
 .search_input_field {
-  @apply py-[0.75rem] px-[0.75rem] bg-transparent w-full md480:py-[1rem];
+  @apply py-[0.75rem] pr-[0.75rem] pl-[1.25rem] bg-transparent w-full tracking-wide md480:py-[1rem];
 }
 
 .filter_button_1 {
   @apply flex_center gap-[0.75rem] border_1_md px-[1rem] py-[0.5rem];
 }
 .filter_button {
-  @apply flex_center gap-[0.75rem] rounded-md px-[1rem] py-[0.6rem] hover:outline focus:outline outline-[2px] outline-offset-[3px] outline-ctaColor;
+  @apply flex_center gap-[0.75rem] rounded-md px-[1rem] py-[0.6rem] hover:outline focus:outline outline-[2px] outline-offset-[3px] outline-tintClearColor;
 }
 .filter_name {
   @apply text-smaller font-semibolden md480:text-small capitalize min-w-fit truncate;
 }
 .filter_mobile_modal_wrapper {
-  @apply block border-t-[2px] border-t-gray-200 rounded-t-[1.25rem] px-[1.5rem] pt-[2rem] pb-[2rem] bg-bodyColor md800:hidden;
+  @apply block border-t-[2px] border-t-gray-200 rounded-t-[1.25rem] px-[1.5rem] pt-[2rem] pb-[2rem] bg-tintColor md800:hidden;
 }
 
 /* .job_card_wrapper {
@@ -128,7 +143,7 @@ input {
 
 /* MODAL BACKGROUND */
 #mobilemodal {
-  @apply fixed top-0 bottom-0 left-0 right-0 z-[60] bg-gray-100 bg-opacity-70 overflow-y-hidden md800:relative;
+  @apply fixed top-0 bottom-0 left-0 right-0 z-[60] bg-lightGrayColor bg-opacity-80 md800:relative;
 }
 #dropdownMenu {
   @apply hidden md800:block;
@@ -136,11 +151,17 @@ input {
 
 /* FORM INPUT */
 .auth_card {
-  @apply w-[320px] border_125 px-[1rem] py-[2.5rem] md800:px-[1.5rem] md480:w-[370px] md800:w-[400px] xm:w-[280px];
+  @apply w-[320px] border_125 px-[1rem] py-[2.5rem] bg-tintColor md800:px-[1.5rem] md480:w-[370px] md800:w-[400px] xm:w-[280px];
+}
+.contact_form {
+  @apply border-[2px] border-tintClearColor rounded-lg px-[1rem] py-[2.5rem] bg-tintColor w-full md800:px-[1.5rem] max-w-md;
 }
 
 .form_input {
   @apply py-[0.6rem] px-[1rem] rounded-md border_1_md hover:outline-none focus:outline-none;
+}
+.contact_form_input {
+  @apply py-[0.6rem] px-[1rem] rounded-md text-darkColor font-semibolden tracking-wide border-[1.7px] border-tintClearColor hover:outline-none focus:outline-none hover:border-darkColor focus:border-darkColor;
 }
 
 /* SKELETON LOADERS */
@@ -231,9 +252,15 @@ input {
 }
 
 /* SCROLL BAR */
+/* ::-webkit-scrollbar {
+  @apply rounded-full bg-lightGrayColor h-[0.2rem] w-[0.4rem];
+}
+::-webkit-scrollbar-thumb {
+  @apply rounded-full bg-tintClearColor;
+} */
 ::-webkit-scrollbar {
   @apply rounded-full bg-lightGrayColor h-[0.2rem] w-[0.4rem];
 }
 ::-webkit-scrollbar-thumb {
-  @apply rounded-full bg-ctaColor;
+  @apply rounded-full bg-textColor;
 }
