@@ -12,7 +12,7 @@ const Descriptions = ({ description, qualifications, responsibilities }) => {
             </span>
           )}
           {origin === "responsibilities" && <span>{`${index + 1}.`}</span>}
-          <p>{paragraph[index]}</p>
+          <p>{paragraph}</p>
         </div>
       );
     });
