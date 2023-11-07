@@ -1,14 +1,17 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ApolloProvider, InMemoryCache, ApolloClient } from "@apollo/client";
 
-import { JobsUserProvider } from "./context/jobsUserContext";
 import { authLink, errorLink, httpLink } from "./utils/apolloConfig";
+import { JobsUserProvider } from "./context/jobsUserContext";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import JobDetailPage from "./pages/JobDetailPage";
 import Signin from "./pages/Signin";
 import Register from "./pages/Register";
 import Board from "./pages/Board";
+import Contact from "./pages/Contact";
+import About from "./pages/About";
+import PageNotFound from "./pages/PageNotFound";
 
 // create apollo client with a pipeline of requests
 const client = new ApolloClient({
@@ -38,6 +41,18 @@ const App = () => {
         {
           path: "/board",
           element: <Board />,
+        },
+        {
+          path: "/contact",
+          element: <Contact />,
+        },
+        {
+          path: "/about",
+          element: <About />,
+        },
+        {
+          path: "*",
+          element: <PageNotFound />,
         },
       ],
     },
