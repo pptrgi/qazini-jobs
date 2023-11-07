@@ -26,7 +26,7 @@ const Feed = ({ loading }) => {
           <h2 className="title_h3">Available Opportunities</h2>
           <div className="flex_col gap-[0.25rem]">
             <span className="capitalize text-smaller md480:text-small">
-              {`${jobs.length} jobs found`}
+              {`${jobs?.length} jobs found`}
             </span>
             <div className="flex gap-[1rem]">
               <div className="flex gap-[0.125rem] items-center">
