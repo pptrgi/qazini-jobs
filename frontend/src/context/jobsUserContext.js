@@ -12,6 +12,7 @@ const JobsUserContext = createContext({
   setJobs: (jobsArray) => {},
   filterJobs: (filterProperty, filterValue) => {},
   searchJobs: (searchText) => {},
+  populateJobs: (jobsArray) => {},
 });
 
 // define action types and how they update state
