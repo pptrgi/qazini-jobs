@@ -43,17 +43,18 @@ export const UPDATE_PROFILE_MUTATION = gql`
 export const SAVE_JOB_MUTATION = gql`
   mutation save_job(
     $job_title: String!
-    $job_type: String!
+    $employment_type: String!
     $alien_job_id: String!
     $employer_name: String!
     $employer_logo: String
     $employer_website: String
+    $company_type: String
     $apply_link: String!
     $job_description: String!
-    $job_qualifications: String!
-    $job_requirements: String
+    $job_qualifications: [String!]!
+    $job_responsibilities: [String!]
     $date_posted: String!
-    $date_expiring: String!
+    $date_expiring: String
     $job_city: String!
     $job_country: String!
     $user_id: ID!
@@ -61,15 +62,16 @@ export const SAVE_JOB_MUTATION = gql`
     save_job(
       saveJobInput: {
         job_title: $job_title
-        job_type: $job_type
+        employment_type: $employment_type
         alien_job_id: $alien_job_id
         employer_name: $employer_name
         employer_logo: $employer_logo
         employer_website: $employer_website
+        company_type: $company_type
         apply_link: $apply_link
         job_description: $job_description
         job_qualifications: $job_qualifications
-        job_requirements: $job_requirements
+        job_responsibilities: $job_responsibilities
         date_posted: $date_posted
         date_expiring: $date_expiring
         job_city: $job_city
@@ -80,19 +82,28 @@ export const SAVE_JOB_MUTATION = gql`
       job_id
       alien_job_id
       job_title
-      job_type
+      employment_type
       employer_name
       employer_logo
       employer_website
+      company_type
       job_description
       job_qualifications
-      job_requirements
+      job_responsibilities
       date_posted
       date_expiring
       job_city
       job_country
       apply_link
       alien_job_id
+    }
+  }
+`;
+
+export const SUBSCRIBE_EMAIL = gql`
+  mutation subscribe_email($email: String!) {
+    subscribe_with_email(email: $email) {
+      email
     }
   }
 `;

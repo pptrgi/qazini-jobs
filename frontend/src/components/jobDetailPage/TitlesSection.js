@@ -5,16 +5,22 @@ import {
   IoLogoTwitter,
   IoShareSocialOutline,
 } from "react-icons/io5";
-import { PiDotBold, PiShare } from "react-icons/pi";
+import { PiDotBold } from "react-icons/pi";
 
 import { formatDate } from "../../utils/dateFormatter";
+import { checkCompanyLogo } from "../../utils/checkCompanyLogo";
+import { calculateRemainingDays } from "../../utils/jobRemainingDays";
 
 const TitlesSection = ({ job }) => {
-  let remainingDays;
-  if (job?.date_expiring !== null) {
-    remainingDays = job.date_expiring - new Date();
-  }
+  // calculate the number of remaining days to expiry
+  const remainingDays = calculateRemainingDays(job?.date_expiring);
 
+  // assign default logo if company has none or link doesn't point to a logo
+  const hasLogo = checkCompanyLogo(job.employer_logo);
+
+  // whatsapp url encoded text
+  //   "`https://wa.me/254700119134?text=Hi%20NyumbaHub%2C%0A%0AI%27m%20interested%20in%20property%20";
+  // let jobText = `${job?.job_title}%0A%0A`;
   return (
     <div className="flex_center w-full">
       <div className="flex_col gap-[2.25rem] items-center w-full">
@@ -29,24 +35,28 @@ const TitlesSection = ({ job }) => {
             </h2>
             <div className="flex gap-[0.5rem] items-center">
               <img
-                src={`${job?.employer_logo}`}
+                src={`${
+                  hasLogo
+                    ? job.employer_logo
+                    : "/company-logo-placeholder-2.png"
+                }`}
                 alt="logo"
                 className="w-[30px]"
               />
-              <div className="flex gap-[0.125rem] items-center truncate">
-                <p className="capitalize text-darkColor">
+              <div className="grid grid-cols-6 gap-[0.125rem] items-center md480:flex">
+                <p className="capitalize text-darkColor col-span-3 truncate">
                   {job?.employer_name}
                 </p>
-                <span className="text-h2">
+                <span className="text-h2 col-span-1">
                   <PiDotBold />
                 </span>
 
-                <p className="capitalize">{`${job?.job_city}, ${job?.job_country}`}</p>
+                <p className="capitalize col-span-2 truncate">{`${job?.job_city}, ${job?.job_country}`}</p>
               </div>
             </div>
           </div>
           <div className="flex_col gap-[0.75rem]">
-            <div className="grid grid-cols-2 gap-[0.25rem] md480:grid-cols-3">
+            <div className="grid grid-cols-2 gap-[0.25rem] md480:grid-cols-3 md480:gap-[0.75rem]">
               <div className="flex gap-2">
                 <span>Posted: </span>
                 <span className="font-semibolden">
@@ -70,7 +80,7 @@ const TitlesSection = ({ job }) => {
                   <span>Remaining: </span>
 
                   <p className="truncate font-semibolden">
-                    {`${remainingDays} days`}{" "}
+                    {`${remainingDays ? `${remainingDays} days` : "Expired"}`}
                   </p>
                 </div>
               )}

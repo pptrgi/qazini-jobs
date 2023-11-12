@@ -1,15 +1,29 @@
+import { useContext } from "react";
 import {
   IoClose,
   IoCheckmarkCircleSharp,
   IoRadioButtonOffSharp,
 } from "react-icons/io5";
 
+import { JobsUserContext } from "../../context/jobsUserContext";
+
 const FilterMobileModal = ({
   filters,
   closeModal,
-  handleSetActiveFilterValue,
-  activeFilterValue,
+  setActiveFilterOptionValue,
+  activeFilterOptionValue,
 }) => {
+  const context = useContext(JobsUserContext);
+
+  // when the filter value is clicked... filter the jobs, make the clicked value active for styling and lastly close the modal
+  const handleOptionValueClick = (filterValue) => {
+    setActiveFilterOptionValue(filterValue && filterValue);
+
+    context.searchJobs(filterValue && filterValue);
+
+    closeModal();
+  };
+
   return (
     <div className="fixed bottom-0 left-0 right-0">
       <div className="filter_mobile_modal_wrapper relative">
@@ -22,26 +36,31 @@ const FilterMobileModal = ({
         <div className="flex_col gap-[1.5rem]">
           <h3 className="title_normal">Filter by:</h3>
           <div className="flex_col gap-[0.75rem]">
-            {filters?.map((filter, index) => {
+            {filters?.map((filterValue, index) => {
               return (
                 <div key={index} className="group">
-                  <div
-                    onClick={(e) => handleSetActiveFilterValue(filter.value)}
-                    className={`flex_between w-full ${
-                      activeFilterValue === filter.value ? "text-ctaColor" : ""
-                    }`}
-                  >
-                    <span className="capitalize text-smaller">
-                      {filter.shownName}
-                    </span>
-                    <span className="text-normal">
-                      {activeFilterValue === filter.value ? (
-                        <IoCheckmarkCircleSharp />
-                      ) : (
-                        <IoRadioButtonOffSharp />
-                      )}
-                    </span>
-                  </div>
+                  {/* some property values are null, don't show blank values */}
+                  {filterValue && (
+                    <div
+                      onClick={(e) => handleOptionValueClick(filterValue)}
+                      className={`flex_between w-full ${
+                        activeFilterOptionValue === filterValue
+                          ? "text-ctaColor"
+                          : ""
+                      }`}
+                    >
+                      <span className="capitalize text-smaller">
+                        {filterValue}
+                      </span>
+                      <span className="text-normal">
+                        {activeFilterOptionValue === filterValue ? (
+                          <IoCheckmarkCircleSharp />
+                        ) : (
+                          <IoRadioButtonOffSharp />
+                        )}
+                      </span>
+                    </div>
+                  )}
                 </div>
               );
             })}

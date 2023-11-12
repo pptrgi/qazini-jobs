@@ -2,14 +2,18 @@ import { useMutation, useQuery } from "@apollo/client";
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { IoBookmark, IoOpenOutline } from "react-icons/io5";
+import { toast } from "react-toastify";
 
 import { SAVE_JOB_MUTATION } from "../../graphql/mutations";
 import { GET_USER_QUERY } from "../../graphql/queries";
 import { JobsUserContext } from "../../context/jobsUserContext";
+import { checkCompanyLogo } from "../../utils/checkCompanyLogo";
+import { toastGraphqlError } from "../../utils/toastGraphqlError";
+import { calculateRemainingDays } from "../../utils/jobRemainingDays";
+import { noInternetHandler } from "../../utils/noInternet";
 
 const JobCard = ({ job }) => {
-  const context = useContext(JobsUserContext);
-  const user = context.user;
+  const { user } = useContext(JobsUserContext);
   const navigate = useNavigate();
 
   const {
@@ -46,13 +50,15 @@ const JobCard = ({ job }) => {
     date_expiring,
     job_city,
     job_country,
-    user_id: 1,
+    user_id: user?.user_id,
   };
 
   const [save_job_now, { loading }] = useMutation(SAVE_JOB_MUTATION, {
     variables: jobValues,
     update(cache, { data }) {
       console.log("save job data", data);
+      toast.success("Job has been saved");
+
       const { get_user } = cache.readQuery({ query: GET_USER_QUERY });
 
       cache.writeQuery({
@@ -60,8 +66,15 @@ const JobCard = ({ job }) => {
         data: { get_user: [...get_user.jobs, data.save_job] },
       });
     },
-    onError({ graphQLErrors }) {
-      console.log("save job erros", graphQLErrors);
+    onError({ graphQLErrors, networkError }) {
+      if (graphQLErrors) {
+        console.log("save job erros", graphQLErrors);
+        toastGraphqlError(graphQLErrors);
+      }
+
+      if (networkError) {
+        noInternetHandler();
+      }
     },
   });
 
@@ -70,9 +83,7 @@ const JobCard = ({ job }) => {
   };
 
   // calculate the number of active days
-  const activeInDays = Math.floor(
-    (new Date(date_expiring) - new Date(date_posted)) / 86400000
-  );
+  const remainingDays = calculateRemainingDays(date_expiring);
 
   // handle view job
   const handleViewJob = () => {
@@ -86,12 +97,19 @@ const JobCard = ({ job }) => {
   // check job saved - alien_job_id
   if (loading) console.log("save job loading...");
 
+  // assign default logo if company has none or link doesn't point to a logo
+  const hasLogo = checkCompanyLogo(employer_logo);
+
   return (
     <div className="job_card_wrapper">
       <div className="flex_col gap-[1.25rem] items-start">
         <div className="flex_between w-full">
-          <img src={`${employer_logo}`} className="w-[60px] min-h-[60px]" />
-          {/* <img src="/logo192.png" className="w-[60px] min-h-[60px]" /> */}
+          <img
+            src={`${
+              hasLogo ? employer_logo : "/company-logo-placeholder-1.png"
+            }`}
+            className="max-w-[100px] max-h-[60px]"
+          />
           <span
             onClick={(e) => handleJobSave()}
             className="text-h3 hover:text-ctaColor"
@@ -120,9 +138,14 @@ const JobCard = ({ job }) => {
           <div className="flex_col gap-[0.25rem]">
             <span className="capitalize">{employment_type}</span>
             <p>
+              {/* A job can have no expiry, have active days or be expired */}
               {date_expiring === null
                 ? "No Expiry"
-                : `Expires in ${activeInDays} days`}
+                : `${
+                    remainingDays
+                      ? `Expires in ${remainingDays} days`
+                      : "Expired"
+                  }`}
             </p>
           </div>
         </div>

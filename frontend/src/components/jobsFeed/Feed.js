@@ -1,26 +1,35 @@
-import { useContext, useState, useRef } from "react";
+import { useContext, useState, useRef, useEffect } from "react";
 import { PiCaretUpDown } from "react-icons/pi";
 import { IoChevronDown, IoChevronUp } from "react-icons/io5";
-import { LiaSortDownSolid, LiaSortUpSolid } from "react-icons/lia";
+import { motion } from "framer-motion";
 
 import { JobsUserContext } from "../../context/jobsUserContext";
 import JobCard from "./JobCard";
 import JobCardSkeleton from "./JobCardSkeleton";
 import SortOptions from "../SortOptions";
 import useClickOutsideClose from "../../hooks/useClickOutsideClose";
+import { sortJobs } from "../../utils/sortJobs";
+import { fadeOutVariants } from "../../transitions/transitions";
 
-const Feed = ({ loading }) => {
+const Feed = ({ loading, error }) => {
   const context = useContext(JobsUserContext);
-  const jobs = context.jobs;
+  let jobs = context.jobs;
 
-  const [currentSort, setCurrentSort] = useState("");
+  const [currentSort, setCurrentSort] = useState("default");
   const [showSortOptions, setShowSortOptions] = useState(false);
   const sortRef = useRef();
+
+  useEffect(() => {
+    jobs = sortJobs(jobs, currentSort);
+  }, [currentSort]);
 
   // close the sort options popup on outside click
   useClickOutsideClose(sortRef, () => setShowSortOptions(false));
   return (
-    <section className="custom_container section">
+    <motion.section
+      variants={fadeOutVariants}
+      className="custom_container section"
+    >
       <div className="flex_col gap-[1.5rem] items-start">
         <div className="flex_col gap-[0.75rem]">
           <h2 className="title_h3">Available Opportunities</h2>
@@ -41,9 +50,7 @@ const Feed = ({ loading }) => {
                   onClick={(e) => setShowSortOptions(true)}
                 >
                   <div className="flex gap-[0.75rem] items-center border_1_md px-[0.75rem] py-[0.35rem]">
-                    <span className="capitalize">
-                      {currentSort === "" ? "default" : currentSort}
-                    </span>
+                    <span className="capitalize">{currentSort}</span>
                     <span>
                       {showSortOptions ? <IoChevronUp /> : <IoChevronDown />}
                     </span>
@@ -61,17 +68,27 @@ const Feed = ({ loading }) => {
             </div>
           </div>
         </div>
-        {loading ? (
-          <JobCardSkeleton />
+        {/* check for error and loading states when fetching jobs */}
+        {!error ? (
+          <>
+            {loading ? (
+              <JobCardSkeleton />
+            ) : (
+              <div className="flex w-full gap-[0.75rem] flex-wrap md480:gap-[1rem] md800:gap-[1.5rem]">
+                {jobs?.map((job, index) => {
+                  return <JobCard job={job} key={index} />;
+                })}
+              </div>
+            )}{" "}
+          </>
         ) : (
-          <div className="flex w-full gap-[0.75rem] flex-wrap md480:gap-[1rem] md800:gap-[1.5rem]">
-            {jobs?.map((job, index) => {
-              return <JobCard job={job} key={index} />;
-            })}
-          </div>
+          <p className="text-red-500 tracking-wide font-semibolden">
+            {/* You're not connected to the internet */}
+            {error}
+          </p>
         )}
       </div>
-    </section>
+    </motion.section>
   );
 };
 

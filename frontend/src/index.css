@@ -61,6 +61,9 @@ input {
 .title_h2 {
   @apply font-nunitoTitle font-semibolden text-darkColor text-h2 tracking-wide;
 }
+.title_h1 {
+  @apply font-nunitoTitle font-semibolden text-darkColor text-h1 tracking-wide;
+}
 
 .cta_button {
   @apply px-[2rem] py-[0.75rem] rounded-full bg-ctaColor text-bodyColor font-semibolden cursor-pointer hover:bg-halfDarkColor;
@@ -127,7 +130,7 @@ input {
   @apply text-smaller font-semibolden md480:text-small capitalize min-w-fit truncate;
 }
 .filter_mobile_modal_wrapper {
-  @apply block border-t-[2px] border-t-gray-200 rounded-t-[1.25rem] px-[1.5rem] pt-[2rem] pb-[2rem] bg-tintColor md800:hidden;
+  @apply block border-t-[2px] border-t-gray-200 rounded-t-[1.25rem] px-[1.5rem] pt-[2rem] pb-[2rem] bg-bodyColor md800:hidden;
 }
 
 /* .job_card_wrapper {
@@ -264,3 +267,21 @@ input {
 ::-webkit-scrollbar-thumb {
   @apply rounded-full bg-textColor;
 }
+
+/* read more functionality */
+.clamp_paragraph {
+  -webkit-line-clamp: 10;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  overflow: hidden;
+}
+
+/* box shadow */
+.bottom_shadow {
+  box-shadow: 0 3px 12px #fffafd;
+}
+.general_shadow {
+  box-shadow: 1px 1px 10px #f3f5f7;
+}
+/* ffe6f4 */
+/* fdf4fa */

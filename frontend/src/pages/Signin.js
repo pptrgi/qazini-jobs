@@ -2,9 +2,13 @@ import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { IoEyeSharp, IoEyeOffSharp } from "react-icons/io5";
+import { motion } from "framer-motion";
 
+import { pageVariants, authFadeOutVariants } from "../transitions/transitions";
 import { SIGNIN_USER_MUTATION } from "../graphql/mutations";
 import { JobsUserContext } from "../context/jobsUserContext";
+import { toastGraphqlError } from "../utils/toastGraphqlError";
+import { noInternetHandler } from "../utils/noInternet";
 
 const Signin = () => {
   const context = useContext(JobsUserContext);
@@ -36,7 +40,14 @@ const Signin = () => {
       navigate("/");
     },
     onError({ graphQLErrors, networkError }) {
-      console.log(graphQLErrors);
+      if (graphQLErrors) {
+        console.log("signin errors", graphQLErrors);
+        toastGraphqlError(graphQLErrors);
+      }
+
+      if (networkError) {
+        noInternetHandler();
+      }
     },
   });
 
@@ -48,10 +59,15 @@ const Signin = () => {
   };
 
   return (
-    <section className="custom_container">
+    <motion.section
+      variants={pageVariants}
+      initial="hidden"
+      animate="visible"
+      className="custom_container"
+    >
       <div className="flex_center w-full min-h-screen">
         <div className="flex_col gap-[0.25rem]">
-          <div className="auth_card">
+          <motion.div variants={authFadeOutVariants} className="auth_card">
             <div className="flex_col gap-[3rem]">
               <div className="flex_col items-center gap-[0.5rem]">
                 <h2 className="title_h2">Qazini</h2>
@@ -118,7 +134,7 @@ const Signin = () => {
                 </Link>
               </div>
             </div>
-          </div>
+          </motion.div>
           <div className="flex_center w-full">
             <p className="text-smaller md800:text-small">
               Copyright &#169; 2023. Lifen Creatives
@@ -126,7 +142,7 @@ const Signin = () => {
           </div>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

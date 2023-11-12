@@ -7,14 +7,16 @@ const GET_USER_QUERY = gql`
       fullname
       email
       jobs {
+        alien_job_id
         job_title
-        job_type
+        employment_type
         employer_name
         employer_logo
         employer_website
+        company_type
         job_description
         job_qualifications
-        job_requirements
+        job_responsibilities
         date_posted
         date_expiring
         job_city

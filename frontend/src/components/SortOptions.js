@@ -2,9 +2,10 @@ import React from "react";
 
 const SortOptions = ({ setSort, closeSortOptions }) => {
   const sortOptions = [
-    { name: "default", value: "" },
-    { name: "expiring soon", value: "date_expiring" },
-    { name: "newest first", value: "-date_expiring" },
+    { name: "default" },
+    { name: "expiring soon" },
+    { name: "newest first" },
+    { name: "name (A - Z)" },
   ];
   return (
     <div className="w-[150px] bg-tintColor rounded-lg shadow-lg px-[1rem]">

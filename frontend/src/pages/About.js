@@ -1,13 +1,28 @@
 import { RiDoubleQuotesL } from "react-icons/ri";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+
+import {
+  pageVariants,
+  pageTitleFadeOutVariants,
+  fadeOutVariants,
+} from "../transitions/transitions";
 
 const About = () => {
   return (
-    <section className="custom_container section_after_header">
+    <motion.section
+      variants={pageVariants}
+      initial="hidden"
+      animate="visible"
+      className="custom_container section_after_header"
+    >
       <div className="flex_center w-full">
         <div className="w-[95%] md480:w-[90%] md800:w-[80%]">
           <div className="flex_col gap-[2rem] w-full items-center">
-            <div className="h-[25vh] bg-tintColor2 w-full rounded-sm">
+            <motion.div
+              variants={pageTitleFadeOutVariants}
+              className="h-[25vh] bg-tintColor2 w-full rounded-sm"
+            >
               <div className="flex_center w-full h-full">
                 <div className="flex_col gap-[0.5rem] items-center">
                   <h2 className="title_h2 leading-none">About Us</h2>
@@ -16,9 +31,9 @@ const About = () => {
                   </p>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="max-w-2xl">
+            <motion.div variants={fadeOutVariants} className="max-w-2xl">
               <div className="flex_col gap-[2.5rem]">
                 <div className="flex_col gap-[1.75rem]">
                   <div className="flex gap-[0.5rem] items-center overflow-hidden">
@@ -31,9 +46,9 @@ const About = () => {
                   <div className="flex gap-[0.5rem] items-center overflow-hidden">
                     <span className="h-[60px] w-[5px] bg-ctaColor rounded-sm lg1023:h-[50px] "></span>
                     <p>
-                      While job vacancies are there, we are committed to do
-                      whatever we can to help easen the job search (a job by
-                      itself) for the folks we believe in. Including you.
+                      While job vacancies exist, we are committed to do whatever
+                      we can to help easen the job search (a job by itself) for
+                      the folks we believe in. Including you.
                     </p>
                   </div>
 
@@ -48,7 +63,7 @@ const About = () => {
                       <p>
                         But we have a problem - uh-oh. As you may have noticed,
                         we are limited on the number of opportunities we supply
-                        (max 10), why? We are depending on another job
+                        (max of 10), why? We are depending on another job
                         provider's service for our posts, which is very generous
                         of{" "}
                         <a href="" className="text-ctaColor">
@@ -58,13 +73,16 @@ const About = () => {
                       </p>
                       <p>
                         If you'd like to see us increase our posts you can
-                        support us to get the{" "}
-                        <a href="" className="text-ctaColor">
-                          JSearch's
+                        support us to get the JSearch's premium plan by{" "}
+                        <a
+                          href="https://buymeacoffee.com/ptrgitonga"
+                          className="text-ctaColor"
+                        >
+                          buying us a coffee
                         </a>{" "}
-                        premium plan, and we'll greatly appreciate it. Or
-                        undirectly, support JSearch so maybe in future they'll
-                        increase their freemium limit, a big maybe.
+                        or in any other means, and we'll greatly appreciate it.
+                        Or undirectly, support JSearch so maybe in future
+                        they'll increase their freemium limit, a big maybe.
                       </p>
                       <p>
                         We also welcome employers to advertise their jobs in our
@@ -107,11 +125,11 @@ const About = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

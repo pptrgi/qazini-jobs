@@ -2,9 +2,13 @@ import { useMutation } from "@apollo/client";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { IoEyeSharp, IoEyeOffSharp } from "react-icons/io5";
+import { motion } from "framer-motion";
 
+import { pageVariants, authFadeOutVariants } from "../transitions/transitions";
 import { GET_USER_QUERY } from "../graphql/queries";
 import { REGISTER_USER_MUTATION } from "../graphql/mutations";
+import { toastGraphqlError } from "../utils/toastGraphqlError";
+import { noInternetHandler } from "../utils/noInternet";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -42,7 +46,14 @@ const Register = () => {
     },
     variables: registerValues,
     onError({ graphQLErrors, networkError }) {
-      console.log(graphQLErrors);
+      if (graphQLErrors) {
+        console.log("register errors", graphQLErrors);
+        toastGraphqlError(graphQLErrors);
+      }
+
+      if (networkError) {
+        noInternetHandler();
+      }
     },
   });
 
@@ -54,10 +65,15 @@ const Register = () => {
   };
 
   return (
-    <section className="custom_container">
+    <motion.section
+      variants={pageVariants}
+      initial="hidden"
+      animate="visible"
+      className="custom_container"
+    >
       <div className="flex_center w-full min-h-screen">
         <div className="flex_col gap-[0.25rem]">
-          <div className="auth_card">
+          <motion.div variants={authFadeOutVariants} className="auth_card">
             <div className="flex_col gap-[3rem]">
               <div className="flex_col items-center gap-[0.5rem]">
                 <h2 className="title_h2">Qazini</h2>
@@ -137,7 +153,7 @@ const Register = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
           <div className="flex_center w-full">
             <p className="text-smaller md800:text-small">
               Copyright &#169; 2023. Lifen Creatives
@@ -145,7 +161,7 @@ const Register = () => {
           </div>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

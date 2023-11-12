@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import { Link } from "react-router-dom";
 import { useMutation, useQuery } from "@apollo/client";
 import { IoPencil, IoEyeOffSharp, IoEyeSharp } from "react-icons/io5";
 
@@ -6,6 +7,8 @@ import { GET_USER_QUERY } from "../../graphql/queries";
 import { JobsUserContext } from "../../context/jobsUserContext";
 import { UPDATE_PROFILE_MUTATION } from "../../graphql/mutations";
 import ProfileSkeleton from "./ProfileSkeleton";
+import { toastGraphqlError } from "../../utils/toastGraphqlError";
+import { noInternetHandler } from "../../utils/noInternet";
 
 const UserInformation = ({ user }) => {
   const context = useContext(JobsUserContext);
@@ -40,8 +43,15 @@ const UserInformation = ({ user }) => {
 
         setPassword("");
       },
-      onError({ graphQLErrors }) {
-        console.log("Update errors", graphQLErrors);
+      onError({ graphQLErrors, networkError }) {
+        if (graphQLErrors) {
+          console.log("Update errors", graphQLErrors);
+          toastGraphqlError(graphQLErrors);
+        }
+
+        if (networkError) {
+          noInternetHandler();
+        }
       },
     }
   );
@@ -173,7 +183,9 @@ const UserInformation = ({ user }) => {
               </div>
             </div>
             <div className="flex gap-[1rem]">
-              <span className="outline_button">Cancel</span>
+              <Link to={"/"} className="outline_button">
+                Cancel
+              </Link>
               <button type="submit" className="cta_button">
                 {loading ? "updating..." : "Update"}
               </button>

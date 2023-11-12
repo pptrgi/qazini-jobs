@@ -103,7 +103,7 @@ const JobsUserProvider = (props) => {
   const filterJobs = (filterProperty, filterValue) => {
     let jobs = [...state.immutableJobs];
 
-    jobs = jobs?.filter((job) => job[filterProperty] == filterValue);
+    jobs = jobs.filter((job) => job[filterProperty] == filterValue);
 
     dispatch({
       type: "FILTER",
@@ -111,10 +111,11 @@ const JobsUserProvider = (props) => {
     });
   };
 
+  // **************************** CURRENTLY SEARCHING THE API INSTEAD ***************************************
   // search for jobs
   // receives a search text whose pattern is matched with job title, location or description fields
   const searchJobs = (searchText) => {
-    const regex = new RegExp(searchText, "i"); // i for case insensitivity
+    const regex = new RegExp(`${searchText}`, "i"); // i for case insensitivity
     let jobs = [...state.immutableJobs];
 
     jobs = jobs.filter(
@@ -122,7 +123,8 @@ const JobsUserProvider = (props) => {
         regex.test(job.job_title) ||
         regex.test(job.company_type) ||
         regex.test(job.job_description) ||
-        regex.test(job.job_country)
+        regex.test(job.job_country) ||
+        regex.test(job.employment_type)
     );
 
     dispatch({
@@ -130,6 +132,7 @@ const JobsUserProvider = (props) => {
       payload: jobs,
     });
   };
+  // **************************** CURRENTLY SEARCHING THE API ***************************************
 
   return (
     <JobsUserContext.Provider

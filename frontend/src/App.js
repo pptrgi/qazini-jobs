@@ -12,6 +12,9 @@ import Board from "./pages/Board";
 import Contact from "./pages/Contact";
 import About from "./pages/About";
 import PageNotFound from "./pages/PageNotFound";
+import OpenRoute from "./components/routesProtection/OpenRoutes";
+import ProtectedRoute from "./components/routesProtection/ProtectedRoutes";
+import NoInternet from "./pages/NoInternet";
 
 // create apollo client with a pipeline of requests
 const client = new ApolloClient({
@@ -49,6 +52,10 @@ const App = () => {
         {
           path: "/about",
           element: <About />,
+        },
+        {
+          path: "/no-internet",
+          element: <NoInternet />,
         },
         {
           path: "*",
