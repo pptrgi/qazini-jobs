@@ -5,7 +5,6 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import { pool } from "../utils/dbConnect.js";
-import { verifyAuthToken } from "../middleware/verifyAuthToken.js";
 import { private_resolvers_guard } from "../middleware/private_resolvers_guard.js";
 
 // GET SINGLE USER QUERY
@@ -46,8 +45,8 @@ export const get_user_resolver = async (_, { user_id }, contextValue) => {
       const user = found_user_res.rows[0];
       user.jobs = user_jobs_res.rows;
 
-      // release the db connection
-      client.release();
+      // close the db connection
+      client.end();
 
       return user;
     } else {
@@ -58,11 +57,7 @@ export const get_user_resolver = async (_, { user_id }, contextValue) => {
     // server couldn't process the request as expected
     console.log(error);
 
-    throw new GraphQLError("Couldn't process your request", {
-      extensions: {
-        code: "INTERNAL_SERVER_ERROR",
-      },
-    });
+    throw new GraphQLError(error?.message);
   }
 };
 
@@ -106,7 +101,7 @@ export const handle_user_register = async (
       console.log(registered_user);
 
       // disconnect database
-      client.release();
+      client.end();
 
       return registered_user;
     } else {
@@ -117,12 +112,7 @@ export const handle_user_register = async (
     // server couldn't process the request as expected
     console.log(error);
 
-    throw new GraphQLError("Server couldn't process the register request", {
-      extensions: {
-        code: "INTERNAL_SERVER_ERROR",
-        frontendMessage: "Server encountered a problem registering",
-      },
-    });
+    throw new GraphQLError(error?.message);
   }
 };
 
@@ -142,7 +132,7 @@ export const handle_user_signin = async (_, { email, password }) => {
     // make sure the user with given email exists
     const user_exists_res = await client.query(check_user_email_query, [email]);
     // after the response we don't need the db anymore, disconnect
-    client.release();
+    client.end();
 
     if (user_exists_res.rows.length > 0) {
       // the user exists, so compare the passwords if they match it's a valid user, assign the user a token
@@ -177,11 +167,7 @@ export const handle_user_signin = async (_, { email, password }) => {
     // unfortunately the server couldn't process the request as expected
     console.log(error);
 
-    throw new GraphQLError("Couldn't process your request", {
-      extensions: {
-        code: "INTERNAL_SERVER_ERROR",
-      },
-    });
+    throw new GraphQLError(error?.message);
   }
 };
 
@@ -226,7 +212,7 @@ export const update_user_profile = async (_, args, contextValue) => {
           email,
           password,
         ]);
-        client.release();
+        client.end();
 
         if (update_profile_res.rows.length > 0) {
           // user updated successfully, now assign them a new token
@@ -266,7 +252,7 @@ export const update_user_profile = async (_, args, contextValue) => {
             email,
             password,
           ]);
-          client.release();
+          client.end();
 
           if (update_profile_res.rows.length > 0) {
             // user updated successfully, now assign them a new token
@@ -298,6 +284,48 @@ export const update_user_profile = async (_, args, contextValue) => {
     // the server couldn't update the profile as expected
     console.log(error);
 
-    throw new GraphQLError("Couldn't process your request");
+    throw new GraphQLError(error?.message);
+  }
+};
+
+// SUBSCRIBE TO JOB UPDATES WITH EMAIL
+export const handle_subscribe_with_email = async (_, { email }) => {
+  if (!email) throw GraphQLError("To subscribe an email is needed");
+  const email_subscribed_query = "SELECT email FROM subscribe WHERE email = $1";
+  const subscribe_user_query =
+    "INSERT INTO subscribe (email) VALUES ($1) RETURNING email";
+
+  try {
+    const client = await pool.connect();
+
+    // check if there's that email already
+    const email_subscribed_res = await client.query(email_subscribed_query, [
+      email,
+    ]);
+
+    if (email_subscribed_res.rows.length > 0) {
+      // that email is already subscribed
+      throw new GraphQLError("Seems like you have already subcribed");
+    } else {
+      // email is unsubscribed, add it
+      const subscribe_user_res = await client.query(subscribe_user_query, [
+        email,
+      ]);
+
+      client.end();
+
+      if (subscribe_user_res.rows.length > 0) {
+        // email has been added successfully
+        const subscribed_email = subscribe_user_res.rows[0];
+        console.log("subscribed_email", subscribed_email);
+
+        return subscribed_email;
+      } else {
+        throw new GraphQLError("Subscription is unsuccessful");
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    throw new GraphQLError(`${error?.message}`);
   }
 };
