@@ -36,12 +36,9 @@ const CTASection = () => {
       className="custom_container section"
     >
       <div className="w-full">
-        <div className="flex_center w-full lg1120:mx-[0.75rem]">
+        <div className="flex_center md800:mx-[0.75rem] lg1023:mx-[2rem] lg1120:mx-[3rem]">
           <div className="px-[1rem] py-[1.75rem] bg-tintColor2 w-full border-[2px] border-tintClearColor rounded-md lg1120:px-[1.5rem]">
             <div className="flex_col gap-[0.5rem] items-start md480:gap-[1rem]">
-              {/* <h2 className="text-darkColor font-semibolden text-[1.4rem] tracking-wide md480:text-[2rem]">
-                Want jobs to look for you?
-              </h2> */}
               <h2 className="text-darkColor font-bolden text-h3 tracking-wide md480:text-h2">
                 Would you like jobs to look for you?
               </h2>

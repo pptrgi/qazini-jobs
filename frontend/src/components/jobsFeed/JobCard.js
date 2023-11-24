@@ -103,13 +103,15 @@ const JobCard = ({ job }) => {
   return (
     <div className="job_card_wrapper">
       <div className="flex_col gap-[1.25rem] items-start">
-        <div className="flex_between w-full">
-          <img
-            src={`${
-              hasLogo ? employer_logo : "/company-logo-placeholder-1.png"
-            }`}
-            className="max-w-[100px] max-h-[60px]"
-          />
+        <div className="flex_between w-full items-center">
+          <div className="relative h-[45px] w-[100px] flex_center overflow-hidden">
+            <img
+              src={`${
+                hasLogo ? employer_logo : "/company-logo-placeholder-1.png"
+              }`}
+              className="absolute object-cover"
+            />
+          </div>
           <span
             onClick={(e) => handleJobSave()}
             className="text-h3 hover:text-ctaColor"

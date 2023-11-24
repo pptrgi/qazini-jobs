@@ -21,7 +21,7 @@ const About = () => {
           <div className="flex_col gap-[2rem] w-full items-center">
             <motion.div
               variants={pageTitleFadeOutVariants}
-              className="h-[25vh] bg-tintColor2 w-full rounded-sm"
+              className="relative h-[25vh] bg-tintColor2 w-full rounded-sm overflow-hidden"
             >
               <div className="flex_center w-full h-full">
                 <div className="flex_col gap-[0.5rem] items-center">
@@ -31,30 +31,32 @@ const About = () => {
                   </p>
                 </div>
               </div>
+              <span className="absolute -bottom-[70px] -right-[90px] w-[130px] h-[150px] rounded-full bg-tintClearColor md480:w-[150px] md480:-right-[80px] md480:-bottom-[20px]"></span>
             </motion.div>
 
             <motion.div variants={fadeOutVariants} className="max-w-2xl">
               <div className="flex_col gap-[2.5rem]">
                 <div className="flex_col gap-[1.75rem]">
-                  <div className="flex gap-[0.5rem] items-center overflow-hidden">
-                    <span className="h-[40px] w-[3px] bg-ctaColor rounded-sm"></span>
-                    <p>
+                  <div className="relative">
+                    <span className="absolute top-0 bottom-0 w-[3px] bg-ctaColor rounded-sm"></span>
+                    <p className="pl-[0.5rem] md480:pl-[0.75rem]">
                       Qazini takes the job you've been looking for, wraps it and
                       gifts it to you. You deserve it.
                     </p>
                   </div>
-                  <div className="flex gap-[0.5rem] items-center overflow-hidden">
-                    <span className="h-[60px] w-[5px] bg-ctaColor rounded-sm lg1023:h-[50px] "></span>
-                    <p>
+
+                  <div className="relative">
+                    <span className="absolute top-0 bottom-0 w-[3px] bg-ctaColor rounded-sm"></span>
+                    <p className="pl-[0.5rem] md480:pl-[0.75rem]">
                       While job vacancies exist, we are committed to do whatever
                       we can to help easen the job search (a job by itself) for
                       the folks we believe in. Including you.
                     </p>
                   </div>
 
-                  <div className="flex gap-[0.5rem] items-center overflow-hidden">
-                    <span className="h-[300px] w-[8px] bg-ctaColor rounded-sm lg1023:h-[250px]"></span>
-                    <div className="flex_col gap-[0.5rem]">
+                  <div className="relative">
+                    <span className="absolute top-0 bottom-0 w-[3px] bg-ctaColor rounded-sm"></span>
+                    <div className="flex_col gap-[0.5rem] pl-[0.5rem] md480:pl-[0.75rem]">
                       <p>
                         That means a ton of latest opportunities from a dozen
                         industries within a location or two or more, or
@@ -66,7 +68,10 @@ const About = () => {
                         (max of 10), why? We are depending on another job
                         provider's service for our posts, which is very generous
                         of{" "}
-                        <a href="" className="text-ctaColor">
+                        <a
+                          href="https://rapidapi.com"
+                          className="text-ctaColor font-semibolden"
+                        >
                           JSearch
                         </a>{" "}
                         nevertheless.
@@ -76,7 +81,7 @@ const About = () => {
                         support us to get the JSearch's premium plan by{" "}
                         <a
                           href="https://buymeacoffee.com/ptrgitonga"
-                          className="text-ctaColor"
+                          className="text-ctaColor font-semibolden"
                         >
                           buying us a coffee
                         </a>{" "}
@@ -94,23 +99,23 @@ const About = () => {
 
                 <div className="flex_center w-full">
                   {/* Add the founder's quote - haha (-_^) */}
-                  <div className="bg-tintColor border-[1.8px] border-darkColor rounded-md px-[0.75rem] pt-[1.5rem] pb-[1rem] max-w-lg">
-                    <div className="flex_col gap-[0.5rem] items-center">
-                      <div className="flex gap-2">
+                  <div className="bg-tintColor border-[2px] border-skeletonColor/25 rounded-md px-[0.75rem] pt-[1.5rem] pb-[1rem] max-w-lg">
+                    <figure className="flex_col gap-[0.5rem] items-center">
+                      <blockquote className="flex gap-2">
                         <span className="text-h2">
                           <RiDoubleQuotesL />
                         </span>
-                        <p>
+                        <p className="tracking-wide">
                           An additional job in here is an additional chance for
                           someone out there.
                         </p>
-                      </div>
-                      <div className="flex_end w-full">
-                        <span className="uppercase italic text-tiny md480:text-smaller">
+                      </blockquote>
+                      <figcaption className="flex_end w-full">
+                        <cite className="uppercase italic text-tiny text-textColor/80 md480:text-smaller">
                           ~ qazini founder - peter
-                        </span>
-                      </div>
-                    </div>
+                        </cite>
+                      </figcaption>
+                    </figure>
                   </div>
                 </div>
                 <div className="flex_col gap-[0.5rem]">
@@ -119,7 +124,7 @@ const About = () => {
                   </p>
                   <div className="flex_col gap-[0.25rem] md480:flex-row md480:gap-[0.4rem]">
                     <p>We get it, you're here to seize the opportunities.</p>
-                    <Link to={"/"} className="text-ctaColor">
+                    <Link to={"/"} className="text-ctaColor font-semibolden">
                       Right here
                     </Link>
                   </div>

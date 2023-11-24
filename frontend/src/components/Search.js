@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { JobsUserContext } from "../context/jobsUserContext";
 import { jobsFetcher } from "../utils/fetchJobs";
 import { fadeOutVariants } from "../transitions/transitions";
+import LoadingDots from "./LoadingDots";
 
 const Search = ({ loading }) => {
   const [searchText, setSearchText] = useState("");
@@ -12,20 +13,27 @@ const Search = ({ loading }) => {
   const [searching, setSearching] = useState(false);
   const context = useContext(JobsUserContext);
 
-  console.log("loading", loading);
-  console.log("searching", searching);
+  // condition search
+  const [searchCount, setSearchCount] = useState(0);
 
   const handleSearchJobs = async (e) => {
     e.preventDefault();
+    console.log("searchText", searchText);
+
+    const storedSearchCount = localStorage.getItem("searchCount");
+    if (storedSearchCount) {
+      setSearchCount(parseInt(storedSearchCount, 10) + 1);
+    }
+    localStorage.setItem("searchCount", searchCount);
 
     setSearching(true);
-    const searchedJobs = jobsFetcher(searchText); // jobFetcher() function might return an array of jobs or an error
+    const searchedJobs = await jobsFetcher(searchText, searchCount); // jobFetcher() function might return an array of jobs or an error
 
-    console.log(searchedJobs);
-    if (typeof searchedJobs == "array") {
+    console.log("searchedJobs", searchedJobs);
+    if (typeof searchedJobs !== "string") {
       setSearching(false);
       console.log(searchedJobs);
-      return context.populateJobs(searchedJobs);
+      return context.setJobs(searchedJobs);
     } else {
       setSearchError(searchedJobs);
       console.log(searchedJobs);
@@ -50,20 +58,27 @@ const Search = ({ loading }) => {
             className="search_input_field"
             placeholder="Search by the job title"
           />
-          <span className="block cta_button mr-[0.3rem] md480:hidden">
-            <IoSearch />
-          </span>
+
           {/* if home page is loading jobs or searching is underway, disable button */}
           <button
             type="submit"
-            className={`hidden cta_button mr-[0.3rem] min-w-fit ${
+            className={`cta_button mr-[0.3rem] min-w-fit ${
               searching == true || loading == true
                 ? "bg-opacity-40 cursor-none"
                 : null
-            } md480:block`}
+            }`}
             disabled={searching === true || loading === true ? true : false}
           >
-            Search job
+            {searching ? (
+              <LoadingDots />
+            ) : (
+              <>
+                <span className="block md480:hidden">
+                  <IoSearch />
+                </span>
+                <span className="hidden md480:block">Search job</span>
+              </>
+            )}
           </button>
         </form>
       </div>

@@ -10,6 +10,7 @@ import SortOptions from "../SortOptions";
 import useClickOutsideClose from "../../hooks/useClickOutsideClose";
 import { sortJobs } from "../../utils/sortJobs";
 import { fadeOutVariants } from "../../transitions/transitions";
+import FillWithMotiv from "../FillWithMotiv";
 
 const Feed = ({ loading, error }) => {
   const context = useContext(JobsUserContext);
@@ -19,9 +20,9 @@ const Feed = ({ loading, error }) => {
   const [showSortOptions, setShowSortOptions] = useState(false);
   const sortRef = useRef();
 
-  useEffect(() => {
-    jobs = sortJobs(jobs, currentSort);
-  }, [currentSort]);
+  // useEffect(() => {
+  //   jobs = sortJobs(jobs, currentSort);
+  // }, [currentSort]);
 
   // close the sort options popup on outside click
   useClickOutsideClose(sortRef, () => setShowSortOptions(false));
@@ -30,7 +31,7 @@ const Feed = ({ loading, error }) => {
       variants={fadeOutVariants}
       className="custom_container section"
     >
-      <div className="flex_col gap-[1.5rem] items-start">
+      <div className="relative flex_col gap-[1.5rem] items-start overflow-hidden">
         <div className="flex_col gap-[0.75rem]">
           <h2 className="title_h3">Available Opportunities</h2>
           <div className="flex_col gap-[0.25rem]">
@@ -74,12 +75,20 @@ const Feed = ({ loading, error }) => {
             {loading ? (
               <JobCardSkeleton />
             ) : (
-              <div className="flex w-full gap-[0.75rem] flex-wrap md480:gap-[1rem] md800:gap-[1.5rem]">
-                {jobs?.map((job, index) => {
-                  return <JobCard job={job} key={index} />;
-                })}
-              </div>
-            )}{" "}
+              <>
+                {jobs?.length > 0 ? (
+                  <div className="grid grid-cols-1 gap-[0.5rem] md480:grid-cols-2 md800:grid-cols-2 lg1023:grid-cols-3">
+                    {jobs?.map((job, index) => {
+                      return <JobCard job={job} key={index} />;
+                    })}
+                  </div>
+                ) : (
+                  <p className="text-normal md480:text-h3">
+                    Sorry, no jobs found
+                  </p>
+                )}
+              </>
+            )}
           </>
         ) : (
           <p className="text-red-500 tracking-wide font-semibolden">
@@ -87,6 +96,17 @@ const Feed = ({ loading, error }) => {
             {error}
           </p>
         )}
+        {/* {/* <span className="hidden justify-center items-center h-full md480:flex">
+          <span className="absolute right-[2rem] top-[30%] w-[16px] h-[16px] rotate-45 bg-tintClearColor/50"></span>
+          <span className="absolute right-[2.5rem] top-[28%] w-[12px] h-[12px] rounded-full bg-tintClearColor/50"></span>
+          <span className="absolute right-[3.5rem] top-[27%] w-[10px] h-[10px] rotate-45 bg-tintClearColor/50"></span>
+          <span className="absolute right-[2rem] top-[25%] w-[8px] h-[8px] rounded-full bg-tintClearColor/50"></span>
+          <span className="absolute right-[2.75rem] top-[24%] w-[6px] h-[6px] rotate-45 bg-tintClearColor/50"></span>
+        </span> 
+        <span className="hidden absolute -right-[150px] justify-center items-center h-full gap-[0.4rem] md480:flex">
+          <span className="w-[200px] bg-tintClearColor/10 h-[30%] rounded-full"></span>
+        </span> */}
+        <FillWithMotiv />
       </div>
     </motion.section>
   );

@@ -28,11 +28,12 @@ const Contact = () => {
           <div className="flex_col gap-[3.5rem] w-full items-center md480:gap-[4rem]">
             <motion.div
               variants={pageTitleFadeOutVariants}
-              className="h-[25vh] bg-tintColor2 w-full rounded-sm"
+              className="relative h-[25vh] bg-tintColor2 w-full rounded-sm overflow-hidden"
             >
               <div className="flex_center w-full h-full">
                 <h2 className="title_h2 leading-none">Contact Us</h2>
               </div>
+              <span className="absolute -bottom-[70px] -right-[90px] w-[130px] h-[150px] rounded-full bg-tintClearColor md480:w-[150px] md480:-right-[80px] md480:-bottom-[20px]"></span>
             </motion.div>
 
             <motion.div variants={slideGoingLeftVariants} className="w-full">

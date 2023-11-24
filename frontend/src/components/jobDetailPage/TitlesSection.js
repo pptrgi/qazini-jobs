@@ -5,7 +5,8 @@ import {
   IoLogoTwitter,
   IoShareSocialOutline,
 } from "react-icons/io5";
-import { PiDotBold } from "react-icons/pi";
+import { GoDotFill } from "react-icons/go";
+import { RxDotFilled } from "react-icons/rx";
 
 import { formatDate } from "../../utils/dateFormatter";
 import { checkCompanyLogo } from "../../utils/checkCompanyLogo";
@@ -43,15 +44,17 @@ const TitlesSection = ({ job }) => {
                 alt="logo"
                 className="w-[30px]"
               />
-              <div className="grid grid-cols-6 gap-[0.125rem] items-center md480:flex">
-                <p className="capitalize text-darkColor col-span-3 truncate">
+              <div className="grid grid-cols-12 gap-[0.25rem] items-center md480:flex">
+                <p className="capitalize text-darkColor col-span-8 truncate">
                   {job?.employer_name}
                 </p>
-                <span className="text-h2 col-span-1">
-                  <PiDotBold />
+                <span className="text-h3 col-span-1 text-textColor/50">
+                  <RxDotFilled />
                 </span>
 
-                <p className="capitalize col-span-2 truncate">{`${job?.job_city}, ${job?.job_country}`}</p>
+                <p className="capitalize col-span-3 truncate pl-[0.125rem] md480:pl-0">
+                  {job?.job_country}
+                </p>
               </div>
             </div>
           </div>
