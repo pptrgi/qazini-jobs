@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
 
-import { pool } from "../utils/dbConnect.js";
+import { client } from "../utils/dbConnect.js";
 import { private_resolvers_guard } from "../middleware/private_resolvers_guard.js";
 
 // GET SINGLE USER QUERY
@@ -29,7 +29,7 @@ export const get_user_resolver = async (_, { user_id }, contextValue) => {
 
   try {
     // connect to the database
-    const client = await pool.connect();
+    await client.connect();
 
     // find the user with the provided user ID
     const found_user_res = await client.query(get_user_query, [
@@ -46,7 +46,7 @@ export const get_user_resolver = async (_, { user_id }, contextValue) => {
       user.jobs = user_jobs_res.rows;
 
       // close the db connection
-      client.end();
+      await client.end();
 
       return user;
     } else {
@@ -81,7 +81,7 @@ export const handle_user_register = async (
 
   try {
     // establish db connection
-    const client = await pool.connect();
+    await client.connect();
 
     // check if there's an existing user with the provided email
     const user_with_email_res = await client.query(email_exists_query, [email]);
@@ -101,7 +101,7 @@ export const handle_user_register = async (
       console.log(registered_user);
 
       // disconnect database
-      client.end();
+      await client.end();
 
       return registered_user;
     } else {
@@ -127,12 +127,12 @@ export const handle_user_signin = async (_, { email, password }) => {
 
   try {
     // create database connection
-    const client = await pool.connect();
+    await client.connect();
 
     // make sure the user with given email exists
     const user_exists_res = await client.query(check_user_email_query, [email]);
     // after the response we don't need the db anymore, disconnect
-    client.end();
+    await client.end();
 
     if (user_exists_res.rows.length > 0) {
       // the user exists, so compare the passwords if they match it's a valid user, assign the user a token
@@ -189,7 +189,7 @@ export const update_user_profile = async (_, args, contextValue) => {
   // REMEMBER: When updating a user 2 scenarios might happen: The new email is same as the old one(conflict handled by postgres), the new email is totally different and might have another user with it
 
   try {
-    const client = await pool.connect();
+    await client.connect();
 
     // confirm the validity of the decoded user's id, return that user
     const confirm_uid_res = await client.query(confirm_uid_query, [
@@ -212,7 +212,7 @@ export const update_user_profile = async (_, args, contextValue) => {
           email,
           password,
         ]);
-        client.end();
+        await client.end();
 
         if (update_profile_res.rows.length > 0) {
           // user updated successfully, now assign them a new token
@@ -252,7 +252,7 @@ export const update_user_profile = async (_, args, contextValue) => {
             email,
             password,
           ]);
-          client.end();
+          await client.end();
 
           if (update_profile_res.rows.length > 0) {
             // user updated successfully, now assign them a new token
@@ -296,7 +296,7 @@ export const handle_subscribe_with_email = async (_, { email }) => {
     "INSERT INTO subscribe (email) VALUES ($1) RETURNING email";
 
   try {
-    const client = await pool.connect();
+    await client.connect();
 
     // check if there's that email already
     const email_subscribed_res = await client.query(email_subscribed_query, [
@@ -312,7 +312,7 @@ export const handle_subscribe_with_email = async (_, { email }) => {
         email,
       ]);
 
-      client.end();
+      await client.end();
 
       if (subscribe_user_res.rows.length > 0) {
         // email has been added successfully

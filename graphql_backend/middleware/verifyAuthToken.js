@@ -29,14 +29,3 @@ export const verifyAuthToken = ({ req, res }) => {
     throw new GraphQLError("You need authorization headers to proceed");
   }
 };
-
-// {
-//             extensions: {
-//               error: "Encountered an authentication problem",
-//             },
-//           }
-//           {
-//       extensions: {
-//         error: "Sign in to proceed",
-//       },
-//     }

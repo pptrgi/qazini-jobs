@@ -5,7 +5,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon server"
+    "dev": "nodemon server",
+    "start": "netlify dev",
+    "deploy": "netlify deploy"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +17,7 @@
   },
   "dependencies": {
     "@apollo/server": "^4.9.4",
+    "@as-integrations/aws-lambda": "^3.1.0",
     "axios": "^1.5.1",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",

@@ -17,8 +17,8 @@ const server = new ApolloServer({
   resolvers,
 });
 
-app.use(express.json());
 app.use(cors());
+app.use(express.json());
 
 const { url } = await startStandaloneServer(server, {
   listen: { port: 4444 },

@@ -1,6 +1,6 @@
 import { GraphQLError } from "graphql";
 
-import { pool } from "../utils/dbConnect.js";
+import { client } from "../utils/dbConnect.js";
 import { private_resolvers_guard } from "../middleware/private_resolvers_guard.js";
 
 // SAVE A JOB MUTATION
@@ -73,7 +73,7 @@ export const handle_save_job = async (_, { saveJobInput }, contextValue) => {
 
   try {
     // connect to the database
-    const client = await pool.connect();
+    await client.connect();
 
     // check if there's a user associated with provided details
     const user_exists_res = await client.query(id_owner_query, [
@@ -97,7 +97,7 @@ export const handle_save_job = async (_, { saveJobInput }, contextValue) => {
         );
 
         const new_job = save_job_res.rows[0];
-        client.end();
+        await client.end();
 
         return new_job;
       } else {
@@ -106,7 +106,7 @@ export const handle_save_job = async (_, { saveJobInput }, contextValue) => {
         ]);
 
         const removed_job = remove_job_res.rows[0];
-        client.end();
+        await client.end();
 
         return removed_job;
       }
@@ -133,7 +133,7 @@ export const delete_job_handler = async (_, { job_id }, contextValue) => {
 
   try {
     // database connection
-    const client = await pool.connect();
+    await client.connect();
 
     // find user
     const found_user_res = await client.query(find_user_query, [
@@ -151,7 +151,7 @@ export const delete_job_handler = async (_, { job_id }, contextValue) => {
         const delete_job_res = await client.query(delete_job_query, [job_id]);
 
         const deleted_job = delete_job_res.rows[0];
-        client.end();
+        await client.end();
 
         return deleted_job;
       } else {
