@@ -1,8 +1,8 @@
-import { IoHeart } from "react-icons/io5";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { IoHeart } from "react-icons/io5";
 
 import { footerVariants } from "../transitions/transitions";
-import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
