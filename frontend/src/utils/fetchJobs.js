@@ -53,10 +53,10 @@ export const jobsFetcher = async (searchText, searchCount) => {
       console.log(error);
       return error?.message;
     }
-  } else if (searchCount === 2) {
+  } else {
     const timeSearchMaxReached = new Date().getTime();
     localStorage.setItem("timeSearchMaxReached", timeSearchMaxReached);
-  } else {
+
     const currentTime = new Date().getTime();
 
     const readConditions = () => {
