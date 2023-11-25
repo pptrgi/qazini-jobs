@@ -73,7 +73,11 @@ const Feed = ({ loading, error }) => {
         {!error ? (
           <>
             {loading ? (
-              <JobCardSkeleton />
+              <div className="grid grid-cols-1 gap-[0.5rem] md480:grid-cols-2 md800:grid-cols-2 lg1023:grid-cols-3">
+                {[...Array(3).keys()].map((index) => {
+                  return <JobCardSkeleton key={index} />;
+                })}
+              </div>
             ) : (
               <>
                 {jobs?.length > 0 ? (
