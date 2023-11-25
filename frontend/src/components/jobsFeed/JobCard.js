@@ -79,7 +79,12 @@ const JobCard = ({ job }) => {
   });
 
   const handleJobSave = () => {
-    save_job_now();
+    if (user) {
+      save_job_now();
+    } else {
+      toast.info("Make sure you're signed in");
+      navigate("/signin");
+    }
   };
 
   // calculate the number of active days
