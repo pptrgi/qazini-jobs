@@ -43,7 +43,11 @@ const App = () => {
         },
         {
           path: "/board",
-          element: <Board />,
+          element: (
+            <ProtectedRoute>
+              <Board />,
+            </ProtectedRoute>
+          ),
         },
         {
           path: "/contact",
