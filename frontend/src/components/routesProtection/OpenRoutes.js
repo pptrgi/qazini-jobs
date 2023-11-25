@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { JobsUserContext } from "../../context/jobsUserContext";
@@ -16,21 +16,22 @@ const OpenRoute = ({ children }) => {
   const storedToken = localStorage.getItem("userToken");
   console.log("storedToken", storedToken);
 
-  const todaysDateNow = new Date().getTime();
-  console.log("todaysDate", todaysDateNow);
+  const timeRightNow = new Date().getTime();
+  console.log("timeRightNow", timeRightNow);
   const tokenActiveTime = 12 * 60 * 60 * 1000; // 12 hours
 
-  const validToken = parseInt(existingTokenExpiry) - todaysDateNow > 1;
+  const validToken =
+    timeRightNow - parseInt(existingTokenExpiry, 10) < tokenActiveTime;
 
   if (!validToken) {
     localStorage.removeItem("userToken");
     context.signout();
-  }
 
-  return storedToken === null
-    ? children
-    : toast.info("Already signed in / registered") &
-      <Navigate to={"/"} replace={true} />;
+    return children;
+  } else {
+    toast.info("Signout first to access this page");
+    return navigate("/");
+  }
 };
 
 export default OpenRoute;
