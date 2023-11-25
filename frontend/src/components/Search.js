@@ -23,8 +23,10 @@ const Search = ({ loading }) => {
     const storedSearchCount = localStorage.getItem("searchCount");
     if (storedSearchCount) {
       setSearchCount(parseInt(storedSearchCount, 10) + 1);
+      localStorage.setItem("searchCount", searchCount);
+    } else {
+      localStorage.setItem("searchCount", 0);
     }
-    localStorage.setItem("searchCount", searchCount);
 
     setSearching(true);
     const searchedJobs = await jobsFetcher(searchText, searchCount); // jobFetcher() function might return an array of jobs or an error
