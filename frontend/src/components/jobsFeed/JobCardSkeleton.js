@@ -1,7 +1,7 @@
 const JobCardSkeleton = () => {
   return (
     <div className="skeleton_card_wrapper">
-      <div className="flex_col gap-[1.5rem] items-start">
+      <div className="flex_col gap-[1.5rem] w-full items-start">
         <div className="flex_between w-full">
           <span className="skeleton_com_logo"></span>
           <span className="skeleton_bookmark"></span>

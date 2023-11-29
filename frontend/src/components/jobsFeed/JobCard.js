@@ -112,7 +112,7 @@ const JobCard = ({ job }) => {
           <div className="relative h-[45px] w-[100px] flex_center overflow-hidden">
             <img
               src={`${
-                hasLogo ? employer_logo : "/company-logo-placeholder-1.png"
+                hasLogo ? employer_logo : "/company_logo_placeholder.png"
               }`}
               className="absolute object-cover"
             />
@@ -129,7 +129,7 @@ const JobCard = ({ job }) => {
             <h2 className="title_h3 lines_limit_2 min-h-[3.7rem] md800:title_h2">
               {job_title}
             </h2>
-            <span className="text-smaller md480:text-small">
+            <span className="text-smaller line-clamp-1 md480:text-small">
               At
               <span className="text-darkColor">
                 {/* if there's company website url make it a link, otherwise just show name */}{" "}
@@ -161,7 +161,7 @@ const JobCard = ({ job }) => {
           <div className="group">
             <a
               href={`${apply_link}`}
-              className="flex gap-[0.5rem] items-center cta_button xm:gap-[0.5rem]"
+              className="flex gap-[0.5rem] items-center cta_button xm:gap-[0.5rem] md800:px-[1.5rem]"
             >
               <span>Apply</span>
               <span className="text-normal">
@@ -170,8 +170,12 @@ const JobCard = ({ job }) => {
             </a>
           </div>
           <div className="group">
-            <div onClick={handleViewJob} className="outline_button ">
-              <span>View Job</span>
+            <div
+              onClick={handleViewJob}
+              className="flex gap-[0.25rem]  outline_button md800:px-[1.5rem]"
+            >
+              <span>View</span>
+              <span className="block md800:hidden lg1023:block">Job</span>
             </div>
           </div>
         </div>
