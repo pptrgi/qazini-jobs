@@ -101,7 +101,7 @@ export const handle_user_register = async (
       console.log(registered_user);
 
       // disconnect database
-      await client.end();
+      // await client.end();
 
       return registered_user;
     } else {
@@ -111,7 +111,6 @@ export const handle_user_register = async (
   } catch (error) {
     // server couldn't process the request as expected
     console.log(error);
-
     throw new GraphQLError(error?.message);
   }
 };
@@ -132,7 +131,7 @@ export const handle_user_signin = async (_, { email, password }) => {
     // make sure the user with given email exists
     const user_exists_res = await client.query(check_user_email_query, [email]);
     // after the response we don't need the db anymore, disconnect
-    await client.end();
+    // await client.end();
 
     if (user_exists_res.rows.length > 0) {
       // the user exists, so compare the passwords if they match it's a valid user, assign the user a token

@@ -19,7 +19,7 @@ CREATE TABLE job (
     employer_website VARCHAR(255),
     company_type VARCHAR(255),
     job_description TEXT NOT NULL,
-    job_qualifications TEXT[] NOT NULL,
+    job_qualifications TEXT[],
     job_responsibilities TEXT[],
     date_posted DATE NOT NULL,
     date_expiring DATE,

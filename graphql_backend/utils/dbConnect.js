@@ -20,6 +20,6 @@ dotenv.config();
 //   password: `${process.env.PASSWORD}`,
 // });
 
-export const client = new pg.Client({
-  connectionString: `${process.env.FLY_PG_URI}`,
+export const client = new pg.Pool({
+  connectionString: `${process.env.REN_PG_URI}`,
 });
