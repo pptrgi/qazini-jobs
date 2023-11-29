@@ -1,6 +1,13 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { IoHeart } from "react-icons/io5";
+import {
+  RiWhatsappFill,
+  RiLinkedinFill,
+  RiTwitterFill,
+  RiPhoneFill,
+  RiFacebookFill,
+} from "react-icons/ri";
 
 import { footerVariants } from "../transitions/transitions";
 
@@ -14,23 +21,57 @@ const Footer = () => {
     >
       <div className="custom_container">
         <div className="flex_col gap-[1rem]">
-          <div className="grid grid-cols-1 gap-[1.5rem] pb-[1.5rem] border-b-[1.8px] border-lightGrayColor md480:gap-[1rem] md480:items-center md480:grid-cols-12">
+          <div className="grid grid-cols-1 gap-[2.5rem] pb-[1.5rem] border-b-[1.8px] border-lightGrayColor md480:gap-[1rem] md480:items-center md480:grid-cols-12">
             <div className="col-span-1 md480:col-span-7 md800:col-span-7 lg1023:col-span-8 lg1120:col-span-9">
               <div className="flex_start_center">
-                <div className="flex_col gap-[0.5rem]">
-                  <h2 className="title_h2">Qazini</h2>
-                  <div className="flex gap-[0.35rem] items-center">
-                    <p className="text-textColor/50">Built with</p>
-                    <span className="text-ctaColor text-h3">
-                      <IoHeart />
-                    </span>
-                    <p className="text-textColor/50">
-                      by{" "}
-                      <span className="font-semibolden text-darkColor">
-                        Lifen Creatives
-                      </span>{" "}
-                      &#169; 2023
-                    </p>
+                <div className="flex_col gap-[1.25rem]">
+                  <div className="flex_col gap-[0.5rem]">
+                    <h2 className="title_h2">Qazini</h2>
+                    <div className="flex gap-[0.35rem] items-center">
+                      <p className="text-textColor/60">Built with</p>
+                      <span className="text-ctaColor text-h3">
+                        <IoHeart />
+                      </span>
+                      <p className="text-textColor/60">
+                        by{" "}
+                        <span className="font-semibolden text-darkColor">
+                          Lifen Creatives
+                        </span>{" "}
+                        &#169; 2023
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex gap-[0.75rem] items-center md480:gap-[1rem]">
+                    <a
+                      href="https://www.linkedin.com/in/petergitonga"
+                      className="text-textColor/50 ring-2 ring-textColor/50 p-[4px] rounded-full bg-transparent"
+                    >
+                      <RiLinkedinFill />
+                    </a>
+                    <a
+                      href="https://wa.me/254700119134"
+                      className="text-textColor/50 ring-2 ring-textColor/50 p-[4px] rounded-full bg-transparent"
+                    >
+                      <RiWhatsappFill />
+                    </a>
+                    <a
+                      href="https://x.com/ptrgitonga"
+                      className="text-textColor/50 ring-2 ring-textColor/50 p-[4px] rounded-full bg-transparent"
+                    >
+                      <RiTwitterFill />
+                    </a>
+                    <a
+                      href="https://www.facebook.com/petergitonga"
+                      className="text-textColor/50 ring-2 ring-textColor/50 p-[4px] rounded-full bg-transparent"
+                    >
+                      <RiFacebookFill />
+                    </a>
+                    <a
+                      href="tel:254700119134"
+                      className="text-textColor/50 ring-2 ring-textColor/50 p-[4px] rounded-full bg-transparent"
+                    >
+                      <RiPhoneFill />
+                    </a>
                   </div>
                 </div>
               </div>
@@ -52,38 +93,35 @@ const Footer = () => {
                       Contact
                     </Link>
                     <Link to={"/board"} className="text-textColor/50">
-                      Account
+                      Profile
                     </Link>
-                    <a
-                      href="https://nyumbahub.vercel.app/privacy"
-                      className="text-textColor/50"
-                    >
-                      Privacy
-                    </a>
+                    <Link to={"/register"} className="text-textColor/50">
+                      Sign Up
+                    </Link>
                   </div>
                 </div>
                 <div className="flex_col gap-[0.5rem]">
                   <h4 className="uppercase text-darkColor truncate text-smaller font-semibolden md480:text-small">
-                    social links
+                    external links
                   </h4>
                   <div className="flex_col gap-[0.125rem]">
                     <a
-                      href="https://www.linkedin.com/in/petergitonga"
+                      href="https://pgitonga.vercel.app"
                       className="text-textColor/50"
                     >
-                      LinkedIn
+                      Owner
                     </a>
                     <a
-                      href="https://x.com/ptrgitonga"
+                      href="https://nyumbahub.vercel.app/privacy-policy"
                       className="text-textColor/50"
                     >
-                      X
+                      Privacy
                     </a>
                     <a
-                      href="https://wa.me/254700119134"
+                      href="https://nyumbahub.vercel.app/terms-of-service"
                       className="text-textColor/50"
                     >
-                      Whatsapp
+                      T & C
                     </a>
                   </div>
                 </div>

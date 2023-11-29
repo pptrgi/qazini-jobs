@@ -27,7 +27,7 @@ const Header = () => {
             <ActiveHeaderLink where={"/about"} headerName={"About"} />
             <ActiveHeaderLink where={"/contact"} headerName={"Contact"} />
           </div>
-          <div className="flex gap-[2rem] items-center md800:gap-[1.5rem] lg1023:gap-[2rem]">
+          <div className="flex gap-[1.5rem] items-center lg1023:gap-[2rem]">
             <ActiveHeaderLink where={"/board"} headerName={"Saved Jobs"} />
 
             {/* when user is signed in show signout, otherwise sign up button */}

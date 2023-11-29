@@ -14,31 +14,31 @@ const Search = ({ loading }) => {
   const context = useContext(JobsUserContext);
 
   // condition search
-  const [searchCount, setSearchCount] = useState(0);
-
   const handleSearchJobs = async (e) => {
     e.preventDefault();
-    console.log("searchText", searchText);
 
-    const storedSearchCount = localStorage.getItem("searchCount");
+    const getStoredCount = () => {
+      return { storedSearchCount: localStorage.getItem("searchCount") };
+    };
+    const { storedSearchCount } = getStoredCount();
+
     if (storedSearchCount) {
-      setSearchCount(parseInt(storedSearchCount, 10) + 1);
-      localStorage.setItem("searchCount", searchCount);
+      localStorage.setItem("searchCount", parseInt(storedSearchCount) + 1);
     } else {
       localStorage.setItem("searchCount", 0);
     }
 
     setSearching(true);
-    const searchedJobs = await jobsFetcher(searchText, searchCount); // jobFetcher() function might return an array of jobs or an error
+    const searchedJobs = await jobsFetcher(
+      searchText,
+      parseInt(storedSearchCount)
+    ); // jobFetcher() function might return an array of jobs or an error
 
-    console.log("searchedJobs", searchedJobs);
     if (typeof searchedJobs !== "string") {
       setSearching(false);
-      console.log(searchedJobs);
       return context.setJobs(searchedJobs);
     } else {
       setSearchError(searchedJobs);
-      console.log(searchedJobs);
       setSearching(false);
     }
   };
@@ -58,7 +58,8 @@ const Search = ({ loading }) => {
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
             className="search_input_field"
-            placeholder="Search by the job title"
+            placeholder="Search e.g. teacher, kenya"
+            required
           />
 
           {/* if home page is loading jobs or searching is underway, disable button */}
@@ -69,13 +70,17 @@ const Search = ({ loading }) => {
                 ? "bg-opacity-40 cursor-none"
                 : null
             }`}
-            disabled={searching === true || loading === true ? true : false}
+            disabled={
+              searching === true || loading === true || searchText === ""
+                ? true
+                : false
+            }
           >
             {searching ? (
               <LoadingDots />
             ) : (
               <>
-                <span className="block md480:hidden">
+                <span className="block text-h3 text-bodyColor/95 md480:hidden">
                   <IoSearch />
                 </span>
                 <span className="hidden md480:block">Search job</span>
