@@ -21,7 +21,7 @@ const About = () => {
           <div className="flex_col gap-[2rem] w-full items-center">
             <motion.div
               variants={pageTitleFadeOutVariants}
-              className="relative h-[25vh] bg-tintColor2 w-full rounded-sm overflow-hidden"
+              className="relative h-[10rem] bg-tintColor2 w-full rounded-sm overflow-hidden md480:h-[13rem]"
             >
               <div className="flex_center w-full h-full">
                 <div className="flex_col gap-[0.5rem] items-center">

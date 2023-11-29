@@ -1,11 +1,11 @@
 import {
-  SiFacebook,
-  SiInstagram,
-  SiLinkedin,
-  SiTwitter,
-  SiWhatsapp,
-} from "react-icons/si";
-import { PiGlobeFill } from "react-icons/pi";
+  RiWhatsappFill,
+  RiLinkedinFill,
+  RiTwitterFill,
+  RiPhoneFill,
+  RiFacebookFill,
+  RiInstagramFill,
+} from "react-icons/ri";
 import { motion } from "framer-motion";
 
 import {
@@ -28,10 +28,15 @@ const Contact = () => {
           <div className="flex_col gap-[3.5rem] w-full items-center md480:gap-[4rem]">
             <motion.div
               variants={pageTitleFadeOutVariants}
-              className="relative h-[25vh] bg-tintColor2 w-full rounded-sm overflow-hidden"
+              className="relative h-[10rem] bg-tintColor2 w-full rounded-sm overflow-hidden md480:h-[13rem]"
             >
               <div className="flex_center w-full h-full">
-                <h2 className="title_h2 leading-none">Contact Us</h2>
+                <div className="flex_col gap-[0.5rem] items-center">
+                  <h2 className="title_h2 leading-none">Contact Us</h2>
+                  <p className="px-[0.5rem] text-center">
+                    Get in touch with us, anytime
+                  </p>
+                </div>
               </div>
               <span className="absolute -bottom-[70px] -right-[90px] w-[130px] h-[150px] rounded-full bg-tintClearColor md480:w-[150px] md480:-right-[80px] md480:-bottom-[20px]"></span>
             </motion.div>
@@ -84,44 +89,40 @@ const Contact = () => {
 
             <motion.div variants={slideGoingRightVariants} className="w-full">
               <div className="grid grid-cols-1 items-center gap-[1rem] md480:grid-cols-4">
-                <div className="flex gap-[1rem] col-span-4 md480:col-span-2">
+                <div className="flex gap-[0.9rem] col-span-4 md480:col-span-2 md480:gap-[1rem]">
                   <a
                     href="https://www.linkedin.com/in/petergitonga"
                     className="p-[0.25rem] rounded-full bg-tintClearColor text-bodyColor text-h3"
                   >
-                    <SiLinkedin />
+                    <RiLinkedinFill />
                   </a>
                   <a
                     href="https://wa.me/254700119134"
                     className="p-[0.25rem] rounded-full bg-tintClearColor text-bodyColor text-h3"
                   >
-                    <SiWhatsapp />
+                    <RiWhatsappFill />
                   </a>
                   <a
                     href="https://x.com/ptrgitonga"
                     className="p-[0.25rem] rounded-full bg-tintClearColor text-bodyColor text-h3"
                   >
-                    <SiTwitter />
+                    <RiTwitterFill />
                   </a>
                   <a
                     href="https://www.facebook.com/petergitonga"
                     className="p-[0.25rem] rounded-full bg-tintClearColor text-bodyColor text-h3"
                   >
-                    <SiFacebook />
+                    <RiFacebookFill />
                   </a>
-                  <span className="hidden p-[0.25rem] rounded-full bg-tintClearColor  text-bodyColor text-h3 md480:block">
-                    <SiInstagram />
+                  <span className="hidden p-[0.25rem] rounded-full bg-tintClearColor text-bodyColor text-h3 cursor-auto md480:block">
+                    <RiInstagramFill />
                   </span>
                   <a
-                    href="https://ptrgitonga.vercel.app"
+                    href="tel:254700119134"
                     className="p-[0.25rem] rounded-full bg-tintClearColor text-bodyColor text-h3"
                   >
-                    <PiGlobeFill />
+                    <RiPhoneFill />
                   </a>
-
-                  {/* <span className="text-h2 bg-tintClearColor text-bodyColor rounded-full">
-                    <IoLogoTwitter />
-                  </span> */}
                 </div>
                 <div className="col-span-4 md480:col-span-2">
                   <div className="flex_start_center w-full">
