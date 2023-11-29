@@ -37,22 +37,20 @@ const TitlesSection = ({ job }) => {
             <div className="flex gap-[0.5rem] items-center">
               <img
                 src={`${
-                  hasLogo
-                    ? job.employer_logo
-                    : "/company-logo-placeholder-2.png"
+                  hasLogo ? job.employer_logo : "/job_logo_placeholder.svg"
                 }`}
                 alt="logo"
                 className="w-[30px]"
               />
-              <div className="grid grid-cols-12 gap-[0.25rem] items-center md480:flex">
-                <p className="capitalize text-darkColor col-span-8 truncate">
+              <div className="flex gap-[0.25rem] items-center">
+                <p className="capitalize text-darkColor max-w-[150px] line-clamp-1 md480:max-w-none">
                   {job?.employer_name}
                 </p>
-                <span className="text-h3 col-span-1 text-textColor/50">
+                <span className="text-h3 max-w-[18px] text-textColor/50 md480:max-w-none">
                   <RxDotFilled />
                 </span>
 
-                <p className="capitalize col-span-3 truncate pl-[0.125rem] md480:pl-0">
+                <p className="capitalize max-w-[100px] line-clamp-1 md480:max-w-none">
                   {job?.job_country}
                 </p>
               </div>
