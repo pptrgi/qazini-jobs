@@ -11,6 +11,7 @@ import useClickOutsideClose from "../../hooks/useClickOutsideClose";
 import { sortJobs } from "../../utils/sortJobs";
 import { fadeOutVariants } from "../../transitions/transitions";
 import FillWithMotiv from "../FillWithMotiv";
+import JobCardClone from "./JobCardClone";
 
 const Feed = ({ loading, error }) => {
   const context = useContext(JobsUserContext);
@@ -29,7 +30,7 @@ const Feed = ({ loading, error }) => {
   return (
     <motion.section
       variants={fadeOutVariants}
-      className="custom_container section"
+      className="custom_container section border-b-[1.5px] border-lightGrayColor/70"
     >
       <div className="relative flex_col gap-[1.5rem] items-start overflow-hidden">
         <div className="flex_col gap-[0.75rem]">
@@ -73,15 +74,15 @@ const Feed = ({ loading, error }) => {
         {!error ? (
           <>
             {loading ? (
-              <div className="grid grid-cols-1 gap-[0.5rem] md480:grid-cols-2 md800:grid-cols-2 lg1023:grid-cols-3">
-                {[...Array(3).keys()].map((index) => {
+              <div className="grid grid-cols-1 gap-[0.5rem] w-full md480:grid-cols-2 md800:grid-cols-3 lg1023:grid-cols-4 md800:gap-[0.25rem] lg1023:gap-[0.5rem]">
+                {[...Array(4).keys()].map((index) => {
                   return <JobCardSkeleton key={index} />;
                 })}
               </div>
             ) : (
               <>
                 {jobs?.length > 0 ? (
-                  <div className="grid grid-cols-1 gap-[0.5rem] md480:grid-cols-2 md800:grid-cols-2 lg1023:grid-cols-3">
+                  <div className="grid grid-cols-1 gap-[0.5rem] md480:grid-cols-2 md800:grid-cols-3 lg1023:grid-cols-4 md800:gap-[0.25rem] lg1023:gap-[0.5rem]">
                     {jobs?.map((job, index) => {
                       return <JobCard job={job} key={index} />;
                     })}
@@ -100,17 +101,7 @@ const Feed = ({ loading, error }) => {
             {error}
           </p>
         )}
-        {/* {/* <span className="hidden justify-center items-center h-full md480:flex">
-          <span className="absolute right-[2rem] top-[30%] w-[16px] h-[16px] rotate-45 bg-tintClearColor/50"></span>
-          <span className="absolute right-[2.5rem] top-[28%] w-[12px] h-[12px] rounded-full bg-tintClearColor/50"></span>
-          <span className="absolute right-[3.5rem] top-[27%] w-[10px] h-[10px] rotate-45 bg-tintClearColor/50"></span>
-          <span className="absolute right-[2rem] top-[25%] w-[8px] h-[8px] rounded-full bg-tintClearColor/50"></span>
-          <span className="absolute right-[2.75rem] top-[24%] w-[6px] h-[6px] rotate-45 bg-tintClearColor/50"></span>
-        </span> 
-        <span className="hidden absolute -right-[150px] justify-center items-center h-full gap-[0.4rem] md480:flex">
-          <span className="w-[200px] bg-tintClearColor/10 h-[30%] rounded-full"></span>
-        </span> */}
-        <FillWithMotiv />
+        {/* <FillWithMotiv /> */}
       </div>
     </motion.section>
   );
