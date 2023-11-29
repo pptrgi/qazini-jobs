@@ -11,7 +11,6 @@ import useClickOutsideClose from "../../hooks/useClickOutsideClose";
 import { sortJobs } from "../../utils/sortJobs";
 import { fadeOutVariants } from "../../transitions/transitions";
 import FillWithMotiv from "../FillWithMotiv";
-import JobCardClone from "./JobCardClone";
 
 const Feed = ({ loading, error }) => {
   const context = useContext(JobsUserContext);
