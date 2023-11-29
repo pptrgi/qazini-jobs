@@ -10,6 +10,7 @@ dotenv.config();
 
 import { typeDefs } from "./graphql_schema.js";
 import { resolvers } from "./resolvers/resolvers_parent.js";
+import { corsOptions } from "./utils/corsOptions.js";
 import { verifyAuthToken } from "./middleware/verifyAuthToken.js";
 
 const app = express();
@@ -24,6 +25,7 @@ await server.start();
 
 app.use(
   "/graphql",
+  cors(corsOptions),
   express.json(),
   expressMiddleware(server, {
     context: async ({ req }) => {
