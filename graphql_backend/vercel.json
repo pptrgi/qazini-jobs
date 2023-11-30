@@ -1,14 +1,18 @@
 {
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/graphql"
-    }
-  ],
+  "version": 2,
   "builds": [
     {
-      "src": "/server.js",
+      "src": "graphql_backend/server.js",
       "use": "@vercel/node"
     }
-  ]
+  ],
+  "routes": [
+    {
+      "src": "/graphql",
+      "dest": "graphql_backend/server.js"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  }
 }
