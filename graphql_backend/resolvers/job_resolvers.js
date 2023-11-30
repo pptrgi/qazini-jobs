@@ -34,7 +34,6 @@ export const handle_save_job = async (_, { saveJobInput }, contextValue) => {
     !alien_job_id ||
     !employer_name ||
     !job_description ||
-    !job_qualifications ||
     !date_posted ||
     !job_city ||
     !job_country ||
