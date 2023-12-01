@@ -105,6 +105,7 @@ const Contact = () => {
                     <>
                       <input
                         type="text"
+                        name="name"
                         value={formik.values.fullname}
                         onChange={formik.handleChange("fullname")}
                         onBlur={formik.handleBlur("fullname")}
@@ -121,6 +122,7 @@ const Contact = () => {
                     <>
                       <input
                         type="email"
+                        name="email"
                         value={formik.values.email}
                         onChange={formik.handleChange("email")}
                         onBlur={formik.handleBlur("email")}
@@ -137,6 +139,7 @@ const Contact = () => {
                     <>
                       <input
                         type="text"
+                        name="subject"
                         value={formik.values.subject}
                         onChange={formik.handleChange("subject")}
                         onBlur={formik.handleBlur("subject")}
@@ -152,6 +155,7 @@ const Contact = () => {
                     <>
                       <textarea
                         rows={5}
+                        name="message"
                         value={formik.values.message}
                         onChange={formik.handleChange("message")}
                         onBlur={formik.handleBlur("message")}
