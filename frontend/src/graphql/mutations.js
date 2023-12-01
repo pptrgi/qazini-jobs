@@ -51,7 +51,7 @@ export const SAVE_JOB_MUTATION = gql`
     $company_type: String
     $apply_link: String!
     $job_description: String!
-    $job_qualifications: [String!]!
+    $job_qualifications: [String!]
     $job_responsibilities: [String!]
     $date_posted: String!
     $date_expiring: String
