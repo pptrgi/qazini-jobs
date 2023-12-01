@@ -3,6 +3,8 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { IoEyeSharp, IoEyeOffSharp } from "react-icons/io5";
 import { motion } from "framer-motion";
+import { useFormik } from "formik";
+import * as yup from "yup";
 
 import { pageVariants, authFadeOutVariants } from "../transitions/transitions";
 import { GET_USER_QUERY } from "../graphql/queries";
@@ -10,41 +12,44 @@ import { REGISTER_USER_MUTATION } from "../graphql/mutations";
 import { toastGraphqlError } from "../utils/toastGraphqlError";
 import { noInternetHandler } from "../utils/noInternet";
 
+// register form inputs schema
+const registerSchema = yup.object({
+  fullname: yup.string().required("Please enter your full name"),
+  email: yup
+    .string()
+    .email("Provide a valid email")
+    .required("Provide your email address"),
+  password: yup.string().required("Password field is required"),
+});
+
 const Register = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const [registerValues, setRegisterValues] = useState({
-    fullname: "",
-    email: "",
-    password: "",
+
+  // validate schema and start the register mutation operation on form submit
+  const formik = useFormik({
+    initialValues: {
+      fullname: "",
+      email: "",
+      password: "",
+    },
+    validationSchema: registerSchema,
+    onSubmit: (values) => {
+      register_user_now({ variables: values });
+    },
   });
 
-  // handle text input fields changes
-  const handleOnChange = (event) => {
-    setRegisterValues({
-      ...registerValues,
-      [event.target.name]: event.target.value,
-    });
-  };
-
-  // reset input values and navigate to signin page on successful register
-  // assign values object to variables
-  // error
   const [register_user_now, { loading }] = useMutation(REGISTER_USER_MUTATION, {
     update(cache, { data }) {
       // const user = cache.readQuery({ query: GET_USER_QUERY });
       // console.log("user", user);
       console.log("data", data);
 
-      setRegisterValues({
-        ...registerValues,
-        fullname: "",
-        email: "",
-        password: "",
-      });
+      formik.resetForm();
+
       navigate("/signin");
     },
-    variables: registerValues,
+
     onError({ graphQLErrors, networkError }) {
       if (graphQLErrors) {
         console.log("register errors", graphQLErrors);
@@ -56,13 +61,6 @@ const Register = () => {
       }
     },
   });
-
-  // start the mutation/register operation on submit
-  const handleUserRegister = (event) => {
-    event.preventDefault();
-
-    register_user_now();
-  };
 
   return (
     <motion.section
@@ -82,52 +80,76 @@ const Register = () => {
                 </h3>
               </div>
               <form
-                onSubmit={handleUserRegister}
+                onSubmit={formik.handleSubmit}
                 className="flex_col gap-[1.5rem]"
               >
-                <div className=" flex_col gap-[0.75rem]">
-                  <input
-                    type="text"
-                    name="fullname"
-                    value={registerValues.fullname}
-                    onChange={handleOnChange}
-                    className="form_input bg-bodyColor"
-                    placeholder="full name"
-                  />
-                  <input
-                    type="email"
-                    name="email"
-                    value={registerValues.email}
-                    onChange={handleOnChange}
-                    className="form_input bg-bodyColor"
-                    placeholder="email address"
-                  />
-
-                  <div className="flex_between form_input bg-bodyColor items-center">
+                <div className=" flex_col gap-[0.6rem]">
+                  <>
                     <input
-                      type={showPassword ? "text" : "password"}
-                      name="password"
-                      value={registerValues.password}
-                      onChange={handleOnChange}
-                      className="bg-transparent"
-                      placeholder="password"
+                      type="text"
+                      name="fullname"
+                      value={formik.values.fullname}
+                      onChange={formik.handleChange("fullname")}
+                      onBlur={formik.handleBlur("fullname")}
+                      className="form_input bg-bodyColor"
+                      placeholder="full name"
                     />
-                    {showPassword ? (
-                      <span
-                        onClick={(e) => setShowPassword(false)}
-                        className="text-ctaColor"
-                      >
-                        <IoEyeOffSharp />
-                      </span>
-                    ) : (
-                      <span
-                        onClick={(e) => setShowPassword(true)}
-                        className="text-ctaColor"
-                      >
-                        <IoEyeSharp />
+                    {formik.touched.fullname && (
+                      <span className="text-smaller text-red-400 pl-[0.5rem] md480:text-small">
+                        {formik.errors.fullname}
                       </span>
                     )}
-                  </div>
+                  </>
+                  <>
+                    <input
+                      type="email"
+                      name="email"
+                      value={formik.values.email}
+                      onChange={formik.handleChange("email")}
+                      onBlur={formik.handleBlur("email")}
+                      className="form_input bg-bodyColor"
+                      placeholder="email address"
+                    />
+                    {formik.touched.email && (
+                      <span className="text-smaller text-red-400 pl-[0.5rem] md480:text-small">
+                        {formik.errors.email}
+                      </span>
+                    )}
+                  </>
+
+                  <>
+                    <div className="flex_between form_input bg-bodyColor items-center">
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        name="password"
+                        value={formik.values.password}
+                        onChange={formik.handleChange("password")}
+                        onBlur={formik.handleBlur("password")}
+                        className="bg-transparent"
+                        placeholder="password"
+                      />
+                      {showPassword ? (
+                        <span
+                          onClick={(e) => setShowPassword(false)}
+                          className="text-ctaColor"
+                        >
+                          <IoEyeOffSharp />
+                        </span>
+                      ) : (
+                        <span
+                          onClick={(e) => setShowPassword(true)}
+                          className="text-ctaColor"
+                        >
+                          <IoEyeSharp />
+                        </span>
+                      )}
+                    </div>
+                    {formik.touched.password && (
+                      <span className="text-smaller text-red-400 pl-[0.5rem] md480:text-small">
+                        {formik.errors.password}
+                      </span>
+                    )}
+                  </>
                 </div>
                 <div className="flex justify-end items-end">
                   <div className="flex gap-[0.75rem] items-center">

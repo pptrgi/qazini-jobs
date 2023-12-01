@@ -26,7 +26,7 @@ const About = () => {
               <div className="flex_center w-full h-full">
                 <div className="flex_col gap-[0.5rem] items-center">
                   <h2 className="title_h2 leading-none">About Us</h2>
-                  <p className="px-[0.5rem] text-center">
+                  <p className="px-[0.5rem] text-center z-10">
                     Qazini is not just a job search site, we're the answer
                   </p>
                 </div>

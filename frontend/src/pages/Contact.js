@@ -1,7 +1,11 @@
+import { useRef } from "react";
+import { useFormik } from "formik";
+import * as yup from "yup";
+import { sendForm } from "@emailjs/browser";
 import {
   RiWhatsappFill,
   RiLinkedinFill,
-  RiTwitterFill,
+  RiTwitterXFill,
   RiPhoneFill,
   RiFacebookFill,
   RiInstagramFill,
@@ -14,8 +18,45 @@ import {
   slideGoingRightVariants,
   pageTitleFadeOutVariants,
 } from "../transitions/transitions";
+import { toast } from "react-toastify";
+
+// contact form inputs schema
+const contactSchema = yup.object({
+  fullname: yup.string().required("Enter your full name"),
+  email: yup
+    .string()
+    .email("Provide a valid email")
+    .required("Provide your email address"),
+  subject: yup.string().required("Specify the subject for the message"),
+  message: yup.string().required("You can't send an empty message body"),
+});
 
 const Contact = () => {
+  const contactFormRef = useRef();
+
+  // validate schema and send the form contents to company email using emailjs email service
+  const formik = useFormik({
+    initialValues: {
+      fullname: "",
+      email: "",
+      subject: "",
+      message: "",
+    },
+    validationSchema: contactSchema,
+    onSubmit: (values, { resetForm }) => {
+      sendForm(
+        `${process.env.REACT_APP_SERVICE_ID}`,
+        `${process.env.REACT_APP_TEMPLATE_ID}`,
+        contactFormRef.current,
+        `${process.env.REACT_APP_EMAIL_PUBLIC_KEY}`
+      )
+        .then(() => {
+          toast.success("Message has been sent!");
+          resetForm();
+        })
+        .catch((error) => console.log(error));
+    },
+  });
   return (
     <motion.section
       variants={pageVariants}
@@ -33,7 +74,7 @@ const Contact = () => {
               <div className="flex_center w-full h-full">
                 <div className="flex_col gap-[0.5rem] items-center">
                   <h2 className="title_h2 leading-none">Contact Us</h2>
-                  <p className="px-[0.5rem] text-center">
+                  <p className="px-[0.5rem] text-center z-10">
                     Get in touch with us, anytime
                   </p>
                 </div>
@@ -56,27 +97,74 @@ const Contact = () => {
                   </div>
                 </div>
                 <div className="flex_start_end w-full col-span-6 md480:col-span-4">
-                  <form className="contact_form flex_col gap-[0.75rem]">
-                    <input
-                      type="text"
-                      className="contact_form_input"
-                      placeholder="fullname"
-                    />
-                    <input
-                      type="email"
-                      className="contact_form_input"
-                      placeholder="example@email.com"
-                    />
-                    <input
-                      type="text"
-                      className="contact_form_input"
-                      placeholder="message's subject"
-                    />
-                    <textarea
-                      rows={5}
-                      className="contact_form_input resize-none"
-                      placeholder="message body"
-                    />
+                  <form
+                    ref={contactFormRef}
+                    onSubmit={formik.handleSubmit}
+                    className="contact_form flex_col gap-[0.6rem]"
+                  >
+                    <>
+                      <input
+                        type="text"
+                        value={formik.values.fullname}
+                        onChange={formik.handleChange("fullname")}
+                        onBlur={formik.handleBlur("fullname")}
+                        className="contact_form_input"
+                        placeholder="fullname"
+                      />
+                      {formik.touched.fullname && (
+                        <span className="text-smaller text-red-400 pl-[0.5rem] md480:text-small">
+                          {formik.errors.fullname}
+                        </span>
+                      )}
+                    </>
+
+                    <>
+                      <input
+                        type="email"
+                        value={formik.values.email}
+                        onChange={formik.handleChange("email")}
+                        onBlur={formik.handleBlur("email")}
+                        className="contact_form_input"
+                        placeholder="example@email.com"
+                      />
+                      {formik.touched.email && (
+                        <span className="text-smaller text-red-400 pl-[0.5rem] md480:text-small">
+                          {formik.errors.email}
+                        </span>
+                      )}
+                    </>
+
+                    <>
+                      <input
+                        type="text"
+                        value={formik.values.subject}
+                        onChange={formik.handleChange("subject")}
+                        onBlur={formik.handleBlur("subject")}
+                        className="contact_form_input"
+                        placeholder="message's subject"
+                      />
+                      {formik.touched.subject && (
+                        <span className="text-smaller text-red-400 pl-[0.5rem] md480:text-small">
+                          {formik.errors.subject}
+                        </span>
+                      )}
+                    </>
+                    <>
+                      <textarea
+                        rows={5}
+                        value={formik.values.message}
+                        onChange={formik.handleChange("message")}
+                        onBlur={formik.handleBlur("message")}
+                        className="contact_form_input resize-none"
+                        placeholder="the message body"
+                      />
+                      {formik.touched.message && (
+                        <span className="text-smaller text-red-400 pl-[0.5rem] md480:text-small">
+                          {formik.errors.message}
+                        </span>
+                      )}
+                    </>
+
                     <div className="flex_end w-full mt-[1.5rem]">
                       <button type="submit" className="cta_button capitalize">
                         send message
@@ -92,35 +180,32 @@ const Contact = () => {
                 <div className="flex gap-[0.9rem] col-span-4 md480:col-span-2 md480:gap-[1rem]">
                   <a
                     href="https://www.linkedin.com/in/petergitonga"
-                    className="p-[0.25rem] rounded-full bg-tintClearColor text-bodyColor text-h3"
+                    className="contact_social_icon"
                   >
                     <RiLinkedinFill />
                   </a>
                   <a
                     href="https://wa.me/254700119134"
-                    className="p-[0.25rem] rounded-full bg-tintClearColor text-bodyColor text-h3"
+                    className="contact_social_icon"
                   >
                     <RiWhatsappFill />
                   </a>
                   <a
                     href="https://x.com/ptrgitonga"
-                    className="p-[0.25rem] rounded-full bg-tintClearColor text-bodyColor text-h3"
+                    className="contact_social_icon"
                   >
-                    <RiTwitterFill />
+                    <RiTwitterXFill />
                   </a>
                   <a
                     href="https://www.facebook.com/petergitonga"
-                    className="p-[0.25rem] rounded-full bg-tintClearColor text-bodyColor text-h3"
+                    className="contact_social_icon"
                   >
                     <RiFacebookFill />
                   </a>
-                  <span className="hidden p-[0.25rem] rounded-full bg-tintClearColor text-bodyColor text-h3 cursor-auto md480:block">
+                  <span className="hidden contact_social_icon cursor-auto md480:block">
                     <RiInstagramFill />
                   </span>
-                  <a
-                    href="tel:254700119134"
-                    className="p-[0.25rem] rounded-full bg-tintClearColor text-bodyColor text-h3"
-                  >
+                  <a href="tel:254700119134" className="contact_social_icon">
                     <RiPhoneFill />
                   </a>
                 </div>

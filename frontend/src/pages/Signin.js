@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { IoEyeSharp, IoEyeOffSharp } from "react-icons/io5";
 import { motion } from "framer-motion";
+import { useFormik } from "formik";
+import * as yup from "yup";
 
 import { pageVariants, authFadeOutVariants } from "../transitions/transitions";
 import { SIGNIN_USER_MUTATION } from "../graphql/mutations";
@@ -10,33 +12,39 @@ import { JobsUserContext } from "../context/jobsUserContext";
 import { toastGraphqlError } from "../utils/toastGraphqlError";
 import { noInternetHandler } from "../utils/noInternet";
 
+// sign-in form inputs schema
+const signinSchema = yup.object({
+  email: yup
+    .string()
+    .email("Provide a valid email")
+    .required("Provide your email address"),
+  password: yup.string().required("Password field is required"),
+});
+
 const Signin = () => {
   const context = useContext(JobsUserContext);
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const [signinValues, setSigninValues] = useState({
-    email: "",
-    password: "",
+
+  // validate schema and start the signin mutation operation on form submit
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: signinSchema,
+    onSubmit: (values) => {
+      signin_user_now({ variables: values });
+    },
   });
 
-  // handle form input changes
-  const handleOnChange = (event) => {
-    setSigninValues({
-      ...signinValues,
-      [event.target.name]: event.target.value,
-    });
-  };
-
-  // reset input values and navigate to signin page on successful register
-  // assign values object to variables
-  // error
   const [signin_user_now, { loading }] = useMutation(SIGNIN_USER_MUTATION, {
-    variables: signinValues,
     update(cache, { data: { signin_user: user_details } }) {
       // console.log("signin_user", user_details);
       context.signin(user_details);
 
-      setSigninValues({ ...signinValues, email: "", password: "" });
+      formik.resetForm();
+
       navigate("/");
     },
     onError({ graphQLErrors, networkError }) {
@@ -50,13 +58,6 @@ const Signin = () => {
       }
     },
   });
-
-  // start the signin mutation operation on form submit
-  const handleUserSignin = (event) => {
-    event.preventDefault();
-
-    signin_user_now();
-  };
 
   return (
     <motion.section
@@ -76,44 +77,60 @@ const Signin = () => {
                 </h3>
               </div>
               <form
-                onSubmit={handleUserSignin}
+                onSubmit={formik.handleSubmit}
                 className="flex_col gap-[1.5rem]"
               >
-                <div className=" flex_col gap-[0.75rem]">
-                  <input
-                    type="email"
-                    name="email"
-                    value={signinValues.email}
-                    onChange={handleOnChange}
-                    className="form_input bg-bodyColor"
-                    placeholder="email address"
-                  />
-
-                  <div className="flex_between form_input bg-bodyColor items-center">
+                <div className=" flex_col gap-[0.6rem]">
+                  <>
                     <input
-                      type={showPassword ? "text" : "password"}
-                      name="password"
-                      value={signinValues.password}
-                      onChange={handleOnChange}
-                      placeholder="password"
-                      className="w-full bg-transparent"
+                      type="email"
+                      name="email"
+                      value={formik.values.email}
+                      onChange={formik.handleChange("email")}
+                      onBlur={formik.handleBlur("email")}
+                      className="form_input bg-bodyColor"
+                      placeholder="email address"
                     />
-                    {showPassword ? (
-                      <span
-                        onClick={(e) => setShowPassword(false)}
-                        className="text-ctaColor pl-[0.75rem]"
-                      >
-                        <IoEyeOffSharp />
-                      </span>
-                    ) : (
-                      <span
-                        onClick={(e) => setShowPassword(true)}
-                        className="text-ctaColor pl-[0.75rem]"
-                      >
-                        <IoEyeSharp />
+                    {formik.touched.email && (
+                      <span className="text-smaller text-red-400 pl-[0.5rem] md480:text-small">
+                        {formik.errors.email}
                       </span>
                     )}
-                  </div>
+                  </>
+
+                  <>
+                    <div className="flex_between form_input bg-bodyColor items-center">
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        name="password"
+                        value={formik.values.password}
+                        onChange={formik.handleChange("password")}
+                        onBlur={formik.handleBlur("password")}
+                        placeholder="password"
+                        className="w-full bg-transparent"
+                      />
+                      {showPassword ? (
+                        <span
+                          onClick={(e) => setShowPassword(false)}
+                          className="text-ctaColor pl-[0.75rem]"
+                        >
+                          <IoEyeOffSharp />
+                        </span>
+                      ) : (
+                        <span
+                          onClick={(e) => setShowPassword(true)}
+                          className="text-ctaColor pl-[0.75rem]"
+                        >
+                          <IoEyeSharp />
+                        </span>
+                      )}
+                    </div>
+                    {formik.touched.password && (
+                      <span className="text-smaller text-red-400 pl-[0.5rem] md480:text-small">
+                        {formik.errors.password}
+                      </span>
+                    )}
+                  </>
                 </div>
                 <div className="flex justify-end items-end">
                   <div className="flex gap-[0.75rem] items-center">
