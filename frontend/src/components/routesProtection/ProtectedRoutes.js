@@ -27,7 +27,8 @@ const ProtectedRoute = ({ children }) => {
     context.signout();
 
     toast.info("Make sure you are signed in");
-    return navigate("/signin");
+    navigate("/signin");
+    return;
   } else {
     return children;
   }

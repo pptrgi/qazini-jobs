@@ -119,7 +119,7 @@ const JobCard = ({ job }) => {
           </div>
           <span
             onClick={(e) => handleJobSave()}
-            className="text-h3 hover:text-ctaColor"
+            className="text-h3 hover:text-ctaColor trans_200"
           >
             <IoBookmark />
           </span>
@@ -131,10 +131,10 @@ const JobCard = ({ job }) => {
             </h2>
             <span className="text-smaller line-clamp-1 md480:text-small">
               At
-              <span className="text-darkColor">
+              <span className="text-darkColor hover:text-ctaColor transition duration-200">
                 {/* if there's company website url make it a link, otherwise just show name */}{" "}
                 {employer_website === null ? (
-                  <span>{employer_name}</span>
+                  <span className=" cursor-default">{employer_name}</span>
                 ) : (
                   <a href={`${employer_website}`}>{`${employer_name}`}</a>
                 )}

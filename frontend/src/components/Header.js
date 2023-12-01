@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { CgMenuRightAlt } from "react-icons/cg";
 import { motion } from "framer-motion";
 
@@ -20,7 +20,9 @@ const Header = () => {
       className="fixed top-0 left-0 w-[100%] bg-bodyColor flex z-50 h-[3.75rem] bottom_shadow"
     >
       <nav className="custom_container flex_between w-full">
-        <h3 className="title_h3">Qazini</h3>
+        <Link to={"/"}>
+          <h3 className="title_h3">Qazini</h3>
+        </Link>
         <div className="hidden_flex_between w-8/12 md800:flex lg1023:w-1/2">
           <div className="flex gap-[2rem]">
             <ActiveHeaderLink where={"/"} headerName={"Home"} />

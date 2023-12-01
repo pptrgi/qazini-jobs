@@ -1,12 +1,12 @@
-import {
-  IoBookmark,
-  IoLogoWhatsapp,
-  IoLogoLinkedin,
-  IoLogoTwitter,
-  IoShareSocialOutline,
-} from "react-icons/io5";
-import { GoDotFill } from "react-icons/go";
+import { IoBookmark, IoShareSocialOutline } from "react-icons/io5";
 import { RxDotFilled } from "react-icons/rx";
+import {
+  WhatsappShareButton,
+  TwitterShareButton,
+  FacebookShareButton,
+  LinkedinShareButton,
+} from "react-share";
+import { RiTwitterXFill, RiWhatsappFill, RiLinkedinFill } from "react-icons/ri";
 
 import { formatDate } from "../../utils/dateFormatter";
 import { checkCompanyLogo } from "../../utils/checkCompanyLogo";
@@ -19,9 +19,6 @@ const TitlesSection = ({ job }) => {
   // assign default logo if company has none or link doesn't point to a logo
   const hasLogo = checkCompanyLogo(job.employer_logo);
 
-  // whatsapp url encoded text
-  //   "`https://wa.me/254700119134?text=Hi%20NyumbaHub%2C%0A%0AI%27m%20interested%20in%20property%20";
-  // let jobText = `${job?.job_title}%0A%0A`;
   return (
     <div className="flex_center w-full">
       <div className="flex_col gap-[2.25rem] items-center w-full">
@@ -43,9 +40,16 @@ const TitlesSection = ({ job }) => {
                 className="w-[30px]"
               />
               <div className="flex gap-[0.25rem] items-center">
-                <p className="capitalize text-darkColor max-w-[150px] line-clamp-1 md480:max-w-none">
-                  {job?.employer_name}
+                <p className="capitalize text-darkColor max-w-[150px] line-clamp-1 hover:font-semibolden md480:max-w-none">
+                  {job?.employer_website === null ? (
+                    <span>{job?.employer_name}</span>
+                  ) : (
+                    <a
+                      href={`${job?.employer_website}`}
+                    >{`${job?.employer_name}`}</a>
+                  )}
                 </p>
+
                 <span className="text-h3 max-w-[18px] text-textColor/50 md480:max-w-none">
                   <RxDotFilled />
                 </span>
@@ -58,7 +62,7 @@ const TitlesSection = ({ job }) => {
           </div>
           <div className="flex_col gap-[0.75rem]">
             <div className="grid grid-cols-2 gap-[0.25rem] md480:grid-cols-3 md480:gap-[0.75rem]">
-              <div className="flex gap-2">
+              <div className="flex gap-[0.25rem] md480:gap-[0.5rem]">
                 <span>Posted: </span>
                 <span className="font-semibolden">
                   {formatDate(job?.date_posted)}
@@ -68,7 +72,7 @@ const TitlesSection = ({ job }) => {
               {job?.date_expiring == null ? (
                 <span className="font-semibolden">No Expiry</span>
               ) : (
-                <div className="flex gap-2">
+                <div className="flex gap-[0.25] md480:gap-[0.5rem]">
                   <span>Expiry: </span>
                   <span className="font-semibolden">
                     {formatDate(job?.date_expiring)}
@@ -77,7 +81,7 @@ const TitlesSection = ({ job }) => {
               )}
 
               {job?.date_expiring !== null && (
-                <div className="flex gap-2">
+                <div className="flex gap-[0.25rem] md480:gap-[0.5rem]">
                   <span>Remaining: </span>
 
                   <p className="truncate font-semibolden">
@@ -87,7 +91,7 @@ const TitlesSection = ({ job }) => {
               )}
             </div>
             <div className="grid grid-cols-2 gap-[0.75rem] md480:gap-[1rem]">
-              <div className="flex gap-[0.25rem]">
+              <div className="flex gap-[0.25rem] md480:gap-[0.5rem]">
                 <p className="truncate">Job type:</p>
                 <span className="uppercase font-semibolden">
                   {" "}
@@ -95,7 +99,7 @@ const TitlesSection = ({ job }) => {
                 </span>
               </div>
               {job?.company_type && (
-                <div className="flex gap-[0.25rem]">
+                <div className="flex gap-[0.25rem] md480:gap-[0.5rem]">
                   <p className="truncate">Company type:</p>
                   <span className="capitalize font-semibolden">
                     {" "}
@@ -122,22 +126,35 @@ const TitlesSection = ({ job }) => {
             </div>
           </div>
           <div className="flex items-center gap-[1.25rem]">
-            <div className="flex gap-[0.25rem] items-center">
+            <div className="flex gap-[0.25rem] items-center text-textColor/80">
               <span>Share job</span>
               <span className="text-h3">
                 <IoShareSocialOutline />
               </span>
             </div>
             <div className="flex gap-[0.75rem]">
-              <span className="text-h3 text-gray-400">
-                <IoLogoWhatsapp />
-              </span>
-              <span className="text-h3 text-gray-400">
-                <IoLogoLinkedin />
-              </span>
-              <span className="text-h3 text-gray-400">
-                <IoLogoTwitter />
-              </span>
+              <WhatsappShareButton
+                title={`${job?.job_title}`}
+                url={`${job?.apply_link}`}
+                className="text-h3 text-titleColor/60 hover:text-titleColor"
+              >
+                <RiTwitterXFill />
+              </WhatsappShareButton>
+              <LinkedinShareButton
+                title={`${job?.job_title}`}
+                summary={`${job?.job_title} and many more jobs shared with love by Qazini. Check us out https://qazini-jobs.vercel.app`}
+                source={`${job?.apply_link}`}
+                className="text-h3 text-titleColor/60 hover:text-titleColor"
+              >
+                <RiLinkedinFill />
+              </LinkedinShareButton>
+              <TwitterShareButton
+                title={`${job?.job_title}`}
+                url={`${job?.apply_link}`}
+                className="text-h3 text-titleColor/60 hover:text-titleColor"
+              >
+                <RiTwitterXFill />
+              </TwitterShareButton>
             </div>
           </div>
         </div>

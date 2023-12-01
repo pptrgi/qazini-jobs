@@ -10,7 +10,9 @@ const ActiveHeaderLink = ({
     <NavLink
       to={where}
       className={({ isActive }) =>
-        isActive ? `${styles} text-tintClearColor` : `${styles}`
+        isActive
+          ? `${styles} text-tintClearColor`
+          : `${styles} hover:text-tintClearColor trans_200`
       }
       onClick={(e) => mobileMenuCloser()}
     >

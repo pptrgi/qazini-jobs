@@ -33,7 +33,7 @@ const CTASection = () => {
   return (
     <motion.section
       variants={fadeOutVariants}
-      className="custom_container section"
+      className="custom_container cta_section"
     >
       <div className="w-full">
         <div className="flex_center md800:mx-[0.75rem] lg1023:mx-[2rem] lg1120:mx-[3rem]">
@@ -56,12 +56,12 @@ const CTASection = () => {
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="col-span-1 px-[0.75rem] py-[0.75rem] rounded-md bg-bodyColor border-[2px] border-tintClearColor font-semibolden tracking-wide text-darkColor hover:border-ctaColor focus:border-ctaColor md480:col-span-5"
+                      className="col-span-1 px-[0.75rem] py-[0.75rem] rounded-md bg-bodyColor border-[2px] border-tintClearColor font-semibolden tracking-wide text-darkColor hover:border-ctaColor focus:border-ctaColor trans_200 md480:col-span-5"
                       placeholder="email@example.com"
                     />
                     <button
                       type="submit"
-                      className="col-span-1 px-[0.75rem] py-[0.75rem] rounded-md bg-darkColor text-bodyColor tracking-wide truncate hover:bg-ctaColor md480:col-span-2"
+                      className="col-span-1 px-[0.75rem] py-[0.75rem] rounded-md bg-darkColor text-bodyColor tracking-wide truncate hover:bg-ctaColor transition duration-200 md480:col-span-2"
                     >
                       {loading ? "sending..." : "Get Jobs"}
                     </button>
@@ -69,7 +69,12 @@ const CTASection = () => {
                   <div>
                     <p className="text-tiny tracking-wide md480:text-smaller">
                       By signing up, you agree to our{" "}
-                      <span className="text-ctaColor">Terms of Service</span>
+                      <a
+                        href="https://nyumbahub.vercel.app/terms-of-service"
+                        className="text-ctaColor"
+                      >
+                        Terms of Service
+                      </a>
                     </p>
                   </div>
                 </div>

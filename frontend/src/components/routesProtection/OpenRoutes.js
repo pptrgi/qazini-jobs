@@ -30,7 +30,8 @@ const OpenRoute = ({ children }) => {
     return children;
   } else {
     toast.info("Signout first to access this page");
-    return navigate("/");
+    navigate("/");
+    return;
   }
 };
 

@@ -4,7 +4,7 @@ import { IoHeart } from "react-icons/io5";
 import {
   RiWhatsappFill,
   RiLinkedinFill,
-  RiTwitterFill,
+  RiTwitterXFill,
   RiPhoneFill,
   RiFacebookFill,
 } from "react-icons/ri";
@@ -44,32 +44,29 @@ const Footer = () => {
                   <div className="flex gap-[0.75rem] items-center md480:gap-[1rem]">
                     <a
                       href="https://www.linkedin.com/in/petergitonga"
-                      className="text-textColor/50 ring-2 ring-textColor/50 p-[4px] rounded-full bg-transparent"
+                      className="footer_social_icon"
                     >
                       <RiLinkedinFill />
                     </a>
                     <a
                       href="https://wa.me/254700119134"
-                      className="text-textColor/50 ring-2 ring-textColor/50 p-[4px] rounded-full bg-transparent"
+                      className="footer_social_icon"
                     >
                       <RiWhatsappFill />
                     </a>
                     <a
                       href="https://x.com/ptrgitonga"
-                      className="text-textColor/50 ring-2 ring-textColor/50 p-[4px] rounded-full bg-transparent"
+                      className="footer_social_icon"
                     >
-                      <RiTwitterFill />
+                      <RiTwitterXFill />
                     </a>
                     <a
                       href="https://www.facebook.com/petergitonga"
-                      className="text-textColor/50 ring-2 ring-textColor/50 p-[4px] rounded-full bg-transparent"
+                      className="footer_social_icon"
                     >
                       <RiFacebookFill />
                     </a>
-                    <a
-                      href="tel:254700119134"
-                      className="text-textColor/50 ring-2 ring-textColor/50 p-[4px] rounded-full bg-transparent"
-                    >
+                    <a href="tel:254700119134" className="footer_social_icon">
                       <RiPhoneFill />
                     </a>
                   </div>
@@ -83,19 +80,19 @@ const Footer = () => {
                     quick links
                   </h4>
                   <div className="flex_col gap-[0.125rem]">
-                    <Link to={"/"} className="text-textColor/50">
+                    <Link to={"/"} className="footer_links">
                       Home
                     </Link>
-                    <Link to={"/about"} className="text-textColor/50">
+                    <Link to={"/about"} className="footer_links">
                       About
                     </Link>
-                    <Link to={"/contact"} className="text-textColor/50">
+                    <Link to={"/contact"} className="footer_links">
                       Contact
                     </Link>
-                    <Link to={"/board"} className="text-textColor/50">
+                    <Link to={"/board"} className="footer_links">
                       Profile
                     </Link>
-                    <Link to={"/register"} className="text-textColor/50">
+                    <Link to={"/register"} className="footer_links">
                       Sign Up
                     </Link>
                   </div>
@@ -107,19 +104,19 @@ const Footer = () => {
                   <div className="flex_col gap-[0.125rem]">
                     <a
                       href="https://pgitonga.vercel.app"
-                      className="text-textColor/50"
+                      className="footer_links"
                     >
                       Owner
                     </a>
                     <a
                       href="https://nyumbahub.vercel.app/privacy-policy"
-                      className="text-textColor/50"
+                      className="footer_links"
                     >
                       Privacy
                     </a>
                     <a
                       href="https://nyumbahub.vercel.app/terms-of-service"
-                      className="text-textColor/50"
+                      className="footer_links"
                     >
                       T & C
                     </a>

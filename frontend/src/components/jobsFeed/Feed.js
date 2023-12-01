@@ -20,16 +20,16 @@ const Feed = ({ loading, error }) => {
   const [showSortOptions, setShowSortOptions] = useState(false);
   const sortRef = useRef();
 
-  // useEffect(() => {
-  //   jobs = sortJobs(jobs, currentSort);
-  // }, [currentSort]);
+  useEffect(() => {
+    jobs = sortJobs(jobs, currentSort);
+  }, [currentSort]);
 
   // close the sort options popup on outside click
   useClickOutsideClose(sortRef, () => setShowSortOptions(false));
   return (
     <motion.section
       variants={fadeOutVariants}
-      className="custom_container section border-b-[1.5px] border-lightGrayColor/70"
+      className="custom_container feed_section border-b-[1.5px] border-lightGrayColor/70"
     >
       <div className="relative flex_col gap-[1.5rem] items-start overflow-hidden">
         <div className="flex_col gap-[0.75rem]">
@@ -100,7 +100,7 @@ const Feed = ({ loading, error }) => {
             {error}
           </p>
         )}
-        {/* <FillWithMotiv /> */}
+        <FillWithMotiv />
       </div>
     </motion.section>
   );
