@@ -18,7 +18,7 @@ export const formatDate = (dateString) => {
 
   const day = dateObject.getDate();
   const month = months[dateObject.getMonth()];
-  //   const year = dateObject.getFullYear();
+  const year = dateObject.getFullYear().toString().slice(-2);
 
-  return `${day} ${month}`;
+  return `${day} ${month}, ${year}`;
 };
