@@ -39,7 +39,12 @@ input {
 .section {
   @apply mt-[2rem] py-[1rem];
 }
-
+.feed_section {
+  @apply mt-[2rem] pt-[1rem] pb-[1.5rem];
+}
+.cta_section {
+  @apply mt-[2rem] py-[1.75rem];
+}
 .section_after_header {
   @apply mt-[4.5rem] py-[0.75rem] mb-[0.5rem];
 }
@@ -68,10 +73,14 @@ input {
 }
 
 .cta_button {
-  @apply px-[2rem] py-[0.75rem] rounded-full bg-ctaColor text-bodyColor font-semibolden cursor-pointer hover:bg-halfDarkColor;
+  @apply px-[2rem] py-[0.75rem] rounded-full bg-ctaColor text-bodyColor font-semibolden cursor-pointer hover:bg-halfDarkColor transition duration-200;
 }
 .outline_button {
-  @apply px-[2rem] py-[0.75rem] border_1_full font-semibolden cursor-pointer hover:text-darkColor hover:border-darkColor;
+  @apply px-[2rem] py-[0.75rem] border_1_full font-semibolden cursor-pointer hover:text-darkColor hover:border-darkColor transition duration-200;
+}
+
+.trans_200 {
+  @apply transition duration-200;
 }
 
 .flex_center {
@@ -145,6 +154,15 @@ input {
 .lines_limit_2 {
   @apply line-clamp-2;
 }
+.footer_social_icon {
+  @apply text-textColor/50 ring-2 ring-textColor/50 p-[4px] rounded-full bg-transparent hover:ring-textColor/80 hover:text-textColor/80 trans_200;
+}
+.footer_links {
+  @apply text-textColor/50 hover:text-textColor/80 trans_200;
+}
+.contact_social_icon {
+  @apply p-[0.25rem] rounded-full bg-tintClearColor text-bodyColor text-h3 hover:bg-halfDarkColor trans_200;
+}
 
 /* MODAL BACKGROUND */
 #mobilemodal {
@@ -166,7 +184,7 @@ input {
   @apply py-[0.6rem] px-[1rem] rounded-md border_1_md hover:outline-none focus:outline-none;
 }
 .contact_form_input {
-  @apply py-[0.6rem] px-[1rem] rounded-md text-darkColor font-semibolden tracking-wide border-[1.7px] border-tintClearColor hover:outline-none focus:outline-none hover:border-darkColor focus:border-darkColor;
+  @apply py-[0.6rem] px-[1rem] rounded-md text-darkColor font-semibolden tracking-wide border-[1.7px] border-tintClearColor hover:outline-none focus:outline-none hover:border-halfDarkColor focus:border-halfDarkColor;
 }
 
 /* SKELETON LOADERS */
