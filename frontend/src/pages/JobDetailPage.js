@@ -10,7 +10,6 @@ const JobDetailPage = () => {
     state: { job_details },
   } = useLocation();
 
-  console.log(job_details);
   return (
     <motion.section
       variants={pageVariants}
@@ -18,11 +17,8 @@ const JobDetailPage = () => {
       animate="visible"
       className="custom_container section_after_header relative"
     >
-      {/* <div className="h-[200px] border-b-[2px] border-textColor"></div> */}
       <div className="flex_center w-full">
         <div className="w-[95%] bg-bodyColor shadow-lg md480:w-[90%] md800:w-[80%]">
-          {/* <div className="w-[95%] bg-bodyColor shadow-lg px-[1.5rem] py-[2rem] md480:w-[80%] xm:px-[0.75rem]"> */}
-          {/* <div className="absolute top-[2rem]"> */}
           <div className="">
             <div className="flex_col gap-[2.5rem]">
               <motion.section
