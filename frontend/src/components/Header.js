@@ -38,7 +38,9 @@ const Header = () => {
                 <span className="capitalize font-semibolden">{`${
                   user?.fullname?.split(" ")[0]
                 },`}</span>
-                <span className="text-red-400 cursor-pointer">signout?</span>
+                <span className="text-red-400 cursor-pointer hover:text-red-500 trans_200">
+                  signout?
+                </span>
               </span>
             ) : (
               <Link to={"/register"} className="cta_button">

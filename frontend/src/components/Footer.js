@@ -34,9 +34,12 @@ const Footer = () => {
                       </span>
                       <p className="text-textColor/60">
                         by{" "}
-                        <span className="font-semibolden text-darkColor">
+                        <a
+                          href="https://pgitonga.vercel.app"
+                          className="font-semibolden text-darkColor hover:text-darkColor/80 trans_200"
+                        >
                           Lifen Creatives
-                        </span>{" "}
+                        </a>{" "}
                         &#169; 2023
                       </p>
                     </div>

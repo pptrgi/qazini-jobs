@@ -43,8 +43,8 @@ const HamMenu = ({ closeMenu, user, signout }) => {
             to={"/board"}
             className={({ isActive }) =>
               isActive
-                ? "flex_center gap-[0.25rem] text-tintClearColor"
-                : "flex_center gap-[0.25rem]"
+                ? "flex_center gap-[0.25rem] text-tintClearColor hover:text-tintClearColor trans_200"
+                : "flex_center gap-[0.25rem] hover:text-tintClearColor trans_200"
             }
             onClick={(e) => closeMenu()}
           >
@@ -60,7 +60,9 @@ const HamMenu = ({ closeMenu, user, signout }) => {
               <span className="capitalize font-semibolden">{`Hi ${
                 user?.fullname?.split(" ")[0]
               },`}</span>
-              <span className="text-red-400 cursor-pointer">signout?</span>
+              <span className="text-red-400 cursor-pointer hover:text-red-500 trans_200">
+                signout?
+              </span>
             </span>
           ) : (
             <Link
@@ -80,7 +82,15 @@ const HamMenu = ({ closeMenu, user, signout }) => {
         <IoClose />
       </span>
       <div className="absolute bottom-[1.25rem] flex_center w-full">
-        <p className="text-tiny">Copyright &#169; 2023. Lifen Creatives</p>
+        <p className="text-tiny">
+          Copyright &#169; {new Date().getFullYear()}.{" "}
+          <a
+            href="https://pgitonga.vercel.app"
+            className="hover_trans_dark_200"
+          >
+            Lifen Creatives
+          </a>
+        </p>
       </div>
     </motion.div>
   );

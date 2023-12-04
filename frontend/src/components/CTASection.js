@@ -71,7 +71,7 @@ const CTASection = () => {
                       By signing up, you agree to our{" "}
                       <a
                         href="https://nyumbahub.vercel.app/terms-of-service"
-                        className="text-ctaColor"
+                        className="text-ctaColor hover:text-ctaColor/80 trans_200"
                       >
                         Terms of Service
                       </a>
