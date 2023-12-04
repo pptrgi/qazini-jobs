@@ -19,6 +19,21 @@ const TitlesSection = ({ job }) => {
   // assign default logo if company has none or link doesn't point to a logo
   const hasLogo = checkCompanyLogo(job.employer_logo);
 
+  // share title contents
+  const contentsInTitle = `${job?.job_title}\n\nAt ${
+    job?.employer_name
+  }\nPosted - ${formatDate(job.date_posted)}\n${
+    job?.date_expiring
+      ? `Deadline - ${formatDate(job.date_expiring)}`
+      : "No Deadline"
+  }\n${
+    job?.date_expiring
+      ? `Remaining - ${calculateRemainingDays(job.date_expiring)}`
+      : "No Deadline"
+  }\nEmployment type - ${job?.employment_type}\nApply link -\n${
+    job?.apply_link
+  }\n\nShared with love by Qazini`;
+
   return (
     <div className="flex_center w-full">
       <div className="flex_col gap-[2.25rem] items-center w-full">
@@ -72,7 +87,7 @@ const TitlesSection = ({ job }) => {
               {job?.date_expiring == null ? (
                 <span className="font-semibolden">No Expiry</span>
               ) : (
-                <div className="flex gap-[0.25] md480:gap-[0.5rem]">
+                <div className="flex gap-[0.25rem] md480:gap-[0.5rem]">
                   <span>Expiry: </span>
                   <span className="font-semibolden">
                     {formatDate(job?.date_expiring)}
@@ -127,34 +142,37 @@ const TitlesSection = ({ job }) => {
           </div>
           <div className="flex items-center gap-[1.25rem]">
             <div className="flex gap-[0.25rem] items-center text-textColor/80">
-              <span>Share job</span>
-              <span className="text-h3">
+              <span>Share Job</span>
+              <span className="text-h3 text-textColor/50">
                 <IoShareSocialOutline />
               </span>
             </div>
             <div className="flex gap-[0.75rem]">
               <WhatsappShareButton
-                title={`${job?.job_title}`}
+                title={contentsInTitle}
                 url={`${job?.apply_link}`}
-                className="text-h3 text-titleColor/60 hover:text-titleColor"
               >
-                <RiTwitterXFill />
+                <span className="text-[1rem] text-titleColor/60 hover:text-ctaColor trans_200">
+                  <RiWhatsappFill />
+                </span>
               </WhatsappShareButton>
-              <LinkedinShareButton
-                title={`${job?.job_title}`}
-                summary={`${job?.job_title} and many more jobs shared with love by Qazini. Check us out https://qazini-jobs.vercel.app`}
-                source={`${job?.apply_link}`}
-                className="text-h3 text-titleColor/60 hover:text-titleColor"
-              >
-                <RiLinkedinFill />
-              </LinkedinShareButton>
               <TwitterShareButton
-                title={`${job?.job_title}`}
+                title={contentsInTitle}
                 url={`${job?.apply_link}`}
-                className="text-h3 text-titleColor/60 hover:text-titleColor"
               >
-                <RiTwitterXFill />
+                <span className="text-[1rem] text-titleColor/60 hover:text-ctaColor trans_200">
+                  <RiTwitterXFill />
+                </span>
               </TwitterShareButton>
+              <LinkedinShareButton
+                title={"Job Posting"}
+                summary={contentsInTitle}
+                url={`${job?.apply_link}`}
+              >
+                <span className="text-[1rem] text-titleColor/60 hover:text-ctaColor trans_200">
+                  <RiLinkedinFill />
+                </span>
+              </LinkedinShareButton>
             </div>
           </div>
         </div>

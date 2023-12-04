@@ -12,14 +12,20 @@ const Descriptions = ({ description, qualifications, responsibilities }) => {
         <h3 className="title_normal border-b-[1px] border-gray-200">
           Description
         </h3>
-        <ReadMoreOrLessText text={description} nodeRef={descriptionRef} />
+        {description ? (
+          <ReadMoreOrLessText text={description} nodeRef={descriptionRef} />
+        ) : (
+          <p>Job has no description</p>
+        )}
       </section>
       <section className="flex_col gap-[0.75rem]">
         <h3 className="title_normal border-b-[1px] border-gray-200">
           Qualifications
         </h3>
         <div className="text-smaller md800:text-small">
-          {paragraphMaker(qualifications, "qualifications")}
+          {qualifications
+            ? paragraphMaker(qualifications, "qualifications")
+            : "No qualifications mentioned"}
         </div>
       </section>
       <section className="flex_col gap-[0.75rem]">
@@ -27,7 +33,9 @@ const Descriptions = ({ description, qualifications, responsibilities }) => {
           Responsibilities
         </h3>
         <div className="text-smaller md800:text-small">
-          {paragraphMaker(responsibilities, "responsibilities")}
+          {responsibilities
+            ? paragraphMaker(responsibilities, "responsibilities")
+            : "Employer hasn't stated any responsibilities"}
         </div>
       </section>
     </div>
