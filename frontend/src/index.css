@@ -181,7 +181,7 @@ input {
 }
 
 .form_input {
-  @apply py-[0.6rem] px-[1rem] rounded-md border_1_md hover:outline-none focus:outline-none;
+  @apply py-[0.6rem] px-[1rem] rounded-md border_1_md hover:outline-none focus:outline-none hover:border-darkColor focus:border-darkColor;
 }
 .contact_form_input {
   @apply py-[0.6rem] px-[1rem] rounded-md text-darkColor font-semibolden tracking-wide border-[1.7px] border-tintClearColor hover:outline-none focus:outline-none hover:border-halfDarkColor focus:border-halfDarkColor;
@@ -233,6 +233,10 @@ input {
 }
 .skeleton_profile_button {
   @apply relative w-[150px] h-[42px] bg-skeletonColor rounded-full overflow-hidden;
+}
+
+.hover_trans_dark_200 {
+  @apply hover:text-darkColor trans_200;
 }
 
 /* Skeletons Animation */
