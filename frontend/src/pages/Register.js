@@ -5,6 +5,7 @@ import { IoEyeSharp, IoEyeOffSharp } from "react-icons/io5";
 import { motion } from "framer-motion";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { toast } from "react-toastify";
 
 import { pageVariants, authFadeOutVariants } from "../transitions/transitions";
 import { GET_USER_QUERY } from "../graphql/queries";
@@ -35,6 +36,7 @@ const Register = () => {
     },
     validationSchema: registerSchema,
     onSubmit: (values) => {
+      toast.info("Sign-up is under implementation. Coming soon");
       register_user_now({ variables: values });
     },
   });
@@ -131,14 +133,14 @@ const Register = () => {
                       {showPassword ? (
                         <span
                           onClick={(e) => setShowPassword(false)}
-                          className="text-ctaColor"
+                          className="text-ctaColor hover_trans_dark_200"
                         >
                           <IoEyeOffSharp />
                         </span>
                       ) : (
                         <span
                           onClick={(e) => setShowPassword(true)}
-                          className="text-ctaColor"
+                          className="text-ctaColor hover_trans_dark_200"
                         >
                           <IoEyeSharp />
                         </span>
@@ -165,11 +167,19 @@ const Register = () => {
               <div className="flex_col gap-[0.25rem]">
                 <p className="text-smaller md800:text-small">
                   By registering, you agree to our{" "}
-                  <span className="text-ctaColor">Terms of Service</span>
+                  <a
+                    href="https://nyumbahub.vercel.app/terms-of-service"
+                    className="text-ctaColor/80 hover:text-ctaColor trans_200"
+                  >
+                    Terms of Service
+                  </a>
                 </p>
                 <div className="flex justify-end items-end gap-[0.5rem]">
                   <p>Already in Qazini?</p>
-                  <Link to={"/signin"} className="text-ctaColor">
+                  <Link
+                    to={"/signin"}
+                    className="text-ctaColor hover_trans_dark_200"
+                  >
                     Let's go
                   </Link>
                 </div>
@@ -178,7 +188,13 @@ const Register = () => {
           </motion.div>
           <div className="flex_center w-full">
             <p className="text-smaller md800:text-small">
-              Copyright &#169; 2023. Lifen Creatives
+              Copyright &#169; {new Date().getFullYear()}.{" "}
+              <a
+                href="https://pgitonga.vercel.app"
+                className="text-textColor hover_trans_dark_200"
+              >
+                Lifen Creatives
+              </a>
             </p>
           </div>
         </div>

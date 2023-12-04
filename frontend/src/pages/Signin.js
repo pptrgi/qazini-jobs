@@ -5,6 +5,7 @@ import { IoEyeSharp, IoEyeOffSharp } from "react-icons/io5";
 import { motion } from "framer-motion";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { toast } from "react-toastify";
 
 import { pageVariants, authFadeOutVariants } from "../transitions/transitions";
 import { SIGNIN_USER_MUTATION } from "../graphql/mutations";
@@ -34,6 +35,7 @@ const Signin = () => {
     },
     validationSchema: signinSchema,
     onSubmit: (values) => {
+      toast.info("Sign-in is under implementation. Coming soon");
       signin_user_now({ variables: values });
     },
   });
@@ -112,14 +114,14 @@ const Signin = () => {
                       {showPassword ? (
                         <span
                           onClick={(e) => setShowPassword(false)}
-                          className="text-ctaColor pl-[0.75rem]"
+                          className="text-ctaColor pl-[0.75rem] hover_trans_dark_200"
                         >
                           <IoEyeOffSharp />
                         </span>
                       ) : (
                         <span
                           onClick={(e) => setShowPassword(true)}
-                          className="text-ctaColor pl-[0.75rem]"
+                          className="text-ctaColor pl-[0.75rem] hover_trans_dark_200"
                         >
                           <IoEyeSharp />
                         </span>
@@ -146,7 +148,10 @@ const Signin = () => {
 
               <div className="flex justify-start items-start gap-[0.5rem]">
                 <p>New to Qazini?</p>
-                <Link to={"/register"} className="text-ctaColor">
+                <Link
+                  to={"/register"}
+                  className="text-ctaColor hover_trans_dark_200"
+                >
                   Register
                 </Link>
               </div>
@@ -154,7 +159,13 @@ const Signin = () => {
           </motion.div>
           <div className="flex_center w-full">
             <p className="text-smaller md800:text-small">
-              Copyright &#169; 2023. Lifen Creatives
+              Copyright &#169; {new Date().getFullYear()}.{" "}
+              <a
+                href="https://pgitonga.vercel.app"
+                className="text-textColor hover_trans_dark_200"
+              >
+                Lifen Creatives
+              </a>
             </p>
           </div>
         </div>
