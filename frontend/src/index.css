@@ -135,7 +135,7 @@ input {
   @apply flex_center gap-[0.75rem] border_1_md px-[1rem] py-[0.5rem];
 }
 .filter_button {
-  @apply flex_center gap-[0.75rem] rounded-md px-[1rem] py-[0.6rem] hover:outline focus:outline outline-[2px] outline-offset-[3px] outline-tintClearColor;
+  @apply flex_center gap-[0.75rem] rounded-md px-[1rem] py-[0.6rem] tracking-wide hover:outline focus:outline outline-[2px] outline-offset-[3px] outline-tintClearColor trans_200;
 }
 .filter_name {
   @apply text-smaller font-semibolden md480:text-small capitalize min-w-fit truncate;
@@ -187,6 +187,10 @@ input {
   @apply py-[0.6rem] px-[1rem] rounded-md text-darkColor font-semibolden tracking-wide border-[1.7px] border-tintClearColor hover:outline-none focus:outline-none hover:border-halfDarkColor focus:border-halfDarkColor;
 }
 
+.hover_trans_dark_200 {
+  @apply hover:text-darkColor trans_200;
+}
+
 /* SKELETON LOADERS */
 
 /* Job Card */
@@ -233,10 +237,6 @@ input {
 }
 .skeleton_profile_button {
   @apply relative w-[150px] h-[42px] bg-skeletonColor rounded-full overflow-hidden;
-}
-
-.hover_trans_dark_200 {
-  @apply hover:text-darkColor trans_200;
 }
 
 /* Skeletons Animation */
