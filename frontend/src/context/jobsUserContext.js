@@ -111,7 +111,6 @@ const JobsUserProvider = (props) => {
     });
   };
 
-  // **************************** CURRENTLY SEARCHING THE API INSTEAD ***************************************
   // search for jobs
   // receives a search text whose pattern is matched with job title, location or description fields
   const searchJobs = (searchText) => {
@@ -120,11 +119,12 @@ const JobsUserProvider = (props) => {
 
     jobs = jobs.filter(
       (job) =>
-        regex.test(job.job_title) ||
+        regex.test(job.employment_type) ||
+        regex.test(job.employer_name) ||
         regex.test(job.company_type) ||
         regex.test(job.job_description) ||
         regex.test(job.job_country) ||
-        regex.test(job.employment_type)
+        regex.test(job.job_title)
     );
 
     dispatch({
@@ -132,7 +132,6 @@ const JobsUserProvider = (props) => {
       payload: jobs,
     });
   };
-  // **************************** CURRENTLY SEARCHING THE API ***************************************
 
   return (
     <JobsUserContext.Provider
