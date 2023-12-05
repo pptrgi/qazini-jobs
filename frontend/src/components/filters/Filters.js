@@ -72,7 +72,7 @@ const Filters = () => {
                       }
                       className={`filter_button ${
                         activeFilterOption === option.optionName
-                          ? "bg-ctaColor text-bodyColor"
+                          ? "bg-darkColor/70 text-bodyColor"
                           : "bg-lightGrayColor"
                       }`}
                     >

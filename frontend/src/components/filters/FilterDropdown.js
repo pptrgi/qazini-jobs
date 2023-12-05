@@ -35,7 +35,7 @@ const FilterDropdown = ({
             <p
               key={index}
               onClick={(e) => handleOptionValueClick(filterValue)}
-              className={`px-[1rem] py-[0.4rem] capitalize ${
+              className={`px-[1rem] py-[0.4rem] capitalize cursor-pointer hover:text-ctaColor trans_200 ${
                 activeFilterOptionValue === filterValue ? "text-ctaColor" : ""
               }`}
             >

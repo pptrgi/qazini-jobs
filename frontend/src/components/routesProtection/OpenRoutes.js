@@ -29,9 +29,8 @@ const OpenRoute = ({ children }) => {
 
     return children;
   } else {
-    toast.info("Signout first to access this page");
     navigate("/");
-    return;
+    return toast.info("Signout first to access this page");
   }
 };
 

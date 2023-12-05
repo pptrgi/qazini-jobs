@@ -1,3 +1,5 @@
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { IoBookmark, IoShareSocialOutline } from "react-icons/io5";
 import { RxDotFilled } from "react-icons/rx";
 import {
@@ -6,11 +8,18 @@ import {
   FacebookShareButton,
   LinkedinShareButton,
 } from "react-share";
-import { RiTwitterXFill, RiWhatsappFill, RiLinkedinFill } from "react-icons/ri";
+import {
+  RiTwitterXFill,
+  RiWhatsappFill,
+  RiLinkedinFill,
+  RiFacebookFill,
+} from "react-icons/ri";
 
 import { formatDate } from "../../utils/dateFormatter";
 import { checkCompanyLogo } from "../../utils/checkCompanyLogo";
 import { calculateRemainingDays } from "../../utils/jobRemainingDays";
+import { JobsUserContext } from "../../context/jobsUserContext";
+import { toast } from "react-toastify";
 
 const TitlesSection = ({ job }) => {
   // calculate the number of remaining days to expiry
@@ -22,17 +31,30 @@ const TitlesSection = ({ job }) => {
   // share title contents
   const contentsInTitle = `${job?.job_title}\n\nAt ${
     job?.employer_name
-  }\nPosted - ${formatDate(job.date_posted)}\n${
+  }\nPosted: ${formatDate(job.date_posted)}\n${
     job?.date_expiring
-      ? `Deadline - ${formatDate(job.date_expiring)}`
+      ? `Deadline: ${formatDate(job.date_expiring)}`
       : "No Deadline"
   }\n${
     job?.date_expiring
-      ? `Remaining - ${calculateRemainingDays(job.date_expiring)}`
-      : "No Deadline"
-  }\nEmployment type - ${job?.employment_type}\nApply link -\n${
+      ? `Remaining: ${calculateRemainingDays(job.date_expiring)} days`
+      : "Open Applications"
+  }\nEmployment type - ${job?.employment_type}\nApply link: ${
     job?.apply_link
-  }\n\nShared with love by Qazini`;
+  }\n\nShared with love by Qazini's founder p.Gitonga. Check us out`;
+
+  // handle save job
+  const { user } = useContext(JobsUserContext);
+  const navigate = useNavigate();
+
+  const handleJobSave = () => {
+    if (user) {
+      return toast.success("Job save is under implementation. Coming soon");
+    } else {
+      navigate("/signin");
+      return toast.info("Make sure you're signed in");
+    }
+  };
 
   return (
     <div className="flex_center w-full">
@@ -133,7 +155,10 @@ const TitlesSection = ({ job }) => {
             >
               Apply Now
             </a>
-            <div className="flex gap-[0.5rem] items-center outline_button">
+            <div
+              onClick={(e) => handleJobSave()}
+              className="flex gap-[0.5rem] items-center outline_button"
+            >
               <span>Save</span>
               <span className="hidden md480:block">
                 <IoBookmark />
@@ -141,16 +166,16 @@ const TitlesSection = ({ job }) => {
             </div>
           </div>
           <div className="flex items-center gap-[1.25rem]">
-            <div className="flex gap-[0.25rem] items-center text-textColor/80">
+            <div className="flex gap-[0.25rem] items-center text-textColor">
               <span>Share Job</span>
-              <span className="text-h3 text-textColor/50">
+              <span className="text-h3 text-textColor/40">
                 <IoShareSocialOutline />
               </span>
             </div>
             <div className="flex gap-[0.75rem]">
               <WhatsappShareButton
                 title={contentsInTitle}
-                url={`${job?.apply_link}`}
+                url={"https://qazini-jobs.vercel.app"}
               >
                 <span className="text-[1rem] text-titleColor/60 hover:text-ctaColor trans_200">
                   <RiWhatsappFill />
@@ -158,7 +183,13 @@ const TitlesSection = ({ job }) => {
               </WhatsappShareButton>
               <TwitterShareButton
                 title={contentsInTitle}
-                url={`${job?.apply_link}`}
+                url={"https://qazini-jobs.vercel.app"}
+                hashtags={[
+                  "#jobsearch",
+                  "#jobs",
+                  "#buildinpublic",
+                  "#growtogether",
+                ]}
               >
                 <span className="text-[1rem] text-titleColor/60 hover:text-ctaColor trans_200">
                   <RiTwitterXFill />
@@ -167,12 +198,21 @@ const TitlesSection = ({ job }) => {
               <LinkedinShareButton
                 title={"Job Posting"}
                 summary={contentsInTitle}
-                url={`${job?.apply_link}`}
+                url={"https://qazini-jobs.vercel.app"}
               >
                 <span className="text-[1rem] text-titleColor/60 hover:text-ctaColor trans_200">
                   <RiLinkedinFill />
                 </span>
               </LinkedinShareButton>
+              <FacebookShareButton
+                title={contentsInTitle}
+                url={"https://qazini-jobs.vercel.app"}
+                hashtag="#jobsearch"
+              >
+                <span className="text-[1rem] text-titleColor/60 hover:text-ctaColor trans_200">
+                  <RiFacebookFill />
+                </span>
+              </FacebookShareButton>
             </div>
           </div>
         </div>

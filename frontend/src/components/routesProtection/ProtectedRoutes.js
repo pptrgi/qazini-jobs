@@ -26,9 +26,8 @@ const ProtectedRoute = ({ children }) => {
     localStorage.removeItem("userToken");
     context.signout();
 
-    toast.info("Make sure you are signed in");
     navigate("/signin");
-    return;
+    return toast.info("Make sure you are signed in");
   } else {
     return children;
   }

@@ -19,7 +19,7 @@ const ReadMoreOrLessText = ({ text, nodeRef }) => {
       {showReadButtons && (
         <span
           onClick={(e) => setClamped(!clamped)}
-          className="pl-[0.5rem] w-fit font-bolden text-tintClearColor tracking-wide cursor-pointer"
+          className="pl-[0.5rem] w-fit font-bolden text-tintClearColor tracking-wide cursor-pointer hover:text-ctaColor/80 trans_200"
         >
           {clamped ? "Read more" : "Read less"}
         </span>

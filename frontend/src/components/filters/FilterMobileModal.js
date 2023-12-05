@@ -38,7 +38,7 @@ const FilterMobileModal = ({
           <div className="flex_col gap-[0.75rem]">
             {filters?.map((filterValue, index) => {
               return (
-                <div key={index} className="group">
+                <div key={index} className="group cursor-pointer">
                   {/* some property values are null, don't show blank values */}
                   {filterValue && (
                     <div
@@ -46,13 +46,13 @@ const FilterMobileModal = ({
                       className={`flex_between w-full ${
                         activeFilterOptionValue === filterValue
                           ? "text-ctaColor"
-                          : ""
+                          : "group-hover:text-ctaColor trans_200"
                       }`}
                     >
                       <span className="capitalize text-smaller">
                         {filterValue}
                       </span>
-                      <span className="text-normal">
+                      <span className="text-[1.125rem]">
                         {activeFilterOptionValue === filterValue ? (
                           <IoCheckmarkCircleSharp />
                         ) : (

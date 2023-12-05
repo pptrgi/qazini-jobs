@@ -8,7 +8,7 @@ const SortOptions = ({ setSort, closeSortOptions }) => {
     { name: "name (A - Z)" },
   ];
   return (
-    <div className="w-[150px] bg-tintColor rounded-lg shadow-lg px-[1rem] z-30">
+    <div className="w-[150px] bg-tintColor rounded-lg shadow-lg px-[1rem]">
       <div className="flex_col items-start w-full">
         {sortOptions.map((option, index) => {
           return (

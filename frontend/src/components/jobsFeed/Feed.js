@@ -50,7 +50,7 @@ const Feed = ({ loading, error }) => {
                   className="group cursor-pointer"
                   onClick={(e) => setShowSortOptions(true)}
                 >
-                  <div className="flex gap-[0.75rem] items-center border_1_md px-[0.75rem] py-[0.35rem]">
+                  <div className="flex gap-[0.75rem] items-center border_1_md px-[0.75rem] py-[0.35rem] group-hover:text-darkColor group-hover:border-darkColor trans_200">
                     <span className="capitalize">{currentSort}</span>
                     <span>
                       {showSortOptions ? <IoChevronUp /> : <IoChevronDown />}
@@ -58,7 +58,10 @@ const Feed = ({ loading, error }) => {
                   </div>
                 </div>
                 {showSortOptions && (
-                  <div ref={sortRef} className="absolute top-[2.5rem] left-0">
+                  <div
+                    ref={sortRef}
+                    className="absolute top-[2.5rem] left-0 z-30"
+                  >
                     <SortOptions
                       setSort={(sortValue) => setCurrentSort(sortValue)}
                       closeSortOptions={() => setShowSortOptions(false)}
@@ -97,7 +100,15 @@ const Feed = ({ loading, error }) => {
         ) : (
           <p className="text-red-500 tracking-wide font-semibolden">
             {/* You're not connected to the internet */}
-            {error}
+            {error == "Request failed with status code 429" ? (
+              <span>
+                Apparently, we have exhausted our freemium quota limit with
+                RapidAPI.
+                <br /> That means we can't fetch any more jobs for free. Sorry.
+              </span>
+            ) : (
+              <span>{error}</span>
+            )}
           </p>
         )}
         <FillWithMotiv />

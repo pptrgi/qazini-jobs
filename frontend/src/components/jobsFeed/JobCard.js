@@ -80,10 +80,10 @@ const JobCard = ({ job }) => {
 
   const handleJobSave = () => {
     if (user) {
-      save_job_now();
+      return save_job_now();
     } else {
-      toast.info("Make sure you're signed in");
       navigate("/signin");
+      return toast.info("Make sure you're signed in");
     }
   };
 
@@ -114,7 +114,7 @@ const JobCard = ({ job }) => {
               src={`${
                 hasLogo ? employer_logo : "/company_logo_placeholder.png"
               }`}
-              className="absolute object-cover"
+              className="absolute object-cover z-0"
             />
           </div>
           <span
