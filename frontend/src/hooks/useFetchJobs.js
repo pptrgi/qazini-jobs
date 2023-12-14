@@ -14,7 +14,7 @@ const useFetchJobs = (searchText) => {
     method: "GET",
     url: `https://jsearch.p.rapidapi.com/search`,
     headers: {
-      "X-RapidAPI-Key": "de8798e5a5msh4ea80eadd2055e1p13fa19jsna581fd2c58b4",
+      "X-RapidAPI-Key": "434c08d95bmsh9eafc407cd760d7p17670fjsn8c5b705ea3b7",
       "X-RapidAPI-Host": "jsearch.p.rapidapi.com",
     },
     params: {
