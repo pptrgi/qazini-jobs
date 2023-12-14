@@ -178,10 +178,10 @@ const TitlesSection = ({ job }) => {
                   title={contentsInTitle}
                   url={"https://twitter.com/ptrgitonga"}
                   hashtags={[
-                    "#jobsearch",
-                    "#jobs",
-                    "#buildinpublic",
-                    "#growtogether",
+                    "jobsearch",
+                    "jobs",
+                    "buildinpublic",
+                    "growtogether",
                   ]}
                 >
                   <span>
