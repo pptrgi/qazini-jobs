@@ -191,6 +191,10 @@ input {
   @apply hover:text-darkColor trans_200;
 }
 
+.detail_page_icon {
+  @apply text-[1rem] flex items-center text-textColor/70 ring-1 ring-textColor/70 rounded-full p-[3px] hover:text-darkColor hover:ring-darkColor trans_200;
+}
+
 /* SKELETON LOADERS */
 
 /* Job Card */
