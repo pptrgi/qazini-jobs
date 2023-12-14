@@ -18,7 +18,7 @@ const JobDetailPage = () => {
       className="custom_container section_after_header relative"
     >
       <div className="flex_center w-full">
-        <div className="w-[95%] bg-bodyColor shadow-lg md480:w-[90%] md800:w-[80%]">
+        <div className="w-[95%] bg-bodyColor shadow-md rounded-b-sm md480:w-[90%] md800:w-[80%]">
           <div className="">
             <div className="flex_col gap-[2.5rem]">
               <motion.section
