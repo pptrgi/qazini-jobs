@@ -191,7 +191,7 @@ const TitlesSection = ({ job }) => {
               </div>
               <div className="detail_page_icon">
                 <LinkedinShareButton
-                  title={"Job Posting"}
+                  title={"Job Posting!!\n\n\n"}
                   summary={contentsInTitle}
                   url={"https://twitter.com/ptrgitonga"}
                 >
@@ -202,9 +202,9 @@ const TitlesSection = ({ job }) => {
               </div>
               <div className="detail_page_icon">
                 <FacebookShareButton
-                  title={contentsInTitle}
+                  quote={contentsInTitle}
                   url={"https://twitter.com/ptrgitonga"}
-                  hashtag="#jobsearch"
+                  hashtag="jobsearch"
                 >
                   <span>
                     <RiFacebookFill />
