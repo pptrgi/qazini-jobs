@@ -283,12 +283,6 @@ input {
 }
 
 /* SCROLL BAR */
-/* ::-webkit-scrollbar {
-  @apply rounded-full bg-lightGrayColor h-[0.2rem] w-[0.4rem];
-}
-::-webkit-scrollbar-thumb {
-  @apply rounded-full bg-tintClearColor;
-} */
 ::-webkit-scrollbar {
   @apply rounded-full bg-lightGrayColor h-[0.2rem] w-[0.4rem];
 }
@@ -296,7 +290,12 @@ input {
   @apply rounded-full bg-textColor;
 }
 
-/* read more functionality */
+/* TEXT-HIGHLIGHT COLOR */
+::selection {
+  @apply bg-tintClearColor text-white;
+}
+
+/* CLAMP LINES */
 .clamp_paragraph {
   -webkit-line-clamp: 10;
   -webkit-box-orient: vertical;
@@ -304,7 +303,7 @@ input {
   overflow: hidden;
 }
 
-/* box shadow */
+/* BOX SHADOW */
 .bottom_shadow {
   box-shadow: 0 3px 12px #f3f5f7;
 }
@@ -314,9 +313,8 @@ input {
 .shadow {
   box-shadow: 0 0 14px #e6e6e6;
 }
-/* ffe6f4 */
-/* fdf4fa */
 
+/* ROTATE 50deg */
 .rotate-50 {
   --rotate-value: 50deg;
   transform: rotate(var(--rotate-value));
