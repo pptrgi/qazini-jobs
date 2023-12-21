@@ -1,7 +1,0 @@
-[[services]]
-    internal_port = 5432
-    protocol = "tcp"
-
-[[services.ports]] 
-    handlers = ["pg_tls]
-    port = 5432
