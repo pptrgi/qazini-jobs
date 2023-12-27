@@ -1,20 +1,21 @@
+import { lazy } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ApolloProvider, InMemoryCache, ApolloClient } from "@apollo/client";
 
 import { authLink, errorLink, httpLink } from "./utils/apolloConfig";
 import { JobsUserProvider } from "./context/jobsUserContext";
 import Layout from "./components/Layout";
-import Home from "./pages/Home";
-import JobDetailPage from "./pages/JobDetailPage";
-import Signin from "./pages/Signin";
-import Register from "./pages/Register";
-import Board from "./pages/Board";
-import Contact from "./pages/Contact";
-import About from "./pages/About";
-import PageNotFound from "./pages/PageNotFound";
 import OpenRoute from "./components/routesProtection/OpenRoutes";
 import ProtectedRoute from "./components/routesProtection/ProtectedRoutes";
-import NoInternet from "./pages/NoInternet";
+const Home = lazy(() => import("./pages/Home.js"));
+const JobDetailPage = lazy(() => import("./pages/JobDetailPage.js"));
+const Signin = lazy(() => import("./pages/Signin.js"));
+const Register = lazy(() => import("./pages/Register.js"));
+const Board = lazy(() => import("./pages/Board.js"));
+const Contact = lazy(() => import("./pages/Contact.js"));
+const About = lazy(() => import("./pages/About.js"));
+const PageNotFound = lazy(() => import("./pages/PageNotFound.js"));
+const NoInternet = lazy(() => import("./pages/NoInternet.js"));
 
 // create apollo client with a pipeline of requests
 const client = new ApolloClient({
