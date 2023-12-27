@@ -5,7 +5,7 @@ import { setContext } from "@apollo/client/link/context";
 // define a pipeline of requests
 // apollo client first checks if there's an error, then sets auth headers and finally goes through
 export const httpLink = createHttpLink({
-  uri: "http://qazini-backend.vercel.app/graphql",
+  uri: "https://qazini-server.onrender.com/graphql",
 });
 
 export const authLink = setContext(() => {

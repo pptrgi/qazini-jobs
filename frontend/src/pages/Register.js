@@ -36,7 +36,6 @@ const Register = () => {
     },
     validationSchema: registerSchema,
     onSubmit: (values) => {
-      toast.info("Sign-up is under implementation. Coming soon");
       register_user_now({ variables: values });
     },
   });
