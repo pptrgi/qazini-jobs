@@ -1,18 +1,14 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { motion } from "framer-motion";
-import axios from "axios";
-import { toast } from "react-toastify";
 
+import { JobsUserContext } from "../context/jobsUserContext";
+import { pageVariants } from "../transitions/transitions";
 import Header from "../components/Header";
 import Search from "../components/Search";
 import Filters from "../components/filters/Filters";
 import Feed from "../components/jobsFeed/Feed";
-
-import { JobsUserContext } from "../context/jobsUserContext";
-import { jobs } from "../app/_db";
-import CTASection from "../components/CTASection";
 import useFetchJobs from "../hooks/useFetchJobs";
-import { pageVariants } from "../transitions/transitions";
+import CTASection from "../components/CTASection";
 
 const Home = () => {
   const { jobs, immutableJobs } = useContext(JobsUserContext);
