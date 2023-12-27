@@ -8,7 +8,7 @@ dotenv.config();
 
 import { typeDefs } from "./graphql_schema.js";
 import { resolvers } from "./resolvers/resolvers_parent.js";
-import { verifyAuthTokenContext } from "./middleware/verifyAuthTokenContext.js";
+import { verifyAuthTokenContext } from "./utils/verifyAuthTokenContext.js";
 import { corsOptions } from "./utils/corsOptions.js";
 
 const app = express();
