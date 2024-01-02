@@ -33,7 +33,7 @@ const TitlesSection = ({ job }) => {
 
   const jobValues = {
     ...job,
-    job_city: job_city === null ? "City" : job_city,
+    job_city: job.job_city === null ? "City" : job.job_city,
     user_id: user?.user_id,
   };
 
