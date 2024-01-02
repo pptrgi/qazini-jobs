@@ -46,7 +46,7 @@ export const get_user_resolver = async (_, { user_id }, contextValue) => {
       user.jobs = user_jobs_res.rows;
 
       // close the db connection
-      await client.end();
+      // await client.end();
 
       return user;
     } else {
@@ -211,7 +211,7 @@ export const update_user_profile = async (_, args, contextValue) => {
           email,
           password,
         ]);
-        await client.end();
+        // await client.end();
 
         if (update_profile_res.rows.length > 0) {
           // user updated successfully, now assign them a new token
@@ -251,7 +251,7 @@ export const update_user_profile = async (_, args, contextValue) => {
             email,
             password,
           ]);
-          await client.end();
+          // await client.end();
 
           if (update_profile_res.rows.length > 0) {
             // user updated successfully, now assign them a new token
@@ -311,7 +311,7 @@ export const handle_subscribe_with_email = async (_, { email }) => {
         email,
       ]);
 
-      await client.end();
+      // await client.end();
 
       if (subscribe_user_res.rows.length > 0) {
         // email has been added successfully

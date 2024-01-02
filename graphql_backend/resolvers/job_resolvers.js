@@ -96,7 +96,7 @@ export const handle_save_job = async (_, { saveJobInput }, contextValue) => {
         );
 
         const new_job = save_job_res.rows[0];
-        await client.end();
+        // await client.end();
 
         return new_job;
       } else {
@@ -105,7 +105,7 @@ export const handle_save_job = async (_, { saveJobInput }, contextValue) => {
         ]);
 
         const removed_job = remove_job_res.rows[0];
-        await client.end();
+        // await client.end();
 
         return removed_job;
       }
@@ -130,6 +130,10 @@ export const delete_job_handler = async (_, { job_id }, contextValue) => {
     "DELETE FROM TABLE job WHERE job_id = $1 RETURNING job_id, job_title";
   const find_user_query = "SELECT * FROM job_seeker WHERE user_id = $1";
 
+  if (!job_id) {
+    throw new GraphQLError("Provide the job ID");
+  }
+
   try {
     // database connection
     await client.connect();
@@ -150,7 +154,7 @@ export const delete_job_handler = async (_, { job_id }, contextValue) => {
         const delete_job_res = await client.query(delete_job_query, [job_id]);
 
         const deleted_job = delete_job_res.rows[0];
-        await client.end();
+        // await client.end();
 
         return deleted_job;
       } else {
