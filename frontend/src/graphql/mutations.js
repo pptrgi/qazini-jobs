@@ -107,3 +107,11 @@ export const SUBSCRIBE_EMAIL = gql`
     }
   }
 `;
+
+export const DELETE_JOB = gql`
+  mutation delete_a_job($job_id: ID!) {
+    delete_job(job_id: $job_id) {
+      job_id
+    }
+  }
+`;
