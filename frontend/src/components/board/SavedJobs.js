@@ -1,6 +1,5 @@
-import React from "react";
-import JobCard from "../jobsFeed/JobCard";
-import JobCardSkeleton from "../jobsFeed/JobCardSkeleton";
+import JobCardSkeleton from "../jobCards/JobCardSkeleton";
+import SavedJobCard from "../jobCards/SavedJobCard";
 
 const SavedJobs = ({ jobs, loading }) => {
   return (
@@ -8,13 +7,19 @@ const SavedJobs = ({ jobs, loading }) => {
       <h3 className="title_h3">Jobs you Saved</h3>
 
       {loading ? (
-        <JobCardSkeleton />
+        <div className="w-full">
+          <div className="grid grid-cols-1 gap-[0.75rem] w-full md480:grid-cols-2 lg1023:grid-cols-3 md800:gap-[0.25rem] lg1023:gap-[0.5rem]">
+            {[...Array(3).keys()].map((key) => (
+              <JobCardSkeleton key={key} />
+            ))}
+          </div>
+        </div>
       ) : (
         <>
           {jobs?.length > 0 ? (
-            <div className="flex w-full gap-[0.75rem] flex-wrap md480:gap-[1rem] md800:gap-[1.5rem]">
+            <div className="grid grid-cols-1 gap-[0.75rem] w-full md480:grid-cols-2 lg1023:grid-cols-3 md800:gap-[0.25rem] lg1023:gap-[0.5rem]">
               {jobs?.map((job, index) => {
-                return <JobCard job={job} key={index} />;
+                return <SavedJobCard job={job} key={index} />;
               })}
             </div>
           ) : (
