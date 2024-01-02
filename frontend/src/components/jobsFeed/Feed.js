@@ -4,8 +4,8 @@ import { IoChevronDown, IoChevronUp } from "react-icons/io5";
 import { motion } from "framer-motion";
 
 import { JobsUserContext } from "../../context/jobsUserContext";
-import JobCard from "./JobCard";
-import JobCardSkeleton from "./JobCardSkeleton";
+import FeedJobCard from "../jobCards/FeedJobCard";
+import JobCardSkeleton from "../jobCards/JobCardSkeleton";
 import SortOptions from "../SortOptions";
 import useClickOutsideClose from "../../hooks/useClickOutsideClose";
 import { sortJobs } from "../../utils/sortJobs";
@@ -26,6 +26,7 @@ const Feed = ({ loading, error }) => {
 
   // close the sort options popup on outside click
   useClickOutsideClose(sortRef, () => setShowSortOptions(false));
+
   return (
     <motion.section
       variants={fadeOutVariants}
@@ -84,9 +85,9 @@ const Feed = ({ loading, error }) => {
             ) : (
               <>
                 {jobs?.length > 0 ? (
-                  <div className="grid grid-cols-1 gap-[0.5rem] md480:grid-cols-2 md800:grid-cols-3 lg1023:grid-cols-4 md800:gap-[0.25rem] lg1023:gap-[0.5rem]">
+                  <div className="grid grid-cols-1 w-full gap-[0.5rem] md480:grid-cols-2 md800:grid-cols-3 lg1023:grid-cols-4 md800:gap-[0.25rem] lg1023:gap-[0.5rem]">
                     {jobs?.map((job, index) => {
-                      return <JobCard job={job} key={index} />;
+                      return <FeedJobCard job={job} key={index} />;
                     })}
                   </div>
                 ) : (
