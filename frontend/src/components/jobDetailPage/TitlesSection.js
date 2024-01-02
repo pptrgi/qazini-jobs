@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "@apollo/client";
 import { IoBookmark, IoShareSocialOutline } from "react-icons/io5";
 import { RxDotFilled } from "react-icons/rx";
 import {
@@ -21,8 +22,47 @@ import { checkCompanyLogo } from "../../utils/checkCompanyLogo";
 import { calculateRemainingDays } from "../../utils/jobRemainingDays";
 import { JobsUserContext } from "../../context/jobsUserContext";
 import { assignContentsToTitle } from "../../utils/urlContentsInTitle";
+import { SAVE_JOB_MUTATION } from "../../graphql/mutations";
+import { GET_USER_QUERY } from "../../graphql/queries";
+import { toastGraphqlError } from "../../utils/toastGraphqlError";
+import { noInternetHandler } from "../../utils/noInternet";
 
 const TitlesSection = ({ job }) => {
+  const { user } = useContext(JobsUserContext);
+  const navigate = useNavigate();
+
+  const jobValues = {
+    ...job,
+    job_city: job_city === null ? "City" : job_city,
+    user_id: user?.user_id,
+  };
+
+  // SAVE THE JOB MUTATION
+  const [save_job_now, { loading }] = useMutation(SAVE_JOB_MUTATION, {
+    variables: jobValues,
+    update(cache, { data }) {
+      console.log("save job data", data);
+      toast.success("Job has been saved");
+
+      const { get_user } = cache.readQuery({ query: GET_USER_QUERY });
+
+      cache.writeQuery({
+        query: GET_USER_QUERY,
+        data: { get_user: [...get_user.jobs, data.save_job] },
+      });
+    },
+    onError({ graphQLErrors, networkError }) {
+      if (graphQLErrors) {
+        console.log("save job errors", graphQLErrors);
+        toastGraphqlError(graphQLErrors);
+      }
+
+      if (networkError) {
+        noInternetHandler();
+      }
+    },
+  });
+
   // calculate the number of remaining days to expiry
   const remainingDays = calculateRemainingDays(job?.date_expiring);
 
@@ -31,15 +71,11 @@ const TitlesSection = ({ job }) => {
 
   // share title contents
   const contentsInTitle = assignContentsToTitle(job);
-  console.log(contentsInTitle);
 
   // handle save job
-  const { user } = useContext(JobsUserContext);
-  const navigate = useNavigate();
-
   const handleJobSave = () => {
     if (user) {
-      return toast.success("Job save is under implementation. Coming soon");
+      return save_job_now();
     } else {
       navigate("/signin");
       return toast.info("Make sure you're signed in");
@@ -147,7 +183,9 @@ const TitlesSection = ({ job }) => {
             </a>
             <div
               onClick={(e) => handleJobSave()}
-              className="flex gap-[0.5rem] items-center outline_button"
+              className={`flex gap-[0.5rem] items-center outline_button ${
+                loading && "text-darkColor/40 border-darkColor/40"
+              }`}
             >
               <span>Save</span>
               <span className="hidden md480:block">
