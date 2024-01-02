@@ -86,7 +86,6 @@ export const handle_save_job = async (_, { saveJobInput }, contextValue) => {
       const job_already_exists = found_user?.jobs?.find(
         (job) => job?.job_title == job_title
       );
-      console.log(job_already_exists);
 
       // if the job is already saved, remove otherwise save it
       if (!job_already_exists) {

@@ -77,15 +77,12 @@ export const handle_user_register = async (
     );
   }
 
-  console.log(fullname, email, password);
-
   try {
     // establish db connection
     await client.connect();
 
     // check if there's an existing user with the provided email
     const user_with_email_res = await client.query(email_exists_query, [email]);
-    console.log(user_with_email_res);
 
     if (user_with_email_res.rows.length < 1) {
       // no similar user, so encrypt the new user's password and save them
@@ -98,7 +95,6 @@ export const handle_user_register = async (
       ]);
 
       const registered_user = new_user_res.rows[0];
-      console.log(registered_user);
 
       // disconnect database
       // await client.end();
@@ -147,7 +143,6 @@ export const handle_user_signin = async (_, { email, password }) => {
             expiresIn: "12h",
           }
         );
-        console.log("assigned token", token);
 
         user.token = token;
 
@@ -174,7 +169,6 @@ export const handle_user_signin = async (_, { email, password }) => {
 export const update_user_profile = async (_, args, contextValue) => {
   // check if there's a decoded user, otherwise throw errors aborting the update profile operation
   const decoded_user = await private_resolvers_guard(contextValue);
-  console.log("from update, user", decoded_user);
 
   const decoded_user_id = decoded_user.user_id;
 
@@ -197,7 +191,6 @@ export const update_user_profile = async (_, args, contextValue) => {
 
     if (confirm_uid_res.rows.length > 0) {
       const current_user = confirm_uid_res.rows[0];
-      console.log("current user", current_user);
 
       // user didn't change the existing email
       const same_email = email === current_user.email;
@@ -316,7 +309,6 @@ export const handle_subscribe_with_email = async (_, { email }) => {
       if (subscribe_user_res.rows.length > 0) {
         // email has been added successfully
         const subscribed_email = subscribe_user_res.rows[0];
-        console.log("subscribed_email", subscribed_email);
 
         return subscribed_email;
       } else {
