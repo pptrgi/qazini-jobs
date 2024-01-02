@@ -1,6 +1,7 @@
 import { useContext } from "react";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { jwtDecode } from "jwt-decode";
 
 import { JobsUserContext } from "../../context/jobsUserContext";
 
@@ -8,23 +9,19 @@ const ProtectedRoute = ({ children }) => {
   // if there's NO token, prevent access of children pages
 
   const navigate = useNavigate();
-  const context = useContext(JobsUserContext);
-  console.log("Token Exp", context.user);
+  const { user, signout } = useContext(JobsUserContext);
 
-  const existingTokenExpiry = context.user?.exp;
-
-  const storedToken = localStorage.getItem("userToken");
-  console.log("storedToken", storedToken);
-
-  const timeRightNow = new Date().getTime();
-  const tokenActiveTime = 12 * 60 * 60 * 1000; // 12 hours
+  // decode user detail from the token
+  const decodedUserDetails = user?.token && jwtDecode(user.token);
+  const existingTokenIssue = decodedUserDetails?.iat;
+  const existingTokenExpiry = decodedUserDetails?.exp;
 
   const validToken =
-    timeRightNow - parseInt(existingTokenExpiry) < tokenActiveTime;
+    parseInt(existingTokenExpiry) > parseInt(existingTokenIssue);
 
   if (!validToken) {
     localStorage.removeItem("userToken");
-    context.signout();
+    signout();
 
     navigate("/signin");
     return toast.info("Make sure you are signed in");
