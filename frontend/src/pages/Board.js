@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import { fadeOutVariants, pageVariants } from "../transitions/transitions";
 import UserInformation from "../components/board/UserInformation";
 import SavedJobs from "../components/board/SavedJobs";
-import ProfileSkeleton from "../components/board/ProfileSkeleton";
 import { GET_USER_QUERY } from "../graphql/queries";
 import { JobsUserContext } from "../context/jobsUserContext";
 import { toastGraphqlError } from "../utils/toastGraphqlError";
@@ -29,9 +28,6 @@ const Board = () => {
       }
     },
   });
-
-  console.log(data);
-  console.log(data?.get_user?.jobs);
 
   return (
     <motion.div
