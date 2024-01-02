@@ -5,13 +5,12 @@ import { IoEyeSharp, IoEyeOffSharp } from "react-icons/io5";
 import { motion } from "framer-motion";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { toast } from "react-toastify";
 
 import { pageVariants, authFadeOutVariants } from "../transitions/transitions";
-import { GET_USER_QUERY } from "../graphql/queries";
 import { REGISTER_USER_MUTATION } from "../graphql/mutations";
 import { toastGraphqlError } from "../utils/toastGraphqlError";
 import { noInternetHandler } from "../utils/noInternet";
+import LoadingDots from "../components/LoadingDots";
 
 // register form inputs schema
 const registerSchema = yup.object({
@@ -42,8 +41,6 @@ const Register = () => {
 
   const [register_user_now, { loading }] = useMutation(REGISTER_USER_MUTATION, {
     update(cache, { data }) {
-      // const user = cache.readQuery({ query: GET_USER_QUERY });
-      // console.log("user", user);
       console.log("data", data);
 
       formik.resetForm();
@@ -158,7 +155,7 @@ const Register = () => {
                       Cancel
                     </Link>
                     <button type="submit" className="cta_button">
-                      {loading ? "registering..." : "Register"}
+                      {loading ? <LoadingDots /> : "Register"}
                     </button>
                   </div>
                 </div>

@@ -12,6 +12,7 @@ import { SIGNIN_USER_MUTATION } from "../graphql/mutations";
 import { JobsUserContext } from "../context/jobsUserContext";
 import { toastGraphqlError } from "../utils/toastGraphqlError";
 import { noInternetHandler } from "../utils/noInternet";
+import LoadingDots from "../components/LoadingDots";
 
 // sign-in form inputs schema
 const signinSchema = yup.object({
@@ -35,7 +36,6 @@ const Signin = () => {
     },
     validationSchema: signinSchema,
     onSubmit: (values) => {
-      toast.info("Sign-in is under implementation. Coming soon");
       signin_user_now({ variables: values });
     },
   });
@@ -140,7 +140,7 @@ const Signin = () => {
                       Cancel
                     </Link>
                     <button type="submit" className="cta_button">
-                      {loading ? "lesdoit..." : "Let's go"}
+                      {loading ? <LoadingDots /> : "Let's go"}
                     </button>
                   </div>
                 </div>
