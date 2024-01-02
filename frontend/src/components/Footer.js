@@ -40,7 +40,7 @@ const Footer = () => {
                         >
                           Lifen Creatives
                         </a>{" "}
-                        &#169; 2023
+                        &#169; {new Date().getFullYear()}
                       </p>
                     </div>
                   </div>
