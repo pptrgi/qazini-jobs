@@ -5,7 +5,7 @@ export const calculateRemainingDays = (job_expiry_date) => {
     const days = Math.floor(
       (new Date(job_expiry_date) - new Date()) / 86400000
     );
-    console.log(days);
+
     if (days > 0) {
       remainingDays = days;
     }
