@@ -128,8 +128,9 @@ export const delete_job_handler = async (_, { job_id }, contextValue) => {
   const decoded_user_id = decoded_user?.user_id;
 
   const delete_job_query =
-    "DELETE FROM TABLE job WHERE job_id = $1 RETURNING job_id, job_title";
+    "DELETE FROM job WHERE job_id = $1 RETURNING job_id, job_title";
   const find_user_query = "SELECT * FROM job_seeker WHERE user_id = $1";
+  const find_job_query = "SELECT * FROM job WHERE job_id = $1";
 
   if (!job_id) {
     throw new GraphQLError("Provide the job ID");
@@ -145,13 +146,11 @@ export const delete_job_handler = async (_, { job_id }, contextValue) => {
     ]);
 
     if (found_user_res.rows.length > 0) {
-      // user found, find the job from the user's jobs
-      const user = found_user_res.rows[0];
+      // find if the job exists
+      const found_job_res = await client.query(find_job_query, [job_id]);
 
-      const existing_job = user?.jobs?.find((job) => job?.job_id == job_id);
-
-      // if that job exists, delete otherwise show it's already deleted
-      if (existing_job) {
+      if (found_job_res.rows.length > 0) {
+        // the job exists, delete
         const delete_job_res = await client.query(delete_job_query, [job_id]);
 
         const deleted_job = delete_job_res.rows[0];
@@ -160,7 +159,6 @@ export const delete_job_handler = async (_, { job_id }, contextValue) => {
         return deleted_job;
       } else {
         // such job doesn't exist
-        // return statement??
         throw new GraphQLError("Job is already deleted");
       }
     } else {
