@@ -36,19 +36,11 @@ const App = () => {
         },
         {
           path: "/signin",
-          element: (
-            <OpenRoute>
-              <Signin />
-            </OpenRoute>
-          ),
+          element: <Signin />,
         },
         {
           path: "/register",
-          element: (
-            <OpenRoute>
-              <Register />
-            </OpenRoute>
-          ),
+          element: <Register />,
         },
         {
           path: "/board",
