@@ -11,8 +11,8 @@ import { toastGraphqlError } from "../utils/toastGraphqlError";
 import { noInternetHandler } from "../utils/noInternet";
 
 const Board = () => {
-  const context = useContext(JobsUserContext);
-  const user = context.user;
+  let context = useContext(JobsUserContext);
+  let user = context.user;
 
   // fetch the user
   const { loading, data } = useQuery(GET_USER_QUERY, {
@@ -28,6 +28,12 @@ const Board = () => {
       }
     },
   });
+
+  user = {
+    ...user,
+    email: data?.get_user?.email,
+    fullname: data?.get_user?.fullname,
+  };
 
   return (
     <motion.div
