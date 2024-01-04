@@ -10,8 +10,7 @@ const JobsUserContext = createContext({
   signin: (userData) => {},
   signout: () => {},
   setJobs: (jobsArray) => {},
-  filterJobs: (filterProperty, filterValue) => {},
-  searchJobs: (searchText) => {},
+  filterJobs: (searchText) => {},
   populateJobs: (jobsArray) => {},
 });
 
@@ -23,8 +22,6 @@ const jobsUserReducer = (state, action) => {
     case "SIGNOUT":
       return { ...state, user: null };
     case "SETJOBS":
-      return { ...state, jobs: action.payload };
-    case "SEARCH":
       return { ...state, jobs: action.payload };
     case "FILTER":
       return { ...state, jobs: action.payload };
@@ -41,6 +38,7 @@ const userState = {
 };
 
 if (localStorage.getItem("userToken")) {
+  console.log("context", localStorage.getItem("userToken"));
   // decode the token and assign decoded user details to user state object
   // as long as there's a token, this makes sure the user details in user state are always there even when page is refreshed
   const savedToken = localStorage.getItem("userToken");
@@ -64,6 +62,7 @@ const JobsUserProvider = (props) => {
   const signin = (userData) => {
     // save token to storage
     localStorage.setItem("userToken", userData?.token);
+    localStorage.setItem("signinTime", new Date().getTime());
 
     dispatch({
       type: "SIGNIN",
@@ -98,22 +97,9 @@ const JobsUserProvider = (props) => {
     });
   };
 
-  // filter jobs
-  // accepts the job object property and value that'll be used to filter down the jobs array
-  const filterJobs = (filterProperty, filterValue) => {
-    let jobs = [...state.immutableJobs];
-
-    jobs = jobs.filter((job) => job[filterProperty] == filterValue);
-
-    dispatch({
-      type: "FILTER",
-      payload: jobs,
-    });
-  };
-
-  // search for jobs
-  // receives a search text whose pattern is matched with job title, location or description fields
-  const searchJobs = (searchText) => {
+  // search for / filter jobs
+  // receives a search text whose pattern is matched with job fields
+  const filterJobs = (searchText) => {
     const regex = new RegExp(`${searchText}`, "i"); // i for case insensitivity
     let jobs = [...state.immutableJobs];
 
@@ -128,7 +114,7 @@ const JobsUserProvider = (props) => {
     );
 
     dispatch({
-      type: "SEARCH",
+      type: "FILTER",
       payload: jobs,
     });
   };
@@ -142,7 +128,6 @@ const JobsUserProvider = (props) => {
         signout,
         setJobs,
         filterJobs,
-        searchJobs,
         populateJobs,
       }}
       {...props}
