@@ -124,10 +124,9 @@ export const handle_save_job = async (_, { saveJobInput }, contextValue) => {
 export const delete_job_handler = async (_, { job_id }, contextValue) => {
   // const decoded_user = verifyAuthToken(context);
   // check first if the user is signed in and the validity of the details
-  const decoded_user_id = contextValue?.user_id;
+  const decoded_user = await private_resolvers_guard(contextValue);
+  const decoded_user_id = decoded_user?.user_id;
 
-  console.log(decoded_user_id);
-  console.log(job_id);
   const delete_job_query =
     "DELETE FROM TABLE job WHERE job_id = $1 RETURNING job_id, job_title";
   const find_user_query = "SELECT * FROM job_seeker WHERE user_id = $1";
