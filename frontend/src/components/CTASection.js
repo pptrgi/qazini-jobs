@@ -2,17 +2,38 @@ import { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
+import { useFormik } from "formik";
+import * as yup from "yup";
 
 import { SUBSCRIBE_EMAIL } from "../graphql/mutations";
 import { fadeOutVariants } from "../transitions/transitions";
+import LoadingDots from "./LoadingDots";
+
+// subscribe schema
+const subscribeSchema = yup.object({
+  email: yup
+    .string()
+    .email("Provide a valid email")
+    .required("Provide your email to subscribe"),
+});
 
 const CTASection = () => {
-  const [email, setEmail] = useState("");
+  // validate schema and start the subscribe mutation operation on form submit
+  const formik = useFormik({
+    initialValues: { email: "" },
+    validationSchema: subscribeSchema,
+    onSubmit: (values) => {
+      subscribe_email_now({ variables: values });
+    },
+  });
 
+  // Subscribe operation
   const [subscribe_email_now, { loading }] = useMutation(SUBSCRIBE_EMAIL, {
-    variables: { email },
     update(_, { data: { subscribe_with_email } }) {
       const subcribed_email = subscribe_with_email.email;
+
+      // on successful subscription, reset the input field
+      formik.resetForm();
 
       toast.success(`${subcribed_email} has subcribed successfully`);
     },
@@ -22,13 +43,6 @@ const CTASection = () => {
       }
     },
   });
-
-  // initiate the email subscribe mutation operation on form submit
-  const handleSubscribeEmail = (event) => {
-    event.preventDefault();
-
-    subscribe_email_now();
-  };
 
   return (
     <motion.section
@@ -49,22 +63,25 @@ const CTASection = () => {
                 </p>
                 <div className="flex_col gap-[1rem] w-full md480:w-[60%]">
                   <form
-                    onSubmit={handleSubscribeEmail}
+                    onSubmit={formik.handleSubmit}
                     className="grid grid-cols-1 gap-[0.75rem] w-full md480:grid-cols-7 md480:gap-[0.5rem]"
                   >
                     <input
                       type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="col-span-1 px-[0.75rem] py-[0.75rem] rounded-md bg-bodyColor border-[2px] border-tintClearColor font-semibolden tracking-wide text-darkColor hover:border-ctaColor focus:border-ctaColor trans_200 md480:col-span-5"
+                      value={formik.values.email}
+                      onChange={formik.handleChange("email")}
+                      onBlur={formik.handleBlur("email")}
+                      className="col-span-1 md480:col-span-5 px-[0.75rem] w-full py-[0.75rem] rounded-md bg-bodyColor border-[2px] border-tintClearColor font-semibolden tracking-wide text-darkColor hover:border-ctaColor focus:border-ctaColor trans_200"
                       placeholder="email@example.com"
                     />
-                    <button
-                      type="submit"
-                      className="col-span-1 px-[0.75rem] py-[0.75rem] rounded-md bg-darkColor text-bodyColor tracking-wide truncate hover:bg-ctaColor transition duration-200 md480:col-span-2"
-                    >
-                      {loading ? "sending..." : "Get Jobs"}
-                    </button>
+                    <div className="flex_center col-span-1 md480:col-span-2">
+                      <button
+                        type="submit"
+                        className="px-[0.75rem] py-[0.75rem] w-full rounded-md bg-darkColor text-bodyColor tracking-wide truncate hover:bg-ctaColor transition duration-200"
+                      >
+                        {loading ? <LoadingDots /> : "Get Jobs"}
+                      </button>
+                    </div>
                   </form>
                   <div>
                     <p className="text-tiny tracking-wide md480:text-smaller">
@@ -77,6 +94,11 @@ const CTASection = () => {
                       </a>
                     </p>
                   </div>
+                  {formik.touched.email && (
+                    <p className="text-smaller tracking-wide text-red-400 font-semibolden md480:text-small">
+                      {formik.errors.email}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
