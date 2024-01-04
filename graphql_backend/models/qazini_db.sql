@@ -5,8 +5,7 @@ CREATE TABLE job_seeker (
     fullname VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL,
     password VARCHAR(250) NOT NULL, 
-    UNIQUE(user_id),
-    UNIQUE(email)
+    UNIQUE(user_id, email)
 );
 
 CREATE TABLE job (
