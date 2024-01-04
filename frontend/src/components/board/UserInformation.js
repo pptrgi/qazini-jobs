@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { useMutation, useQuery } from "@apollo/client";
 import { IoPencil, IoEyeOffSharp, IoEyeSharp } from "react-icons/io5";
+import { toast } from "react-toastify";
 
 import { GET_USER_QUERY } from "../../graphql/queries";
 import { JobsUserContext } from "../../context/jobsUserContext";
@@ -12,6 +13,8 @@ import { noInternetHandler } from "../../utils/noInternet";
 
 const UserInformation = ({ user }) => {
   const context = useContext(JobsUserContext);
+  console.log("user", user);
+  console.log("user info", context.user);
   // const user = context.user;
 
   const [enableEmailEdit, setEnableEmailEdit] = useState(false);
@@ -30,6 +33,7 @@ const UserInformation = ({ user }) => {
       variables: { email, fullname, password },
       update(cache, { data }) {
         console.log("update data", data);
+
         const { get_user } = cache.readQuery({ query: GET_USER_QUERY });
 
         cache.writeQuery({
@@ -39,7 +43,8 @@ const UserInformation = ({ user }) => {
           },
         });
 
-        localStorage.setItem("userToken", data.update_profile.token);
+        toast.success("Updated profile");
+        localStorage.setItem("userToken", data?.update_profile?.token);
 
         setPassword("");
       },
@@ -80,7 +85,6 @@ const UserInformation = ({ user }) => {
                       : "bg-halfDarkColor bg-opacity-30"
                   }`}
                 >
-                  {/* bg-gray-400 bg-opacity-50 */}
                   <input
                     type="email"
                     value={email}
