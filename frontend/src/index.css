@@ -86,6 +86,7 @@ input {
 .flex_center {
   @apply flex justify-center items-center;
 }
+
 .flex_end {
   @apply flex justify-end items-end;
 }
