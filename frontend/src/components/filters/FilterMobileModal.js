@@ -19,7 +19,7 @@ const FilterMobileModal = ({
   const handleOptionValueClick = (filterValue) => {
     setActiveFilterOptionValue(filterValue && filterValue);
 
-    context.searchJobs(filterValue && filterValue);
+    context.filterJobs(filterValue && filterValue);
 
     closeModal();
   };
