@@ -20,11 +20,7 @@ export const get_user_resolver = async (_, { user_id }, contextValue) => {
 
   // If the request doesn't contain user id throw an error
   if (!decoded_user_id) {
-    throw new GraphQLError("User's ID is required to fetch a single user", {
-      extensions: {
-        code: "BAD_REQUEST",
-      },
-    });
+    throw new GraphQLError("User's ID is required to fetch a single user");
   }
 
   try {
@@ -176,10 +172,7 @@ export const update_user_profile = async (_, args, contextValue) => {
 
   const confirm_uid_query = "SELECT * FROM job_seeker WHERE user_id = $1";
   const update_profile_query =
-    "INSERT INTO job_seeker (fullname, email, password) VALUES ($1, $2, $3) ON CONFLICT (user_id, email) DO UPDATE SET fullname = EXCLUDED.fullname, email = EXCLUDED.email, password = EXCLUDED.password RETURNING user_id, fullname, email";
-  const similar_email_query = "SELECT * FROM job_seeker WHERE email = $1";
-
-  // REMEMBER: When updating a user 2 scenarios might happen: The new email is same as the old one(conflict handled by postgres), the new email is totally different and might have another user with it
+    "UPDATE job_seeker SET fullname = $1, email = $2, password = $3 WHERE user_id = $4 RETURNING user_id, fullname, email";
 
   try {
     await client.connect();
@@ -192,81 +185,39 @@ export const update_user_profile = async (_, args, contextValue) => {
     if (confirm_uid_res.rows.length > 0) {
       const current_user = confirm_uid_res.rows[0];
 
-      // user didn't change the existing email
-      const same_email = email === current_user.email;
-
-      if (same_email) {
-        // encrypt password, assign token and update profile
-        password = await bcrypt.hash(password, 10);
-
-        const update_profile_res = await client.query(update_profile_query, [
-          fullname,
-          email,
-          password,
-        ]);
-        // await client.end();
-
-        if (update_profile_res.rows.length > 0) {
-          // user updated successfully, now assign them a new token
-          let updated_user = update_profile_res.rows[0];
-
-          const new_token = jwt.sign(
-            {
-              user_id: updated_user.user_id,
-              email: updated_user.email,
-              fullname: updated_user.fullname,
-            },
-            process.env.T_SECRET_KEY,
-            {
-              expiresIn: "12h",
-            }
-          );
-
-          updated_user.token = new_token;
-
-          return updated_user;
-        }
-      } else {
-        // the user is updating with a new email, check if it's already been used
-        const similar_email_res = await client.query(similar_email_query, [
-          email,
-        ]);
-
-        if (similar_email_res.rows.length > 0) {
-          // there's another user with the email you were trying to update your profile with
-          throw new GraphQLError("User with this email already exists");
-        } else {
-          // no other user with the provided email, update profile
+      if (current_user)
+        if (password) {
+          // encrypt password, assign token and update profile
           password = await bcrypt.hash(password, 10);
-
-          const update_profile_res = await client.query(update_profile_query, [
-            fullname,
-            email,
-            password,
-          ]);
-          // await client.end();
-
-          if (update_profile_res.rows.length > 0) {
-            // user updated successfully, now assign them a new token
-            let updated_user = update_profile_res.rows[0];
-
-            const new_token = jwt.sign(
-              {
-                user_id: updated_user.user_id,
-                email: updated_user.email,
-                fullname: updated_user.fullname,
-              },
-              process.env.T_SECRET_KEY,
-              {
-                expiresIn: "12h",
-              }
-            );
-
-            updated_user.token = new_token;
-
-            return updated_user;
-          }
         }
+
+      const update_profile_res = await client.query(update_profile_query, [
+        fullname,
+        email,
+        password ? password : current_user.password,
+        decoded_user_id,
+      ]);
+      // await client.end();
+
+      if (update_profile_res.rows.length > 0) {
+        // user updated successfully, now assign them a new token
+        let updated_user = update_profile_res.rows[0];
+
+        const new_token = jwt.sign(
+          {
+            user_id: updated_user.user_id,
+            email: updated_user.email,
+            fullname: updated_user.fullname,
+          },
+          process.env.T_SECRET_KEY,
+          {
+            expiresIn: "12h",
+          }
+        );
+
+        updated_user.token = new_token;
+
+        return updated_user;
       }
     } else {
       // no user with that id
