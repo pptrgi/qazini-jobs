@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { JobsUserContext } from "../../context/jobsUserContext";
@@ -7,7 +7,6 @@ import { JobsUserContext } from "../../context/jobsUserContext";
 const ProtectedRoute = ({ children }) => {
   // if there's NO token, prevent access of children pages
 
-  const navigate = useNavigate();
   const context = useContext(JobsUserContext);
 
   useEffect(() => {
@@ -15,8 +14,7 @@ const ProtectedRoute = ({ children }) => {
       const signinTime = localStorage.getItem("signinTime");
       const timeRightNow = new Date().getTime();
 
-      const tokenActiveTime = 12 * 60 * 60 * 1000; // 12 hours
-      console.log("tokenActiveTime", tokenActiveTime);
+      const tokenActiveTime = 12 * 60 * 60 * 1000;
 
       const validToken =
         timeRightNow - parseInt(signinTime, 10) < tokenActiveTime;
@@ -27,7 +25,7 @@ const ProtectedRoute = ({ children }) => {
     };
 
     checkTokenValidity();
-  }, [context, navigate]);
+  }, [context]);
 
   return context.user
     ? children
