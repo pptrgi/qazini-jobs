@@ -8,7 +8,7 @@ import { client } from "../utils/dbConnect.js";
 import { private_resolvers_guard } from "../middleware/private_resolvers_guard.js";
 
 // GET SINGLE USER QUERY
-export const get_user_resolver = async (_, { user_id }, contextValue) => {
+export const get_user_resolver = async (parent, args, contextValue) => {
   // call the private resolvers guard with the context value
   // if there's no decoded user details, then it'll throw errors accordingly and terminate get user operation
   const decoded_user = await private_resolvers_guard(contextValue);
@@ -53,7 +53,7 @@ export const get_user_resolver = async (_, { user_id }, contextValue) => {
     // server couldn't process the request as expected
     console.log(error);
 
-    throw new GraphQLError(error?.message);
+    return new GraphQLError(error?.message);
   }
 };
 
@@ -103,7 +103,8 @@ export const handle_user_register = async (
   } catch (error) {
     // server couldn't process the request as expected
     console.log(error);
-    throw new GraphQLError(error?.message);
+
+    return new GraphQLError(error?.message);
   }
 };
 
@@ -157,7 +158,7 @@ export const handle_user_signin = async (_, { email, password }) => {
     // unfortunately the server couldn't process the request as expected
     console.log(error);
 
-    throw new GraphQLError(error?.message);
+    return new GraphQLError(error?.message);
   }
 };
 
@@ -227,7 +228,7 @@ export const update_user_profile = async (_, args, contextValue) => {
     // the server couldn't update the profile as expected
     console.log(error);
 
-    throw new GraphQLError(error?.message);
+    return new GraphQLError(error?.message);
   }
 };
 
@@ -268,6 +269,7 @@ export const handle_subscribe_with_email = async (_, { email }) => {
     }
   } catch (error) {
     console.log(error);
-    throw new GraphQLError(`${error?.message}`);
+
+    return new GraphQLError(error?.message);
   }
 };

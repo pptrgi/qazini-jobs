@@ -116,7 +116,7 @@ export const handle_save_job = async (_, { saveJobInput }, contextValue) => {
     // unfortunately the server couldn't save the job
     console.log(error);
 
-    throw new GraphQLError(error?.message);
+    return new GraphQLError(error?.message);
   }
 };
 
@@ -169,6 +169,6 @@ export const delete_job_handler = async (_, { job_id }, contextValue) => {
     // unfortunately the server couldn't delete the job
     console.log(error);
 
-    throw new GraphQLError(`${error?.message}`);
+    return new GraphQLError(error?.message);
   }
 };
