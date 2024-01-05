@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import { useMutation } from "@apollo/client";
 import { Link, useNavigate } from "react-router-dom";
 import { IoOpenOutline } from "react-icons/io5";
@@ -7,13 +8,16 @@ import { toast } from "react-toastify";
 import { DELETE_JOB } from "../../graphql/mutations";
 import { GET_USER_QUERY } from "../../graphql/queries";
 import { checkCompanyLogo } from "../../utils/checkCompanyLogo";
+import { JobsUserContext } from "../../context/jobsUserContext";
 import { toastGraphqlError } from "../../utils/toastGraphqlError";
 import { calculateRemainingDays } from "../../utils/jobRemainingDays";
 import { noInternetHandler } from "../../utils/noInternet";
 import { convertMsDateToISO } from "../../utils/msDateToISO";
+import LoadingDots from "../LoadingDots";
 
 const SavedJobCard = ({ job }) => {
   const navigate = useNavigate();
+  const context = useContext(JobsUserContext);
 
   let {
     job_id,
@@ -39,12 +43,18 @@ const SavedJobCard = ({ job }) => {
       console.log("delete job data", data);
       toast.success("Job has been deleted");
 
-      const { get_user } = cache.readQuery({ query: GET_USER_QUERY });
+      const dataInCache = cache.readQuery({
+        query: GET_USER_QUERY,
+        variables: { user_id: context.user?.user_id },
+      });
 
       cache.writeQuery({
         query: GET_USER_QUERY,
         data: {
-          get_user: get_user.jobs?.filter((job) => job.job_id !== data?.job_id),
+          get_user: dataInCache?.get_user.jobs?.filter(
+            (job) => job.job_id !== data?.delete_job?.job_id
+          ),
+          variables: { user_id: context.user?.user_id },
         },
       });
     },
@@ -97,7 +107,7 @@ const SavedJobCard = ({ job }) => {
               loading && "text-red-500/30"
             }`}
           >
-            <GoBookmarkSlashFill />
+            {<GoBookmarkSlashFill />}
           </span>
         </div>
         <div className="flex_col gap-[1rem]">
@@ -164,7 +174,7 @@ const SavedJobCard = ({ job }) => {
                 loading && "bg-red-500/30"
               }`}
             >
-              Delete Job
+              {loading ? <LoadingDots /> : "Delete Job"}
             </button>
           </div>
         )}

@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation, useApolloClient } from "@apollo/client";
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { IoBookmark, IoOpenOutline } from "react-icons/io5";
@@ -15,6 +15,7 @@ import { noInternetHandler } from "../../utils/noInternet";
 const JobCard = ({ job }) => {
   const { user } = useContext(JobsUserContext);
   const navigate = useNavigate();
+  const client = useApolloClient();
 
   let {
     employer_name,
@@ -46,11 +47,17 @@ const JobCard = ({ job }) => {
       console.log("save job data", data);
       toast.success("Job has been saved");
 
-      const { get_user } = cache.readQuery({ query: GET_USER_QUERY });
+      const dataInCache = cache.readQuery({
+        query: GET_USER_QUERY,
+        variables: { user_id: user?.user_id },
+      });
 
       cache.writeQuery({
         query: GET_USER_QUERY,
-        data: { get_user: [...get_user.jobs, data.save_job] },
+        data: {
+          get_user: [...dataInCache?.get_user?.jobs, data?.save_job],
+          variables: { user_id: user?.user_id },
+        },
       });
     },
     onError({ graphQLErrors, networkError }) {

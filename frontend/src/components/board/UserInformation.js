@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation, useApolloClient } from "@apollo/client";
 import { IoPencil, IoEyeOffSharp, IoEyeSharp } from "react-icons/io5";
 import { toast } from "react-toastify";
 
@@ -10,11 +10,11 @@ import { UPDATE_PROFILE_MUTATION } from "../../graphql/mutations";
 import ProfileSkeleton from "./ProfileSkeleton";
 import { toastGraphqlError } from "../../utils/toastGraphqlError";
 import { noInternetHandler } from "../../utils/noInternet";
+import LoadingDots from "../LoadingDots";
 
-const UserInformation = ({ user }) => {
+const UserInformation = ({ user, fetching }) => {
+  const client = useApolloClient();
   const context = useContext(JobsUserContext);
-  console.log("user", user);
-  console.log("user info", context.user);
   // const user = context.user;
 
   const [enableEmailEdit, setEnableEmailEdit] = useState(false);
@@ -32,14 +32,17 @@ const UserInformation = ({ user }) => {
     {
       variables: { email, fullname, password },
       update(cache, { data }) {
-        console.log("update data", data);
-
-        const { get_user } = cache.readQuery({ query: GET_USER_QUERY });
+        const dataInCache = cache.readQuery({
+          query: GET_USER_QUERY,
+          variables: { user_id: data?.update_profile?.user_id },
+        });
+        console.log("dataInCache first", dataInCache);
 
         cache.writeQuery({
           query: GET_USER_QUERY,
           data: {
-            get_user: data.update_profile,
+            get_user: data?.update_profile,
+            variables: { user_id: data?.update_profile?.user_id },
           },
         });
 
@@ -69,7 +72,7 @@ const UserInformation = ({ user }) => {
 
   return (
     <>
-      {loading ? (
+      {loading || fetching ? (
         <ProfileSkeleton />
       ) : (
         <div className="flex_col gap-[1.5rem]">
@@ -191,7 +194,7 @@ const UserInformation = ({ user }) => {
                 Cancel
               </Link>
               <button type="submit" className="cta_button">
-                {loading ? "updating..." : "Update"}
+                {loading ? <LoadingDots /> : "Update"}
               </button>
             </div>
           </form>
