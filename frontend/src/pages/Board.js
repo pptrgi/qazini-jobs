@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { useMutation, useQuery } from "@apollo/client";
+import { useQuery, useApolloClient } from "@apollo/client";
 import { motion } from "framer-motion";
 
 import { fadeOutVariants, pageVariants } from "../transitions/transitions";
@@ -11,12 +11,12 @@ import { toastGraphqlError } from "../utils/toastGraphqlError";
 import { noInternetHandler } from "../utils/noInternet";
 
 const Board = () => {
-  let context = useContext(JobsUserContext);
-  let user = context.user;
+  const client = useApolloClient();
+  const context = useContext(JobsUserContext);
 
   // fetch the user
   const { loading, data } = useQuery(GET_USER_QUERY, {
-    variables: { user_id: user?.user_id },
+    variables: { user_id: context.user?.user_id },
     onError({ graphQLErrors, networkError }) {
       if (graphQLErrors) {
         console.log("profile errors", graphQLErrors);
@@ -28,12 +28,6 @@ const Board = () => {
       }
     },
   });
-
-  user = {
-    ...user,
-    email: data?.get_user?.email,
-    fullname: data?.get_user?.fullname,
-  };
 
   return (
     <motion.div
@@ -51,7 +45,7 @@ const Board = () => {
                 variants={fadeOutVariants}
                 className="bg-tintColor3 rounded-md px-[1rem] py-[2rem] shadow-lg xm360:px-[0.75rem]"
               >
-                <UserInformation user={user} loading={loading} />
+                <UserInformation user={context.user} fetching={loading} />
               </motion.section>
 
               {/* Jobs saved by user */}
@@ -59,7 +53,7 @@ const Board = () => {
                 variants={fadeOutVariants}
                 className="bg-bodyColor rounded-md px-[1rem] py-[2rem] shadow-lg xm360:px-[0.75rem]"
               >
-                <SavedJobs jobs={data?.get_user?.jobs} loading={loading} />
+                <SavedJobs jobs={data?.get_user?.jobs} fetching={loading} />
               </motion.section>
             </div>
           </div>
