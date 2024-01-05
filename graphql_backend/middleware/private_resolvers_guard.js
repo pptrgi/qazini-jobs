@@ -10,11 +10,10 @@ export const private_resolvers_guard = (contextValue) => {
   } else {
     switch (contextValue.message) {
       case "Invalid/expired token":
-        throw new GraphQLError("Invalid/expired token", {
+        throw new GraphQLError("Invalid/expired token, signin again", {
           extensions: {
             code: "FORBIDDEN",
             http: 403,
-            frontendMessage: "Unauthenticated, cannot proceed",
           },
         });
       case "Token isn't bearer":
@@ -22,7 +21,6 @@ export const private_resolvers_guard = (contextValue) => {
           extensions: {
             code: "FORBIDDEN",
             http: 403,
-            frontendMessage: "Unauthenticated, cannot proceed",
           },
         });
       case "No auth headers":
@@ -30,7 +28,6 @@ export const private_resolvers_guard = (contextValue) => {
           extensions: {
             code: "FORBIDDEN",
             http: 403,
-            frontendMessage: "Unauthenticated, cannot proceed",
           },
         });
       default:
