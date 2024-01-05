@@ -27,14 +27,5 @@ const GET_USER_QUERY = gql`
     }
   }
 `;
-const GET_USERS = gql`
-  query get_users {
-    users {
-      user_id
-      fullname
-      email
-    }
-  }
-`;
 
-export { GET_USER_QUERY, GET_USERS };
+export { GET_USER_QUERY };
