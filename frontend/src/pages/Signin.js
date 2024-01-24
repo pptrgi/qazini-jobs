@@ -5,7 +5,6 @@ import { IoEyeSharp, IoEyeOffSharp } from "react-icons/io5";
 import { motion } from "framer-motion";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { toast } from "react-toastify";
 
 import { pageVariants, authFadeOutVariants } from "../transitions/transitions";
 import { SIGNIN_USER_MUTATION } from "../graphql/mutations";
@@ -40,9 +39,9 @@ const Signin = () => {
     },
   });
 
+  // user signin mutation
   const [signin_user_now, { loading }] = useMutation(SIGNIN_USER_MUTATION, {
     update(cache, { data: { signin_user: user_details } }) {
-      // console.log("signin_user", user_details);
       context.signin(user_details);
 
       formik.resetForm();

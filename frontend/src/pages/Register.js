@@ -39,6 +39,7 @@ const Register = () => {
     },
   });
 
+  // register user mutation
   const [register_user_now, { loading }] = useMutation(REGISTER_USER_MUTATION, {
     update(cache, { data }) {
       console.log("data", data);
