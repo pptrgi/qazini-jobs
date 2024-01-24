@@ -107,9 +107,6 @@ input {
 .hidden_flex_between {
   @apply hidden justify-between items-center;
 }
-/* .flex_start_center {
-  @apply flex justify-start items-start md800:justify-center md800:items-start;
-} */
 
 .border_1_full {
   @apply border-[1px] border-textColor rounded-full;
@@ -145,9 +142,6 @@ input {
   @apply block border-t-[2px] border-t-gray-200 rounded-t-[1.25rem] px-[1.5rem] pt-[2rem] pb-[2rem] bg-bodyColor md800:hidden;
 }
 
-/* .job_card_wrapper {
-  @apply w-[290px] px-[1rem] py-[1rem] rounded-[1.25rem] border-[1px] border-textColor xm:w-[265px] md480:w-[315px];
-} */
 .job_card_wrapper {
   @apply w-full max-w-[315px] min-w-[230px] px-[1rem] py-[1rem] rounded-[1.25rem] border-[1.5px] border-textColor/30 md800:px-[0.5rem];
 }
