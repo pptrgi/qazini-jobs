@@ -28,8 +28,11 @@ import { toastGraphqlError } from "../../utils/toastGraphqlError";
 import { noInternetHandler } from "../../utils/noInternet";
 
 const TitlesSection = ({ job }) => {
-  const { user } = useContext(JobsUserContext);
+  let { user, savedJobs, addSavedJob } = useContext(JobsUserContext);
   const navigate = useNavigate();
+
+  console.log("In detail", job?.date_posted);
+  console.log("In detail", job);
 
   const jobValues = {
     ...job,
@@ -37,19 +40,12 @@ const TitlesSection = ({ job }) => {
     user_id: user?.user_id,
   };
 
-  // SAVE THE JOB MUTATION
+  // SAVE JOB MUTATION
   const [save_job_now, { loading }] = useMutation(SAVE_JOB_MUTATION, {
     variables: jobValues,
     update(cache, { data }) {
-      console.log("save job data", data);
-      toast.success("Job has been saved");
-
-      const { get_user } = cache.readQuery({ query: GET_USER_QUERY });
-
-      cache.writeQuery({
-        query: GET_USER_QUERY,
-        data: { get_user: [...get_user.jobs, data.save_job] },
-      });
+      // on db save, also save in context
+      addSavedJob(data?.save_job);
     },
     onError({ graphQLErrors, networkError }) {
       if (graphQLErrors) {
@@ -81,6 +77,11 @@ const TitlesSection = ({ job }) => {
       return toast.info("Make sure you're signed in");
     }
   };
+
+  // find saved jobs for styling
+  const alreadySavedJob = savedJobs.find(
+    (savedJob) => savedJob?.alien_job_id === job?.alien_job_id
+  );
 
   return (
     <div className="flex_center w-full">
@@ -164,7 +165,7 @@ const TitlesSection = ({ job }) => {
               {job?.company_type && (
                 <div className="flex gap-[0.25rem] md480:gap-[0.5rem]">
                   <p className="truncate">Company type:</p>
-                  <span className="capitalize font-semibolden">
+                  <span className="capitalize font-semibolden line-clamp-1">
                     {" "}
                     {`${job?.company_type}`}
                   </span>
@@ -187,20 +188,20 @@ const TitlesSection = ({ job }) => {
                 loading && "text-darkColor/40 border-darkColor/40"
               }`}
             >
-              <span>Save</span>
+              <span>{alreadySavedJob ? "Saved" : "Save"}</span>
               <span className="hidden md480:block">
                 <IoBookmark />
               </span>
             </div>
           </div>
-          <div className="flex items-center gap-[1.25rem]">
+          <div className="flex items-center justify-end gap-[0.75rem] md480:gap-[1.25rem] md480:justify-normal">
             <div className="flex gap-[0.25rem] items-center text-textColor">
               <span>Share Job</span>
-              <span className="text-h3 text-textColor/40">
+              <span className="hidden text-h3 text-textColor/40 md480:block">
                 <IoShareSocialOutline />
               </span>
             </div>
-            <div className="flex gap-[0.75rem]">
+            <div className="flex gap-[0.5rem] md480:gap-[0.75rem]">
               <div className="detail_page_icon">
                 <WhatsappShareButton
                   title={contentsInTitle}

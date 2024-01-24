@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { useMutation } from "@apollo/client";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { IoOpenOutline } from "react-icons/io5";
 import { GoBookmarkSlashFill } from "react-icons/go";
 import { toast } from "react-toastify";
@@ -17,9 +17,10 @@ import LoadingDots from "../LoadingDots";
 
 const SavedJobCard = ({ job }) => {
   const navigate = useNavigate();
-  const context = useContext(JobsUserContext);
+  const { deleteSavedJob } = useContext(JobsUserContext);
 
-  let {
+  /// job fields used in the saved job's job card
+  const {
     job_id,
     employer_name,
     employer_logo,
@@ -33,30 +34,18 @@ const SavedJobCard = ({ job }) => {
     job_country,
   } = job;
 
-  // convert dates in milliseconds to ISO dates
-  date_expiring = convertMsDateToISO(date_expiring);
-  date_posted = convertMsDateToISO(date_posted);
+  // convert dates in milliseconds(from db) to ISO dates
+  const iso_date_expiring = convertMsDateToISO(date_expiring);
+  const iso_date_posted = convertMsDateToISO(date_posted);
 
+  // delete / unsave job mutation
   const [delete_job_now, { loading }] = useMutation(DELETE_JOB, {
     variables: { job_id },
-    update(cache, { data }) {
-      console.log("delete job data", data);
+    update(cache, { data: { delete_job } }) {
       toast.success("Job has been deleted");
 
-      const dataInCache = cache.readQuery({
-        query: GET_USER_QUERY,
-        variables: { user_id: context.user?.user_id },
-      });
-
-      cache.writeQuery({
-        query: GET_USER_QUERY,
-        data: {
-          get_user: dataInCache?.get_user.jobs?.filter(
-            (job) => job.job_id !== data?.delete_job?.job_id
-          ),
-          variables: { user_id: context.user?.user_id },
-        },
-      });
+      // on db delete, also remove from state in context
+      deleteSavedJob(delete_job?.alien_job_id);
     },
     onError({ graphQLErrors, networkError }) {
       if (graphQLErrors) {
@@ -70,18 +59,23 @@ const SavedJobCard = ({ job }) => {
     },
   });
 
+  // start the job delete/unsave mutation operation
   const handleDeleteJob = () => {
     delete_job_now();
   };
 
   // calculate the number of active days
-  const remainingDays = calculateRemainingDays(date_expiring);
+  const remainingDays = calculateRemainingDays(iso_date_expiring);
 
   // handle view job
   const handleViewJob = () => {
     navigate(`/job/${alien_job_id}`, {
       state: {
-        job_details: job,
+        job_details: {
+          ...job,
+          date_posted: iso_date_posted,
+          date_expiring: iso_date_expiring,
+        },
       },
     });
   };

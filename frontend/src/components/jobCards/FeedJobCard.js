@@ -1,6 +1,6 @@
 import { useMutation, useApolloClient } from "@apollo/client";
 import { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { IoBookmark, IoOpenOutline } from "react-icons/io5";
 import { toast } from "react-toastify";
 
@@ -12,53 +12,38 @@ import { toastGraphqlError } from "../../utils/toastGraphqlError";
 import { calculateRemainingDays } from "../../utils/jobRemainingDays";
 import { noInternetHandler } from "../../utils/noInternet";
 
-const JobCard = ({ job }) => {
-  const { user } = useContext(JobsUserContext);
+const FeedJobCard = ({ job }) => {
+  let { user, addSavedJob, savedJobs } = useContext(JobsUserContext);
   const navigate = useNavigate();
   const client = useApolloClient();
 
+  // job fields used in the feed's job card
   let {
     employer_name,
     employer_logo,
     employer_website,
-    company_type,
     alien_job_id,
     employment_type,
     job_title,
     apply_link,
-    job_description,
-    job_qualifications,
-    job_responsibilities,
-    date_posted,
     date_expiring,
     job_city,
     job_country,
   } = job;
 
+  // assign user id, and add default city value(before optionalizing it in schema)
   const jobValues = {
     ...job,
     job_city: job_city === null ? "City" : job_city,
     user_id: user?.user_id,
   };
 
+  // save job mutation
   const [save_job_now, { loading }] = useMutation(SAVE_JOB_MUTATION, {
     variables: jobValues,
-    update(cache, { data }) {
-      console.log("save job data", data);
-      toast.success("Job has been saved");
-
-      const dataInCache = cache.readQuery({
-        query: GET_USER_QUERY,
-        variables: { user_id: user?.user_id },
-      });
-
-      cache.writeQuery({
-        query: GET_USER_QUERY,
-        data: {
-          get_user: [...dataInCache?.get_user?.jobs, data?.save_job],
-          variables: { user_id: user?.user_id },
-        },
-      });
+    update(cache, { data: { save_job } }) {
+      // on db save, also save in context
+      addSavedJob(save_job);
     },
     onError({ graphQLErrors, networkError }) {
       if (graphQLErrors) {
@@ -72,6 +57,7 @@ const JobCard = ({ job }) => {
     },
   });
 
+  // call the mutation operation when the user is signed in
   const handleJobSave = () => {
     if (user) {
       return save_job_now();
@@ -96,6 +82,11 @@ const JobCard = ({ job }) => {
   // assign default logo if company has none or link doesn't point to a logo
   const hasLogo = checkCompanyLogo(employer_logo);
 
+  // find saved jobs for styling
+  const alreadySavedJob = savedJobs.find(
+    (savedJob) => savedJob?.alien_job_id === job?.alien_job_id
+  );
+
   return (
     <div className="job_card_wrapper">
       <div className="flex_col gap-[1.25rem] items-start">
@@ -112,7 +103,7 @@ const JobCard = ({ job }) => {
             onClick={(e) => handleJobSave()}
             className={`text-h3 hover:text-ctaColor trans_200 ${
               loading && "text-textColor/25"
-            }`}
+            } ${alreadySavedJob && "text-ctaColor"}`}
           >
             <IoBookmark />
           </span>
@@ -177,4 +168,4 @@ const JobCard = ({ job }) => {
   );
 };
 
-export default JobCard;
+export default FeedJobCard;
