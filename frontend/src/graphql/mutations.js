@@ -36,6 +36,7 @@ export const UPDATE_PROFILE_MUTATION = gql`
       user_id
       fullname
       email
+      token
     }
   }
 `;
@@ -112,6 +113,8 @@ export const DELETE_JOB = gql`
   mutation delete_a_job($job_id: ID!) {
     delete_job(job_id: $job_id) {
       job_id
+      job_title
+      alien_job_id
     }
   }
 `;
