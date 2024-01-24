@@ -77,7 +77,7 @@ const Feed = ({ loading, error }) => {
         {!error ? (
           <>
             {loading ? (
-              <div className="grid grid-cols-1 gap-[0.5rem] w-full md480:grid-cols-2 md800:grid-cols-3 lg1023:grid-cols-4 md800:gap-[0.25rem] lg1023:gap-[0.5rem]">
+              <div className="grid grid-cols-1 gap-[0.75rem] w-full md480:grid-cols-2 md800:grid-cols-3 lg1023:grid-cols-4 md800:gap-[0.25rem] lg1023:gap-[0.5rem]">
                 {[...Array(4).keys()].map((index) => {
                   return <JobCardSkeleton key={index} />;
                 })}
@@ -85,7 +85,7 @@ const Feed = ({ loading, error }) => {
             ) : (
               <>
                 {jobs?.length > 0 ? (
-                  <div className="grid grid-cols-1 w-full gap-[0.5rem] md480:grid-cols-2 md800:grid-cols-3 lg1023:grid-cols-4 md800:gap-[0.25rem] lg1023:gap-[0.5rem]">
+                  <div className="grid grid-cols-1 w-full gap-[0.75rem] md480:grid-cols-2 md800:grid-cols-3 lg1023:grid-cols-4 md800:gap-[0.25rem] lg1023:gap-[0.5rem]">
                     {jobs?.map((job, index) => {
                       return <FeedJobCard job={job} key={index} />;
                     })}
