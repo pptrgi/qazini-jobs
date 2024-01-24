@@ -15,38 +15,29 @@ import LoadingDots from "../LoadingDots";
 const UserInformation = ({ user, fetching }) => {
   const client = useApolloClient();
   const context = useContext(JobsUserContext);
-  // const user = context.user;
 
+  // input fields status
   const [enableEmailEdit, setEnableEmailEdit] = useState(false);
   const [enableNameEdit, setEnableNameEdit] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  //input fields
+  // input fields
   const [email, setEmail] = useState(user?.email ? user.email : "");
   const [fullname, setFullname] = useState(user?.fullname ? user.fullname : "");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  // update user info mutation
   const [update_profile_now, { loading }] = useMutation(
     UPDATE_PROFILE_MUTATION,
     {
       variables: { email, fullname, password },
       update(cache, { data }) {
-        const dataInCache = cache.readQuery({
-          query: GET_USER_QUERY,
-          variables: { user_id: data?.update_profile?.user_id },
-        });
-        console.log("dataInCache first", dataInCache);
+        toast.success("Updated your profile");
 
-        cache.writeQuery({
-          query: GET_USER_QUERY,
-          data: {
-            get_user: data?.update_profile,
-            variables: { user_id: data?.update_profile?.user_id },
-          },
-        });
+        // on successful info update, also update the user's details in context, including the token
+        context.signin(data?.update_profile);
 
-        toast.success("Updated profile");
         localStorage.setItem("userToken", data?.update_profile?.token);
 
         setPassword("");
@@ -64,6 +55,7 @@ const UserInformation = ({ user, fetching }) => {
     }
   );
 
+  // start the update user info mutation operation on form submit
   const handleUpdateProfile = (event) => {
     event.preventDefault();
 
