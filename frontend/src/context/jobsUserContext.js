@@ -1,5 +1,6 @@
 import { createContext, useReducer } from "react";
 import { jwtDecode } from "jwt-decode";
+import { toast } from "react-toastify";
 
 // create a single context for jobs and user, and initialize the values
 // immutableJobs array holds the original jobs list, jobs array gets updated dynamically
@@ -7,11 +8,14 @@ const JobsUserContext = createContext({
   jobs: [],
   immutableJobs: [],
   user: null,
+  savedJobs: [],
   signin: (userData) => {},
   signout: () => {},
   setJobs: (jobsArray) => {},
   filterJobs: (searchText) => {},
   populateJobs: (jobsArray) => {},
+  addSavedJob: (job) => {},
+  deleteSavedJob: (jobAlienId) => {},
 });
 
 // define action types and how they update state
@@ -27,6 +31,10 @@ const jobsUserReducer = (state, action) => {
       return { ...state, jobs: action.payload };
     case "POPULATEJOBS":
       return { ...state, immutableJobs: action.payload, jobs: action.payload };
+    case "ADDSAVEDJOB":
+      return { ...state, savedJobs: action.payload };
+    case "DELETESAVEDJOB":
+      return { ...state, savedJobs: action.payload };
     default:
       return state;
   }
@@ -55,6 +63,7 @@ const JobsUserProvider = (props) => {
   const [state, dispatch] = useReducer(jobsUserReducer, {
     jobs: [],
     user: userState.user,
+    savedJobs: [],
   });
 
   // sign in
@@ -119,16 +128,68 @@ const JobsUserProvider = (props) => {
     });
   };
 
+  // add saved job to savedJobs array
+  const addSavedJob = (job) => {
+    // find if the job exists
+    const alreadySavedJob = state.savedJobs?.find(
+      (savedJob) => savedJob?.alien_job_id == `${job?.alien_job_id}`
+    );
+
+    if (alreadySavedJob) {
+      // const newSavedArray = state.savedJobs.filter(
+      //   (job) => job.alien_job_id != alreadySavedJob.alien_job_id
+      // );
+      dispatch({
+        type: "ADDSAVEDJOB",
+        payload: state.savedJobs.filter(
+          (savedJob) => savedJob?.alien_job_id !== job?.alien_job_id
+        ),
+      });
+      toast.success("You have unsaved the job");
+    } else {
+      dispatch({
+        type: "ADDSAVEDJOB",
+        payload: [...state.savedJobs, job],
+      });
+      toast.success("Job has been saved");
+    }
+  };
+
+  // delete saved job from savedJobs array
+  const deleteSavedJob = (jobAlienId) => {
+    // find if the job exists
+    const existingJob = state.savedJobs?.find(
+      (job) => job?.alien_job_id === `${jobAlienId}`
+    );
+
+    if (!existingJob) {
+      dispatch({
+        type: "DELETESAVEDJOB",
+        payload: [...state.savedJobs],
+      });
+    } else {
+      dispatch({
+        type: "DELETESAVEDJOB",
+        payload: state.savedJobs.filter(
+          (job) => job?.alien_job_id !== `${jobAlienId}`
+        ),
+      });
+    }
+  };
+
   return (
     <JobsUserContext.Provider
       value={{
         jobs: state.jobs,
         user: state.user,
+        savedJobs: state.savedJobs,
         signin,
         signout,
         setJobs,
         filterJobs,
         populateJobs,
+        addSavedJob,
+        deleteSavedJob,
       }}
       {...props}
     />
