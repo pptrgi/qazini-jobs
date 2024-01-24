@@ -31,7 +31,6 @@ const useFetchJobs = (searchText) => {
     if (jobs?.length < 1) {
       try {
         const response = await axios.request(options);
-        console.log(response?.data?.data);
 
         let readyToGoJobs = [];
 
