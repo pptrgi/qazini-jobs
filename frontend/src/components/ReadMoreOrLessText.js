@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 
 const ReadMoreOrLessText = ({ text, nodeRef }) => {
   const [clamped, setClamped] = useState(true);
@@ -13,7 +13,12 @@ const ReadMoreOrLessText = ({ text, nodeRef }) => {
 
   return (
     <div className="flex_col gap-[0.25rem] text-smaller md800:text-small">
-      <p ref={nodeRef} className={`${clamped ? "clamp_paragraph" : ""}`}>
+      <p
+        ref={nodeRef}
+        className={`${
+          clamped ? "clamp_paragraph" : ""
+        } tracking-wide leading-5 font-semibolden`}
+      >
         {text}
       </p>
       {showReadButtons && (
