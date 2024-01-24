@@ -50,14 +50,17 @@ export const handle_save_job = async (_, { saveJobInput }, contextValue) => {
   const id_owner_query = "SELECT user_id FROM job_seeker WHERE user_id = $1";
   const save_job_query =
     "INSERT INTO job (job_title, employment_type, employer_name, employer_logo, company_type, employer_website, job_description, job_qualifications, job_responsibilities, date_posted, date_expiring, job_city, job_country, user_id, apply_link, alien_job_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16) RETURNING job_id, job_title, employment_type, employer_name, employer_logo, employer_website, job_description, job_qualifications, job_responsibilities, date_posted, date_expiring, job_city, job_country, apply_link, alien_job_id";
-  const remove_job_query = "DELETE FROM TABLE job WHERE job_id = $1";
+  const unsave_job_query =
+    "DELETE FROM job WHERE job_id = $1 RETURNING job_id, job_title, employment_type, employer_name, employer_logo, employer_website, job_description, job_qualifications, job_responsibilities, date_posted, date_expiring, job_city, job_country, apply_link, alien_job_id";
+  const find_job_query =
+    "SELECT alien_job_id, job_id FROM job WHERE user_id = $1";
   const job_fields_array = [
     job_title,
     employment_type,
     employer_name,
     employer_logo,
-    employer_website,
     company_type,
+    employer_website,
     job_description,
     job_qualifications,
     job_responsibilities,
@@ -80,33 +83,42 @@ export const handle_save_job = async (_, { saveJobInput }, contextValue) => {
     ]);
 
     if (user_exists_res.rows.length > 0) {
-      // the user is there, check if the job exists in the found user's jobs array
+      // the user exists
       const found_user = user_exists_res.rows[0];
 
-      const job_already_exists = found_user?.jobs?.find(
-        (job) => job?.job_title == job_title
-      );
+      // find the jobs related to this user
+      const user_jobs_res = await client.query(find_job_query, [
+        found_user?.user_id,
+      ]);
 
-      // if the job is already saved, remove otherwise save it
-      if (!job_already_exists) {
-        const save_job_res = await client.query(
-          save_job_query,
-          job_fields_array
+      // if the user has saved no jobs yet or hasn't saved this job before, save it, otherwise unsave it
+      if (user_jobs_res.rows.length >= 0) {
+        const user_jobs = user_jobs_res.rows;
+
+        const already_existing_job = user_jobs?.find(
+          (job) => job?.alien_job_id == `${alien_job_id}`
         );
 
-        const new_job = save_job_res.rows[0];
-        // await client.end();
+        if (!already_existing_job) {
+          const save_job_res = await client.query(
+            save_job_query,
+            job_fields_array
+          );
 
-        return new_job;
-      } else {
-        const remove_job_res = await client.query(remove_job_query, [
-          job_already_exists?.job_id,
-        ]);
+          const new_job = save_job_res.rows[0];
+          // await client.end();
 
-        const removed_job = remove_job_res.rows[0];
-        // await client.end();
+          return new_job;
+        } else {
+          const unsave_job_res = await client.query(unsave_job_query, [
+            already_existing_job?.job_id,
+          ]);
 
-        return removed_job;
+          const unsaved_job = unsave_job_res.rows[0];
+          // await client.end();
+
+          return unsaved_job;
+        }
       }
     } else {
       // user doesn't exist
@@ -128,7 +140,7 @@ export const delete_job_handler = async (_, { job_id }, contextValue) => {
   const decoded_user_id = decoded_user?.user_id;
 
   const delete_job_query =
-    "DELETE FROM job WHERE job_id = $1 RETURNING job_id, job_title";
+    "DELETE FROM job WHERE job_id = $1 RETURNING job_id, job_title, alien_job_id";
   const find_user_query = "SELECT * FROM job_seeker WHERE user_id = $1";
   const find_job_query = "SELECT * FROM job WHERE job_id = $1";
 
@@ -154,12 +166,13 @@ export const delete_job_handler = async (_, { job_id }, contextValue) => {
         const delete_job_res = await client.query(delete_job_query, [job_id]);
 
         const deleted_job = delete_job_res.rows[0];
+
         // await client.end();
 
         return deleted_job;
       } else {
         // such job doesn't exist
-        throw new GraphQLError("Job is already deleted");
+        throw new GraphQLError("This job is already deleted");
       }
     } else {
       // user wasn't found
