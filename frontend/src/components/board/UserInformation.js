@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import { useMutation, useApolloClient } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { IoPencil, IoEyeOffSharp, IoEyeSharp } from "react-icons/io5";
 import { toast } from "react-toastify";
 
@@ -13,7 +13,6 @@ import { noInternetHandler } from "../../utils/noInternet";
 import LoadingDots from "../LoadingDots";
 
 const UserInformation = ({ user, fetching }) => {
-  const client = useApolloClient();
   const context = useContext(JobsUserContext);
 
   // input fields status
@@ -41,6 +40,7 @@ const UserInformation = ({ user, fetching }) => {
         localStorage.setItem("userToken", data?.update_profile?.token);
 
         setPassword("");
+        setConfirmPassword("");
       },
       onError({ graphQLErrors, networkError }) {
         if (graphQLErrors) {
@@ -55,11 +55,15 @@ const UserInformation = ({ user, fetching }) => {
     }
   );
 
-  // start the update user info mutation operation on form submit
+  // start the update user info mutation operation on form submit only if the passwords matched
   const handleUpdateProfile = (event) => {
     event.preventDefault();
 
-    update_profile_now();
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match");
+    } else {
+      update_profile_now();
+    }
   };
 
   return (
@@ -94,7 +98,7 @@ const UserInformation = ({ user, fetching }) => {
                     }
                     className={`px-[0.5rem] text-h3 ${
                       enableEmailEdit ? "text-textColor" : "text-bodyColor"
-                    }`}
+                    } hover:text-h2 tran_200`}
                   >
                     <IoPencil />
                   </span>
@@ -120,7 +124,7 @@ const UserInformation = ({ user, fetching }) => {
                     }
                     className={`px-[0.5rem] text-h3 ${
                       enableNameEdit ? "text-textColor" : "text-bodyColor"
-                    }`}
+                    } hover:text-h2 tran_200`}
                   >
                     <IoPencil />
                   </span>
@@ -142,14 +146,14 @@ const UserInformation = ({ user, fetching }) => {
                   {showPassword ? (
                     <span
                       onClick={(e) => setShowPassword(false)}
-                      className="text-ctaColor pl-[0.75rem]"
+                      className="text-ctaColor pl-[0.75rem] hover:text-darkColor trans_200"
                     >
                       <IoEyeOffSharp />
                     </span>
                   ) : (
                     <span
                       onClick={(e) => setShowPassword(true)}
-                      className="text-ctaColor pl-[0.75rem]"
+                      className="text-ctaColor pl-[0.75rem] hover:text-darkColor trans_200"
                     >
                       <IoEyeSharp />
                     </span>
@@ -166,14 +170,14 @@ const UserInformation = ({ user, fetching }) => {
                   {showPassword ? (
                     <span
                       onClick={(e) => setShowPassword(false)}
-                      className="text-ctaColor pl-[0.75rem]"
+                      className="text-ctaColor pl-[0.75rem] hover:text-darkColor trans_200"
                     >
                       <IoEyeOffSharp />
                     </span>
                   ) : (
                     <span
                       onClick={(e) => setShowPassword(true)}
-                      className="text-ctaColor pl-[0.75rem]"
+                      className="text-ctaColor pl-[0.75rem] hover:text-darkColor trans_200"
                     >
                       <IoEyeSharp />
                     </span>
