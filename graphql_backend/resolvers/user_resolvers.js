@@ -47,7 +47,7 @@ export const get_user_resolver = async (parent, args, contextValue) => {
       return user;
     } else {
       // the user with the provided id isn't found in the database
-      throw new GraphQLError("User not found");
+      throw new GraphQLError("Sorry, user does not exist");
     }
   } catch (error) {
     // server couldn't process the request as expected
@@ -150,9 +150,7 @@ export const handle_user_signin = async (_, { email, password }) => {
       }
     } else {
       // user with the given email doesn't exist
-      throw new GraphQLError("User not found", {
-        extensions: { frontendMessage: "User doesn't exist, Register first" },
-      });
+      throw new GraphQLError("User not found. Register your account first");
     }
   } catch (error) {
     // unfortunately the server couldn't process the request as expected
