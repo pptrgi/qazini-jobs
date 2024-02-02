@@ -34,14 +34,14 @@ const Feed = ({ loading, error }) => {
     >
       <div className="relative flex_col gap-[1.5rem] items-start overflow-hidden">
         <div className="flex_col gap-[0.75rem]">
-          <h2 className="title_h3">Available Opportunities</h2>
+          <h2 className="title_h3 md480:text-h2">Available Opportunities</h2>
           <div className="flex_col gap-[0.25rem]">
-            <span className="capitalize text-smaller md480:text-small">
-              {`${jobs?.length} jobs found`}
+            <span className="capitalize text-smaller tracking-wide md480:text-small">
+              {`${jobs?.length ? `${jobs.length} jobs found` : "0 jobs found"}`}
             </span>
             <div className="flex gap-[1rem]">
               <div className="flex gap-[0.125rem] items-center">
-                <span>Sort by</span>
+                <span className="tracking-wide">Sort by</span>
                 <span>
                   <PiCaretUpDown />
                 </span>
@@ -51,9 +51,9 @@ const Feed = ({ loading, error }) => {
                   className="group cursor-pointer"
                   onClick={(e) => setShowSortOptions(true)}
                 >
-                  <div className="flex gap-[0.75rem] items-center border_1_md px-[0.75rem] py-[0.35rem] group-hover:text-darkColor group-hover:border-darkColor trans_200">
+                  <div className="flex gap-[0.5rem] items-center border-[1.8px] border-textColor/20 rounded-lg px-[0.75rem] py-[0.35rem] text-textColor/80 group-hover:text-darkColor group-hover:border-darkColor trans_200">
                     <span className="capitalize">{currentSort}</span>
-                    <span>
+                    <span className="text-textColor/40">
                       {showSortOptions ? <IoChevronUp /> : <IoChevronDown />}
                     </span>
                   </div>
@@ -91,8 +91,8 @@ const Feed = ({ loading, error }) => {
                     })}
                   </div>
                 ) : (
-                  <p className="text-normal md480:text-h3">
-                    Sorry, no jobs found
+                  <p className="text-normal tracking-wide z-10 md480:text-h3">
+                    Sorry, no jobs were found.
                   </p>
                 )}
               </>

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
@@ -51,8 +50,8 @@ const CTASection = () => {
     >
       <div className="w-full">
         <div className="flex_center md800:mx-[0.75rem] lg1023:mx-[2rem] lg1120:mx-[3rem]">
-          <div className="px-[1rem] py-[1.75rem] bg-tintColor2 w-full border-[2px] border-tintClearColor rounded-md lg1120:px-[1.5rem]">
-            <div className="flex_col gap-[0.5rem] items-start md480:gap-[1rem]">
+          <div className="relative px-[1rem] py-[2rem] bg-tintColor2 w-full border-[2px] border-tintClearColor rounded-xl lg1120:px-[1.5rem] lg1120:py-[2.25rem]">
+            <div className="flex_col gap-[1rem] items-start md480:gap-[1.5rem]">
               <h2 className="text-darkColor font-bolden text-h3 tracking-wide md480:text-h2">
                 Would you like jobs to look for you?
               </h2>
@@ -83,7 +82,7 @@ const CTASection = () => {
                       </button>
                     </div>
                   </form>
-                  <div>
+                  <div className="z-10">
                     <p className="text-tiny tracking-wide md480:text-smaller">
                       By signing up, you agree to our{" "}
                       <a
@@ -101,6 +100,13 @@ const CTASection = () => {
                   )}
                 </div>
               </div>
+            </div>
+            <div className="absolute bottom-[0.5rem] right-[0.5rem] md480:bottom-[0.75rem]">
+              <img
+                src="/sparkles.svg"
+                alt="sparkles"
+                className="w-[30px] md480:w-[35px]"
+              />
             </div>
           </div>
         </div>
