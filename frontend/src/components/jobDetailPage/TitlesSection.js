@@ -31,9 +31,6 @@ const TitlesSection = ({ job }) => {
   let { user, savedJobs, addSavedJob } = useContext(JobsUserContext);
   const navigate = useNavigate();
 
-  console.log("In detail", job?.date_posted);
-  console.log("In detail", job);
-
   const jobValues = {
     ...job,
     job_city: job.job_city === null ? "City" : job.job_city,
