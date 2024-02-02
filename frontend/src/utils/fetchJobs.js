@@ -77,7 +77,7 @@ export const jobsFetcher = async (searchText, searchCount) => {
       localStorage.removeItem("searchCount");
       localStorage.removeItem("timeSearchMaxReached");
 
-      toast.error("Sorry didn't quite catch that, search again");
+      toast.error("Oops, first times are the hardest. Search again.");
       localStorage.setItem("searchCount", 0);
     }
   }
