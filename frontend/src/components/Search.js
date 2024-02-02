@@ -51,14 +51,14 @@ const Search = ({ loading }) => {
       <div className="flex_center w-full">
         <form
           onSubmit={handleSearchJobs}
-          className="flex_between border_1_full items-center search_form_width"
+          className="flex_between border_1_full items-center search_form_width trans_200"
         >
           <input
             type="text"
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
             className="search_input_field"
-            placeholder="Search e.g. teacher, kenya"
+            placeholder="Search e.g. accountant, kenya"
             required
           />
 
