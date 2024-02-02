@@ -39,8 +39,9 @@ input {
 .section {
   @apply mt-[2rem] py-[1rem];
 }
+
 .feed_section {
-  @apply mt-[2rem] pt-[1rem] pb-[1.5rem];
+  @apply mt-[1rem] pt-[0.5rem] pb-[1.5rem] md480:mt-[1.25rem];
 }
 .cta_section {
   @apply mt-[2rem] py-[1.75rem];
@@ -49,10 +50,10 @@ input {
   @apply mt-[4.5rem] py-[0.75rem] mb-[0.5rem];
 }
 .search_section {
-  @apply mt-[6rem] py-[0.75rem] mb-[0.5rem];
+  @apply mt-[6rem] py-[0.5rem] mb-[0.25rem];
 }
 .section_after_search {
-  @apply mt-[0.75rem] pt-[0.5rem] pb-[1rem];
+  @apply mt-[0.5rem] pt-[0.5rem] pb-[0.5rem];
 }
 
 .flex_between {
@@ -133,10 +134,10 @@ input {
   @apply flex_center gap-[0.75rem] border_1_md px-[1rem] py-[0.5rem];
 }
 .filter_button {
-  @apply flex_center gap-[0.75rem] rounded-md px-[1rem] py-[0.6rem] tracking-wide hover:outline focus:outline outline-[2px] outline-offset-[3px] outline-tintClearColor trans_200;
+  @apply flex_center gap-[0.75rem] rounded-xl px-[1rem] py-[0.6rem] hover:outline focus:outline outline-[2px] outline-offset-[3px] outline-tintClearColor;
 }
 .filter_name {
-  @apply text-smaller font-semibolden md480:text-small capitalize min-w-fit truncate;
+  @apply text-smaller font-semibolden tracking-wide md480:text-small capitalize min-w-fit truncate transition duration-500;
 }
 .filter_mobile_modal_wrapper {
   @apply block border-t-[2px] border-t-gray-200 rounded-t-[1.25rem] px-[1.5rem] pt-[2rem] pb-[2rem] bg-bodyColor md800:hidden;
@@ -172,7 +173,7 @@ input {
   @apply w-[320px] border_125 px-[1rem] py-[2.5rem] bg-tintColor md800:px-[1.5rem] md480:w-[370px] md800:w-[400px] xm:w-[280px];
 }
 .contact_form {
-  @apply border-[2px] border-tintClearColor rounded-lg px-[1rem] py-[2.5rem] bg-tintColor w-full md800:px-[1.5rem] max-w-md;
+  @apply border-[2px] border-tintClearColor rounded-xl px-[1rem] py-[2.5rem] bg-tintColor w-full md800:px-[1.5rem] max-w-md;
 }
 
 .form_input {
