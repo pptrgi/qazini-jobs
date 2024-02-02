@@ -65,24 +65,35 @@ const Contact = () => {
       className="custom_container section_after_header"
     >
       <div className="flex_center w-full">
-        <div className="w-[95%] md480:w-[90%] md800:w-[80%]">
+        <div className="w-[95%] shadow-sm md480:w-[90%] md800:w-[80%]">
           <div className="flex_col gap-[3.5rem] w-full items-center md480:gap-[4rem]">
             <motion.div
               variants={pageTitleFadeOutVariants}
-              className="relative h-[10rem] bg-tintColor2 w-full rounded-sm overflow-hidden md480:h-[13rem]"
+              className="relative h-[10rem] bg-tintColor2 w-full rounded-t-xl overflow-hidden md480:h-[13rem]"
             >
               <div className="flex_center w-full h-full">
-                <div className="flex_col gap-[0.5rem] items-center">
-                  <h2 className="title_h2 leading-none">Contact Us</h2>
-                  <p className="px-[0.5rem] text-center z-10">
-                    Get in touch with us, anytime
+                <div className="flex_col gap-[0.75rem] items-center">
+                  <p className="text-tiny uppercase text-center text-textColor/80 tracking-wide z-10 md480:text-smaller">
+                    Contact
                   </p>
+                  <h2 className="font-nunitoTitle font-bolden text-darkColor text-h2 text-center tracking-tight leading-none md480:text-[2rem]">
+                    Get In Touch with Us
+                  </h2>
                 </div>
               </div>
-              <span className="absolute -bottom-[70px] -right-[90px] w-[130px] h-[150px] rounded-full bg-tintClearColor md480:w-[150px] md480:-right-[80px] md480:-bottom-[20px]"></span>
+              <div className="absolute bottom-[0.5rem] right-[0.5rem] md480:bottom-[1rem] md480:right-[1rem]">
+                <img
+                  src="/sparkles.svg"
+                  alt="sparkles"
+                  className="w-[30px] md480:w-[40px]"
+                />
+              </div>
             </motion.div>
 
-            <motion.div variants={slideGoingLeftVariants} className="w-full">
+            <motion.div
+              variants={slideGoingLeftVariants}
+              className="w-full px-[0.25rem] md480:px-[0.5rem]"
+            >
               <div className="grid grid-cols-1 gap-[0.75rem] items-center md480:grid-cols-6">
                 <div className="flex_start_center w-full col-span-6 md480:col-span-2">
                   <div className="block md480:flex md480:items-center">
@@ -228,6 +239,7 @@ const Contact = () => {
               </div>
             </motion.div>
           </div>
+          <div className="mt-[3rem] h-[2rem] bg-tintColor2 w-full rounded-b-xl shadow-lg"></div>
         </div>
       </div>
     </motion.section>

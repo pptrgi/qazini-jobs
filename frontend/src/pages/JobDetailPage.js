@@ -18,14 +18,21 @@ const JobDetailPage = () => {
       className="custom_container section_after_header relative"
     >
       <div className="flex_center w-full">
-        <div className="w-[95%] bg-bodyColor shadow-md rounded-b-sm md480:w-[90%] md800:w-[80%]">
+        <div className="w-[95%] bg-bodyColor shadow-md rounded-xl md480:w-[90%] md800:w-[80%]">
           <div className="">
             <div className="flex_col gap-[2.5rem]">
               <motion.section
                 variants={fadeOutVariants}
-                className="bg-tintColor2 px-[1.5rem] py-[2rem] xm:px-[0.75rem]"
+                className="relative bg-tintColor2 px-[1.5rem] py-[2rem] rounded-t-xl xm:px-[0.75rem]"
               >
                 <TitlesSection job={job_details} />
+                <div className="absolute top-[0.5rem] right-[0.5rem] md480:bottom-[0.75rem]">
+                  <img
+                    src="/sparkles.svg"
+                    alt="sparkles"
+                    className="w-[30px] md480:w-[35px]"
+                  />
+                </div>
               </motion.section>
 
               <motion.section

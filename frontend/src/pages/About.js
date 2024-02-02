@@ -17,29 +17,42 @@ const About = () => {
       className="custom_container section_after_header"
     >
       <div className="flex_center w-full">
-        <div className="w-[95%] md480:w-[90%] md800:w-[80%]">
+        <div className="w-[95%] shadow-sm md480:w-[90%] md800:w-[80%]">
           <div className="flex_col gap-[2rem] w-full items-center">
             <motion.div
               variants={pageTitleFadeOutVariants}
-              className="relative h-[10rem] bg-tintColor2 w-full rounded-sm overflow-hidden md480:h-[13rem]"
+              className="relative h-[10rem] bg-tintColor2 w-full rounded-t-xl overflow-hidden md480:h-[13rem]"
             >
               <div className="flex_center w-full h-full">
                 <div className="flex_col gap-[0.5rem] items-center">
-                  <h2 className="title_h2 leading-none">About Us</h2>
-                  <p className="px-[0.5rem] text-center z-10">
-                    Qazini is not just a job search site, we're the answer
-                  </p>
+                  <div className="flex_col gap-[0.75rem] items-center">
+                    <p className="text-tiny uppercase text-center text-textColor/80 tracking-wide z-10 md480:text-smaller">
+                      About
+                    </p>
+                    <h2 className="font-nunitoTitle font-bolden text-darkColor text-h2 text-center tracking-tight leading-none md480:text-[2rem]">
+                      Know Qazini Better
+                    </h2>
+                  </div>
+                </div>
+                <div className="absolute bottom-[0.5rem] right-[0.5rem] md480:bottom-[1rem] md480:right-[1rem]">
+                  <img
+                    src="/sparkles.svg"
+                    alt="sparkles"
+                    className="w-[30px] md480:w-[40px]"
+                  />
                 </div>
               </div>
-              <span className="absolute -bottom-[70px] -right-[90px] w-[130px] h-[150px] rounded-full bg-tintClearColor md480:w-[150px] md480:-right-[80px] md480:-bottom-[20px]"></span>
             </motion.div>
 
-            <motion.div variants={fadeOutVariants} className="max-w-2xl">
+            <motion.div
+              variants={fadeOutVariants}
+              className="max-w-xl px-[0.25rem] lg1023:max-w-2xl lg1120:max-w-3xl md480:px-[0.5rem]"
+            >
               <div className="flex_col gap-[2.5rem]">
                 <div className="flex_col gap-[1.75rem]">
                   <div className="relative">
                     <span className="absolute top-0 bottom-0 w-[3px] bg-ctaColor rounded-sm"></span>
-                    <p className="pl-[0.5rem] md480:pl-[0.75rem]">
+                    <p className="pl-[0.5rem] tracking-wide md480:pl-[0.75rem]">
                       Qazini takes the job you've been looking for, wraps it and
                       gifts it to you. You deserve it.
                     </p>
@@ -47,7 +60,7 @@ const About = () => {
 
                   <div className="relative">
                     <span className="absolute top-0 bottom-0 w-[3px] bg-ctaColor rounded-sm"></span>
-                    <p className="pl-[0.5rem] md480:pl-[0.75rem]">
+                    <p className="pl-[0.5rem] tracking-wide md480:pl-[0.75rem]">
                       While job vacancies exist, we are committed to do whatever
                       we can to help easen the job search (a job by itself) for
                       the folks we believe in. Including you.
@@ -57,12 +70,12 @@ const About = () => {
                   <div className="relative">
                     <span className="absolute top-0 bottom-0 w-[3px] bg-ctaColor rounded-sm"></span>
                     <div className="flex_col gap-[0.5rem] pl-[0.5rem] md480:pl-[0.75rem]">
-                      <p>
+                      <p className="tracking-wide">
                         That means a ton of latest opportunities from a dozen
                         industries within a location or two or more, or
                         globally.
                       </p>
-                      <p>
+                      <p className="tracking-wide">
                         But we have a problem - uh-oh. As you may have noticed,
                         we are limited on the number of opportunities we supply
                         (max of 10), why? We are depending on another job
@@ -70,18 +83,18 @@ const About = () => {
                         of{" "}
                         <a
                           href="https://rapidapi.com"
-                          className="text-ctaColor font-semibolden"
+                          className="text-ctaColor font-semibolden tracking-wide"
                         >
                           JSearch
                         </a>{" "}
                         nevertheless.
                       </p>
-                      <p>
+                      <p className="tracking-wide">
                         If you'd like to see us increase our posts you can
                         support us to get the JSearch's premium plan by{" "}
                         <a
                           href="https://buymeacoffee.com/ptrgitonga"
-                          className="text-ctaColor font-semibolden"
+                          className="text-ctaColor font-semibolden tracking-wide"
                         >
                           buying us a coffee
                         </a>{" "}
@@ -89,7 +102,7 @@ const About = () => {
                         Or undirectly, support JSearch so maybe in future
                         they'll increase their freemium limit, a big maybe.
                       </p>
-                      <p>
+                      <p className="tracking-wide">
                         We also welcome employers to advertise their jobs in our
                         platform. Again, problem solved.
                       </p>
@@ -98,20 +111,20 @@ const About = () => {
                 </div>
 
                 <div className="flex_center w-full">
-                  {/* Add the founder's quote - haha (-_^) */}
-                  <div className="bg-tintColor border-[2px] border-skeletonColor/25 rounded-md px-[0.75rem] pt-[1.5rem] pb-[1rem] max-w-lg">
+                  {/* Add the founder's quote (-_^) */}
+                  <div className="bg-tintColor border-[3px] border-skeletonColor/25 rounded-xl shadow-lg px-[0.75rem] pt-[1.5rem] pb-[1rem] max-w-lg">
                     <figure className="flex_col gap-[0.5rem] items-center">
                       <blockquote className="flex gap-2">
                         <span className="text-h2">
                           <RiDoubleQuotesL />
                         </span>
-                        <p className="tracking-wide">
+                        <p className="tracking-wide font-semibolden">
                           An additional job in here is an additional chance for
                           someone out there.
                         </p>
                       </blockquote>
                       <figcaption className="flex_end w-full">
-                        <cite className="uppercase italic text-tiny text-textColor/80 md480:text-smaller">
+                        <cite className="uppercase italic text-tiny tracking-tight text-textColor/80 md480:text-smaller">
                           ~ qazini founder - peter
                         </cite>
                       </figcaption>
@@ -123,8 +136,13 @@ const About = () => {
                     Now, y'all ready for some opportunities?
                   </p>
                   <div className="flex_col gap-[0.25rem] md480:flex-row md480:gap-[0.4rem]">
-                    <p>We get it, you're here to seize the opportunities.</p>
-                    <Link to={"/"} className="text-ctaColor font-semibolden">
+                    <p className="tracking-wide">
+                      We get it, you're here to seize the opportunities.
+                    </p>
+                    <Link
+                      to={"/"}
+                      className="text-ctaColor font-semibolden tracking-wide"
+                    >
                       Right here
                     </Link>
                   </div>
@@ -132,6 +150,7 @@ const About = () => {
               </div>
             </motion.div>
           </div>
+          <div className="mt-[3rem] h-[2rem] bg-tintColor2 w-full rounded-b-xl shadow-lg"></div>
         </div>
       </div>
     </motion.section>
