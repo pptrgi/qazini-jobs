@@ -4,10 +4,10 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
 
-import { client } from "../utils/dbConnect.js";
+import { pool } from "../utils/dbConnect.js";
 import { private_resolvers_guard } from "../middleware/private_resolvers_guard.js";
 
-// GET SINGLE USER QUERY
+// GET SINGLE USER QUERY HANDLER
 export const get_user_resolver = async (parent, args, contextValue) => {
   // call the private resolvers guard with the context value
   // if there's no decoded user details, then it'll throw errors accordingly and terminate get user operation
@@ -23,9 +23,14 @@ export const get_user_resolver = async (parent, args, contextValue) => {
     throw new GraphQLError("User's ID is required to fetch a single user");
   }
 
+  let client;
+
   try {
     // connect to the database
-    await client.connect();
+    client = await pool.connect();
+
+    // start transaction
+    await client.query("BEGIN");
 
     // find the user with the provided user ID
     const found_user_res = await client.query(get_user_query, [
@@ -41,8 +46,8 @@ export const get_user_resolver = async (parent, args, contextValue) => {
       const user = found_user_res.rows[0];
       user.jobs = user_jobs_res.rows;
 
-      // close the db connection
-      // await client.end();
+      // commit the transaction
+      await client.query("COMMIT");
 
       return user;
     } else {
@@ -53,11 +58,18 @@ export const get_user_resolver = async (parent, args, contextValue) => {
     // server couldn't process the request as expected
     console.log(error);
 
+    // rollback transaction on error
+    if (client) await client.query("ROLLBACK");
+
     return new GraphQLError(error?.message);
+  } finally {
+    // if this client is still active release it back to the pool
+    if (client) client.release();
   }
 };
 
-// REGISTER THE USER MUTATION
+// REGISTER USER MUTATION HANDLER
+
 export const handle_user_register = async (
   _,
   { fullname, email, password }
@@ -73,9 +85,14 @@ export const handle_user_register = async (
     );
   }
 
+  let client;
+
   try {
     // establish db connection
-    await client.connect();
+    client = await pool.connect();
+
+    // start transaction
+    await client.query("BEGIN");
 
     // check if there's an existing user with the provided email
     const user_with_email_res = await client.query(email_exists_query, [email]);
@@ -92,8 +109,7 @@ export const handle_user_register = async (
 
       const registered_user = new_user_res.rows[0];
 
-      // disconnect database
-      // await client.end();
+      await client.query("COMMIT"); // commit the transaction
 
       return registered_user;
     } else {
@@ -104,11 +120,18 @@ export const handle_user_register = async (
     // server couldn't process the request as expected
     console.log(error);
 
+    // rollback the transaction on error
+    if (client) await client.query("ROLLBACK");
+
     return new GraphQLError(error?.message);
+  } finally {
+    // if this client is still active release it back to the pool
+    if (client) client.release();
   }
 };
 
-// USER SIGN IN MUTATION
+// USER SIGN-IN MUTATION HANDLER
+
 export const handle_user_signin = async (_, { email, password }) => {
   const check_user_email_query = "SELECT * FROM job_seeker WHERE email = $1";
 
@@ -117,14 +140,17 @@ export const handle_user_signin = async (_, { email, password }) => {
     throw new GraphQLError("Please provide email and password to sign in");
   }
 
+  let client;
+
   try {
     // create database connection
-    await client.connect();
+    client = await pool.connect();
+
+    // start transaction
+    await client.query("BEGIN");
 
     // make sure the user with given email exists
     const user_exists_res = await client.query(check_user_email_query, [email]);
-    // after the response we don't need the db anymore, disconnect
-    // await client.end();
 
     if (user_exists_res.rows.length > 0) {
       // the user exists, so compare the passwords if they match it's a valid user, assign the user a token
@@ -143,6 +169,8 @@ export const handle_user_signin = async (_, { email, password }) => {
 
         user.token = token;
 
+        await client.query("COMMIT"); // commit the transaction
+
         return user;
       } else {
         // user exists but the passwords don't match
@@ -156,11 +184,18 @@ export const handle_user_signin = async (_, { email, password }) => {
     // unfortunately the server couldn't process the request as expected
     console.log(error);
 
+    // rollback transaction on error
+    if (client) await client.query("ROLLBACK");
+
     return new GraphQLError(error?.message);
+  } finally {
+    // if this client is still active release it back to the pool
+    if (client) client.release();
   }
 };
 
-// UPDATE USER'S PROFILE MUTATION
+// UPDATE USER'S PROFILE MUTATION HANDLER
+
 export const update_user_profile = async (_, args, contextValue) => {
   // check if there's a decoded user, otherwise throw errors aborting the update profile operation
   const decoded_user = await private_resolvers_guard(contextValue);
@@ -173,8 +208,13 @@ export const update_user_profile = async (_, args, contextValue) => {
   const update_profile_query =
     "UPDATE job_seeker SET fullname = $1, email = $2, password = $3 WHERE user_id = $4 RETURNING user_id, fullname, email";
 
+  let client;
+
   try {
-    await client.connect();
+    client = await pool.connect();
+
+    // start transaction
+    await client.query("BEGIN");
 
     // confirm the validity of the decoded user's id, return that user
     const confirm_uid_res = await client.query(confirm_uid_query, [
@@ -196,7 +236,6 @@ export const update_user_profile = async (_, args, contextValue) => {
         password ? password : current_user.password,
         decoded_user_id,
       ]);
-      // await client.end();
 
       if (update_profile_res.rows.length > 0) {
         // user updated successfully, now assign them a new token
@@ -216,6 +255,8 @@ export const update_user_profile = async (_, args, contextValue) => {
 
         updated_user.token = new_token;
 
+        await client.query("COMMIT"); // commit the transaction
+
         return updated_user;
       }
     } else {
@@ -226,19 +267,31 @@ export const update_user_profile = async (_, args, contextValue) => {
     // the server couldn't update the profile as expected
     console.log(error);
 
+    // rollback transaction on error
+    if (client) await client.query("ROLLBACK");
+
     return new GraphQLError(error?.message);
+  } finally {
+    // if this client is still active release it back to the pool
+    if (client) client.release();
   }
 };
 
 // SUBSCRIBE TO JOB UPDATES WITH EMAIL
+
 export const handle_subscribe_with_email = async (_, { email }) => {
   if (!email) throw GraphQLError("To subscribe an email is needed");
   const email_subscribed_query = "SELECT email FROM subscribe WHERE email = $1";
   const subscribe_user_query =
     "INSERT INTO subscribe (email) VALUES ($1) RETURNING email";
 
+  let client;
+
   try {
-    await client.connect();
+    client = await pool.connect();
+
+    // start transaction
+    await client.query("BEGIN");
 
     // check if there's that email already
     const email_subscribed_res = await client.query(email_subscribed_query, [
@@ -254,11 +307,11 @@ export const handle_subscribe_with_email = async (_, { email }) => {
         email,
       ]);
 
-      // await client.end();
-
       if (subscribe_user_res.rows.length > 0) {
         // email has been added successfully
         const subscribed_email = subscribe_user_res.rows[0];
+
+        await client.query("COMMIT"); // commit the transaction
 
         return subscribed_email;
       } else {
@@ -268,6 +321,12 @@ export const handle_subscribe_with_email = async (_, { email }) => {
   } catch (error) {
     console.log(error);
 
+    // rollback transaction on error
+    if (client) await client.query("ROLLBACK");
+
     return new GraphQLError(error?.message);
+  } finally {
+    // if this client is still active release it back to the pool
+    if (client) client.release();
   }
 };

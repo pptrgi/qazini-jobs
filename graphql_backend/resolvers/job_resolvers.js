@@ -1,9 +1,9 @@
 import { GraphQLError } from "graphql";
 
-import { client } from "../utils/dbConnect.js";
+import { pool } from "../utils/dbConnect.js";
 import { private_resolvers_guard } from "../middleware/private_resolvers_guard.js";
 
-// SAVE A JOB MUTATION
+// SAVE A JOB MUTATION HANDLER
 export const handle_save_job = async (_, { saveJobInput }, contextValue) => {
   // destructure the input arg to get job properties
   let {
@@ -73,9 +73,14 @@ export const handle_save_job = async (_, { saveJobInput }, contextValue) => {
     alien_job_id,
   ];
 
+  let client;
+
   try {
     // connect to the database
-    await client.connect();
+    client = await pool.connect();
+
+    // start transaction
+    await client.query("BEGIN");
 
     // check if there's a user associated with provided details
     const user_exists_res = await client.query(id_owner_query, [
@@ -106,7 +111,8 @@ export const handle_save_job = async (_, { saveJobInput }, contextValue) => {
           );
 
           const new_job = save_job_res.rows[0];
-          // await client.end();
+
+          await client.query("COMMIT"); // commit the transaction
 
           return new_job;
         } else {
@@ -115,7 +121,8 @@ export const handle_save_job = async (_, { saveJobInput }, contextValue) => {
           ]);
 
           const unsaved_job = unsave_job_res.rows[0];
-          // await client.end();
+
+          await client.query("COMMIT"); // commit the transaction
 
           return unsaved_job;
         }
@@ -128,11 +135,18 @@ export const handle_save_job = async (_, { saveJobInput }, contextValue) => {
     // unfortunately the server couldn't save the job
     console.log(error);
 
+    // rollback transaction on error
+    if (client) await client.query("ROLLBACK");
+
     return new GraphQLError(error?.message);
+  } finally {
+    // if this client is still active release it back to the pool
+    if (client) client.release();
   }
 };
 
-// MUTATION TO DELETE A JOB
+// DELETE A JOB MUTATION HANDLER
+
 export const delete_job_handler = async (_, { job_id }, contextValue) => {
   // const decoded_user = verifyAuthToken(context);
   // check first if the user is signed in and the validity of the details
@@ -148,9 +162,14 @@ export const delete_job_handler = async (_, { job_id }, contextValue) => {
     throw new GraphQLError("Provide the job ID");
   }
 
+  let client;
+
   try {
     // database connection
-    await client.connect();
+    client = await pool.connect();
+
+    // start transaction
+    await client.query("BEGIN");
 
     // find user
     const found_user_res = await client.query(find_user_query, [
@@ -167,7 +186,7 @@ export const delete_job_handler = async (_, { job_id }, contextValue) => {
 
         const deleted_job = delete_job_res.rows[0];
 
-        // await client.end();
+        await client.query("COMMIT"); // commit the transaction
 
         return deleted_job;
       } else {
@@ -182,6 +201,12 @@ export const delete_job_handler = async (_, { job_id }, contextValue) => {
     // unfortunately the server couldn't delete the job
     console.log(error);
 
+    // rollback the transaction on error
+    if (client) await client.query("ROLLBACK");
+
     return new GraphQLError(error?.message);
+  } finally {
+    // if this client is still active release it back to the pool
+    if (client) client.release();
   }
 };
