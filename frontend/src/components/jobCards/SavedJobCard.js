@@ -84,7 +84,7 @@ const SavedJobCard = ({ job }) => {
   const hasLogo = checkCompanyLogo(employer_logo);
 
   return (
-    <div className="job_card_wrapper">
+    <div className="job_card_wrapper z-10">
       <div className="flex_col gap-[1.25rem] items-start">
         <div className="flex_between w-full items-center">
           <div className="relative h-[45px] w-[100px] flex_center overflow-hidden">
