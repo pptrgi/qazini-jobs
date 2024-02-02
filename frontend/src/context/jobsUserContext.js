@@ -183,6 +183,7 @@ const JobsUserProvider = (props) => {
         jobs: state.jobs,
         user: state.user,
         savedJobs: state.savedJobs,
+        immutableJobs: state.immutableJobs,
         signin,
         signout,
         setJobs,
