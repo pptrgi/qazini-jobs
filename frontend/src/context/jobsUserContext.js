@@ -136,9 +136,6 @@ const JobsUserProvider = (props) => {
     );
 
     if (alreadySavedJob) {
-      // const newSavedArray = state.savedJobs.filter(
-      //   (job) => job.alien_job_id != alreadySavedJob.alien_job_id
-      // );
       dispatch({
         type: "ADDSAVEDJOB",
         payload: state.savedJobs.filter(
