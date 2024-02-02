@@ -1,37 +1,39 @@
-import { useContext, useState } from "react";
-import { IoChevronDown, IoChevronUp } from "react-icons/io5";
+import { useContext, useEffect, useState } from "react";
+import { IoChevronDown, IoChevronUp, IoOptionsOutline } from "react-icons/io5";
 import { motion } from "framer-motion";
+import { toast } from "react-toastify";
 
 import FilterDropdown from "./FilterDropdown";
 import FilterMobileModal from "./FilterMobileModal";
 import { JobsUserContext } from "../../context/jobsUserContext";
 import { filterOptions } from "./filterOptions";
-import { toast } from "react-toastify";
 import { fadeOutVariants } from "../../transitions/transitions";
 
 const Filters = () => {
-  const context = useContext(JobsUserContext);
-  const jobs = context.jobs;
-  const filterOptionsValues = new Set();
-  const [filterOptionsArray, setFilterOptionsArray] = useState([]);
   // menus displaying filter values
   const [showMobileModal, setShowMobileModal] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
+
   // active filter property and value to be used to filter overall jobs array and styling
   const [activeFilterOption, setActiveFilterOption] = useState("");
   const [activeFilterOptionValue, setActiveFilterOptionValue] = useState("");
 
-  const notEmptyJobs =
-    context.jobs?.length > 0 || context.immutableJobs?.length > 0;
+  const [filterOptionsArray, setFilterOptionsArray] = useState([]); // array of the gathered filter values
+  const { jobs, immutableJobs, setJobs } = useContext(JobsUserContext); // jobs from context
+  const filterOptionsValues = new Set(); // a set to remove duplicate filter values
 
-  /*
- On filter option click:
-  1. clear the existing entries in set
-  2. update set with values of the current jobs array based on the job property clicked
-  3. open the menu/modal
-  4. lastly append to the filter values array values belonging to the selected property
- */
+  // confirm the jobs arrays are not empty
+  const notEmptyJobs = jobs?.length > 0 || immutableJobs?.length > 0;
+
   const handleOptionClick = (optionProperty, optionName) => {
+    /**
+     * On filter option button click:
+     *  1. clear the existing entries in set
+     *  2. update set with values of the current jobs array based on the job property clicked
+     *  3. open the menu/modal
+     *  4. lastly append to the filter values array values belonging to the selected property
+     */
+
     if (notEmptyJobs) {
       filterOptionsValues.clear();
 
@@ -50,16 +52,25 @@ const Filters = () => {
     }
   };
 
+  // reset the active filter values and arrays on clear-filters button click
+  const handleClearFilters = () => {
+    setJobs(immutableJobs);
+    setActiveFilterOption("");
+    setActiveFilterOptionValue("");
+    setFilterOptionsArray([]);
+  };
   return (
     <motion.section
       variants={fadeOutVariants}
       className="custom_container section_after_search"
     >
-      <div className="">
-        <div className="flex gap-[1.5rem] items-center relative">
-          <h3 className="title_normal">Filters:</h3>
-          <div className="overflow-x-auto py-[0.5rem] px-[0.5rem]">
-            <div className="flex gap-[1.5rem]">
+      <div>
+        <div className="flex justify-center gap-[1rem] items-center relative">
+          <span className="px-[1rem] py-[0.6rem] bg-lightGrayColor text-textColor/70 rounded-xl text-h3">
+            <IoOptionsOutline />
+          </span>
+          <div className="overflow-x-auto py-[0.5rem] px-[0.25rem] md480:px-[0.5rem]">
+            <div className="flex gap-[0.75rem]">
               {filterOptions.map((option) => {
                 return (
                   <div className="group cursor-pointer">
@@ -72,7 +83,7 @@ const Filters = () => {
                       }
                       className={`filter_button ${
                         activeFilterOption === option.optionName
-                          ? "bg-darkColor/70 text-bodyColor"
+                          ? "bg-darkColor/70 text-bodyColor/90"
                           : "bg-lightGrayColor"
                       }`}
                     >
@@ -88,10 +99,21 @@ const Filters = () => {
                   </div>
                 );
               })}
+              {filterOptionsArray?.length > 0 && (
+                <div
+                  onClick={(e) => {
+                    handleClearFilters();
+                  }}
+                  className={
+                    "filter_button bg-darkColor/70 text-bodyColor/90 cursor-pointer"
+                  }
+                >
+                  <span className="filter_name">Clear filters</span>
+                </div>
+              )}
             </div>
           </div>
           {/* Only open the dropdown if the jobs array is not empty and showDropdown is true */}
-          {/* {showDropdown && context.jobs?.length > 0 && ( */}
           {showDropdown && (
             <div id="dropdownMenu">
               <FilterDropdown

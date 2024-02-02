@@ -23,7 +23,9 @@ const SavedJobs = ({ jobs, fetching }) => {
               })}
             </div>
           ) : (
-            <p>Seems like you haven't saved any jobs yet</p>
+            <p className="tracking-wide">
+              Seems like you haven't saved any jobs yet
+            </p>
           )}
         </>
       )}

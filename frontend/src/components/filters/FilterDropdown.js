@@ -27,7 +27,7 @@ const FilterDropdown = ({
   return (
     <div
       ref={dropdownRef}
-      className="absolute top-[3.25rem] left-0 z-20 w-full"
+      className="absolute top-[3.25rem] left-[2rem] right-[2rem] z-20 lg1120:right-[4rem]"
     >
       <div className="flex_col w-full rounded-md shadow-lg bg-tintColor">
         {filters?.map((filterValue, index) => {

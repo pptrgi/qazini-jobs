@@ -80,7 +80,7 @@ const UserInformation = ({ user, fetching }) => {
                 <div
                   className={`flex_between w-full border_1_md ${
                     enableEmailEdit
-                      ? "bg-tintColor"
+                      ? "bg-bodyColor"
                       : "bg-halfDarkColor bg-opacity-30"
                   }`}
                 >
@@ -91,10 +91,11 @@ const UserInformation = ({ user, fetching }) => {
                     className="w-full px-[1rem] py-[0.6rem] bg-transparent"
                     disabled={enableEmailEdit ? false : true}
                     placeholder="jinalako@email.com"
+                    id="emaild"
                   />
                   <span
                     onClick={(e) =>
-                      setEnableEmailEdit(enableEmailEdit ? false : true)
+                      setEnableEmailEdit((enableEmailEdit) => !enableEmailEdit)
                     }
                     className={`px-[0.5rem] text-h3 ${
                       enableEmailEdit ? "text-textColor" : "text-bodyColor"
@@ -106,7 +107,7 @@ const UserInformation = ({ user, fetching }) => {
                 <div
                   className={`flex_between w-full border_1_md ${
                     enableNameEdit
-                      ? "bg-tintColor"
+                      ? "bg-bodyColor"
                       : "bg-halfDarkColor bg-opacity-30"
                   }`}
                 >
@@ -120,7 +121,7 @@ const UserInformation = ({ user, fetching }) => {
                   />
                   <span
                     onClick={(e) =>
-                      setEnableNameEdit(enableNameEdit ? false : true)
+                      setEnableNameEdit((enableNameEdit) => !enableNameEdit)
                     }
                     className={`px-[0.5rem] text-h3 ${
                       enableNameEdit ? "text-textColor" : "text-bodyColor"
@@ -135,7 +136,7 @@ const UserInformation = ({ user, fetching }) => {
             <div className="flex_col gap-[0.75rem]">
               <p className="title_name">Change Password</p>
               <div className="grid grid-cols-1 w-full gap-[0.5rem] md800:grid-cols-2 md800:gap-[2rem]">
-                <div className="flex_between form_input bg-tintColor items-center">
+                <div className="flex_between form_input bg-bodyColor items-center">
                   <input
                     type={showPassword ? "text" : "password"}
                     value={password}
@@ -159,7 +160,7 @@ const UserInformation = ({ user, fetching }) => {
                     </span>
                   )}
                 </div>
-                <div className="flex_between form_input bg-tintColor items-center">
+                <div className="flex_between form_input bg-bodyColor items-center">
                   <input
                     type={showPassword ? "text" : "password"}
                     value={confirmPassword}
