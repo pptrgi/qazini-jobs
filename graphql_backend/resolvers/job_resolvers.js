@@ -129,7 +129,7 @@ export const handle_save_job = async (_, { saveJobInput }, contextValue) => {
       }
     } else {
       // user doesn't exist
-      throw new GraphQLError("Sign in to save jobs");
+      throw new GraphQLError("Sorry, user does not exist");
     }
   } catch (error) {
     // unfortunately the server couldn't save the job
