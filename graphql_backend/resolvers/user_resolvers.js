@@ -29,9 +29,6 @@ export const get_user_resolver = async (parent, args, contextValue) => {
     // connect to the database
     client = await pool.connect();
 
-    // start transaction
-    await client.query("BEGIN");
-
     // find the user with the provided user ID
     const found_user_res = await client.query(get_user_query, [
       decoded_user_id,
@@ -46,9 +43,6 @@ export const get_user_resolver = async (parent, args, contextValue) => {
       const user = found_user_res.rows[0];
       user.jobs = user_jobs_res.rows;
 
-      // commit the transaction
-      await client.query("COMMIT");
-
       return user;
     } else {
       // the user with the provided id isn't found in the database
@@ -57,9 +51,6 @@ export const get_user_resolver = async (parent, args, contextValue) => {
   } catch (error) {
     // server couldn't process the request as expected
     console.log(error);
-
-    // rollback transaction on error
-    if (client) await client.query("ROLLBACK");
 
     return new GraphQLError(error?.message);
   } finally {
@@ -261,7 +252,7 @@ export const update_user_profile = async (_, args, contextValue) => {
       }
     } else {
       // no user with that id
-      throw new GraphQLError("No user with that user ID");
+      throw new GraphQLError("Sorry, user does not exist");
     }
   } catch (error) {
     // the server couldn't update the profile as expected
